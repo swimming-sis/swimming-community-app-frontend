@@ -41,7 +41,12 @@ export default {
         "lightblue/700": "#445e94",
         "lightblue/800": "#2d3e63",
         "lightblue/900": "#171f31",
+        "kakaoyellow": "#FEE500",
+        "staryellow": "#FEB700",
       },
+      fontSize: {
+        "10px":"10px"
+      }
     },
   },
   plugins: [],
