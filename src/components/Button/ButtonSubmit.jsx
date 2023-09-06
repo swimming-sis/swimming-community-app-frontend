@@ -1,7 +1,8 @@
 import propTypes from "prop-types";
 
 
-function ButtonSubmit ({color, content}) {
+function ButtonSubmit ({color="bg-primary", content="시작하기"}) {
+
 return (
   <button type="button" className={`w-full py-4 rounded-xl text-base font-semibold text-white ${color}`} >
     {content}
@@ -9,8 +10,8 @@ return (
 )
 }
 ButtonSubmit.propTypes={
-  color: propTypes.string.isRequired,
-  content: propTypes.string.isRequired,
+  color: propTypes.string,
+  content: propTypes.string,
 }
 
-export default ButtonSubmit
+export default ButtonSubmit 
