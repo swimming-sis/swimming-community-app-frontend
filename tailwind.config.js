@@ -7,11 +7,10 @@ export default {
         pretendard: ["Pretendard"],
       },
       colors: {
-        contentTertiary: "#A6A6A6",
-        contentSecondary: "#6B6B6B",
         primary: "#0086FF",
         secondary: "#001B33",
         tertiary: "#5FB2FD",
+        quaternary: "#E9F4FF",
         error: "#FF3743",
         "gray/50": "#f9f9f9",
         "gray/100": "#e1e1e1",

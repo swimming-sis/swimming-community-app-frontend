@@ -1,0 +1,17 @@
+.reviewTagLabelInactive {
+  display: inline-block;
+  padding: 4px 2px 4px 2px;
+  border-radius: 8px;
+  border: 2px solid #5FB2FD;
+  background: #E9F4FF;
+  color: #0086FF;
+}
+
+.reviewTagLabelActive {
+  display: inline-block;
+  padding: 4px 2px 4px 2px;
+  border-radius: 8px;
+  border: 2px solid #E9F4FF;
+  background: #001B33;
+  color: #E9F4FF;
+}
