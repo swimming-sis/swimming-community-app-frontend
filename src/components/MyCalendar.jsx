@@ -3,7 +3,6 @@ import moment from 'moment';
 import Direction from './Icon/Direction';
 import SwimmingKickBoard from './Icon/SwimmingKickBoard';
 
-
 function MyCalendar() {
   const [currentMonth, setCurrentMonth] = useState([]);
   const [monthOffset, setMonthOffset] = useState(0);
@@ -50,7 +49,13 @@ function MyCalendar() {
     fetch(
       `${BASE_CALENDAR_URL}/${CALENDAR_REGION}%23${BASE_CALENDAR_ID_FOR_PUBLIC_HOLIDAY}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}`
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('API 요청 실패');
+        }
+      })
       .then(
         (response) => {
           const formattedResponse = response.items
@@ -112,7 +117,11 @@ function MyCalendar() {
             aria-label={day.a11y}
             className={`text-center h-12 items-start rounded-lg hover:bg-quaternary 
            ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
-           ${selectedDate === day.dateInfo ? 'border-2 border-primary text-primary bg-quaternary font-semibold' : ''}
+           ${
+             selectedDate === day.dateInfo
+               ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
+               : ''
+           }
            ${holidays[day.dateInfo] ? 'text-error' : ''}
            ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
            `}>
