@@ -11,7 +11,7 @@ function Direction({direction=true}) {
       className={direction ? "rotate-0" : "rotate-180"}
     >
       <path
-        fill="#001B33"
+        fill="#0086FF"
         d="M12.942 15.808a.624.624 0 11-.884.884l-6.25-6.25a.626.626 0 010-.884l6.25-6.25a.626.626 0 01.884.884L7.134 10l5.808 5.808z"
       ></path>
     </svg>
