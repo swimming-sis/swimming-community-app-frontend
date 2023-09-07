@@ -1,10 +1,10 @@
-import MyCalender from "@/components/MyCalender"
+import MyCalendar from "@/components/MyCalendar"
 
 
 function Home () {
   return(
     <div className="min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard">
-      <MyCalender />
+      <MyCalendar />
     </div>
   )
 }
