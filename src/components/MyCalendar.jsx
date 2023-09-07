@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import moment from 'moment';
 import Direction from './Icon/Direction';
+import SwimmingKickBoard from './Icon/SwimmingKickBoard';
+
 
 function MyCalendar() {
   const [currentMonth, setCurrentMonth] = useState([]);
@@ -66,7 +68,7 @@ function MyCalendar() {
 
   return (
     <div className="w-full border shadow-lg p-2  rounded-2xl">
-      <div className="flex justify-between items-center mb-6 mt-4">
+      <header className="flex justify-between items-center mb-6 mt-4">
         <h2 className="sr-only">캘린더</h2>
         <p
           tabIndex={0}
@@ -87,7 +89,7 @@ function MyCalendar() {
           aria-label="다음 달">
           <Direction direction={false} />
         </button>
-      </div>
+      </header>
       <div className={`grid grid-cols-7 gap-1 text-sm font-semibold`}>
         {daysOfWeek.map((day, index) => (
           <div
@@ -104,18 +106,18 @@ function MyCalendar() {
             key={index}
             onClick={() => {
               if (day.date !== '') {
-                // Check if the button has a valid day value (not empty)
                 setSelectedDate(day.dateInfo);
               }
             }}
             aria-label={day.a11y}
             className={`text-center h-12 items-start rounded-lg hover:bg-quaternary 
            ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
+           ${selectedDate === day.dateInfo ? 'border-2 border-primary text-primary bg-quaternary font-semibold' : ''}
            ${holidays[day.dateInfo] ? 'text-error' : ''}
            ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
-           ${selectedDate === day.dateInfo ? 'bg-primary text-white font-semibold' : ''}
            `}>
             {day.date}
+            <SwimmingKickBoard />
           </button>
         ))}
       </div>
