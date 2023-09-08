@@ -1,4 +1,6 @@
-function X() {
+import propTypes from 'prop-types';
+
+function X({className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -6,6 +8,7 @@ function X() {
       height="12"
       fill="none"
       viewBox="0 0 12 12"
+      className={className}
     >
       <path
         fill="#001B33"
@@ -14,5 +17,7 @@ function X() {
     </svg>
   );
 }
-
+X.propTypes = {
+  className: propTypes.string
+}
 export default X;

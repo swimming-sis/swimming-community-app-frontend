@@ -6,6 +6,7 @@ function Back() {
       height="15"
       fill="none"
       viewBox="0 0 9 15"
+      className="ml-4"
     >
       <path
         fill="#001B33"

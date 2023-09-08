@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
 
-function Logo({width=250,height=130}) {
+function Logo({width=250,height=130,className}) {
   return (
-    <figure>
+    <figure className={` ${className}`} >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width={width}
@@ -10,7 +10,7 @@ function Logo({width=250,height=130}) {
         fill="none"
         viewBox="0 0 250 130"
         className="w-full"
-        
+        preserveAspectRatio="xMidYMid meet"
       >
         <path
           fill="#fff"
@@ -37,12 +37,14 @@ function Logo({width=250,height=130}) {
           d="M73.565 81.303c0-28.333 9.047-37.985 24.184-37.985 12.36 0 20.601 6.346 23.288 23.774h3.493V44.658h25.885v73.378H124.53V92.564h-3.046c-2.239 19.663-10.748 26.724-23.735 26.724-15.137 0-24.184-9.653-24.184-37.985zm15.764-4.648l-1.612 2.413c5.912 2.682 13.256 4.022 19.974 4.022V80.41c-6.718 0-13.077-1.609-18.362-3.754zm143.489 8.223v-15.73h-9.763v-8.76h9.763v-15.73h-75.954v15.73h10.659v8.76h-10.659v15.73h75.954zm-48.636-23.149c6.718 1.877 15.854 2.95 22.572 2.95v2.681c-6.718 0-16.66-.804-23.557-2.95l.985-2.68zm24.452 56.307v-10.903h24.184V88.185h-75.954v18.948h24.183v10.903h27.587z"
         ></path>
       </svg>
+      <figcaption className='sr-only'>어푸어푸</figcaption>
     </figure>
   );
 }
 Logo.propTypes = {
   width: propTypes.number,
   height: propTypes.number,
+  className:propTypes.string,
 }
 
 

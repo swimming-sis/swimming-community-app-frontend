@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-function Search({size = 24}) {
+function Search({size = 24, className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +8,7 @@ function Search({size = 24}) {
       height={size}
       fill="none"
       viewBox="0 0 19 19"
+      className={className}
     >
       <path
         fill="#000"
@@ -17,7 +18,8 @@ function Search({size = 24}) {
   );
 }
 Search.propTypes = {
-  Size: propTypes.number
+  size: propTypes.number,
+  className: propTypes.string
 }
 
 

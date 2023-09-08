@@ -8,6 +8,7 @@ function Pencil({size=20}) {
       height={size}
       fill="none"
       viewBox="0 0 20 20"
+      className='mr-4'
     >
       <path
         stroke="#001B33"
