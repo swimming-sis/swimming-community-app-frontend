@@ -4,13 +4,14 @@ function LogInText({
   id='tel', 
   content='전화번호', 
   type='text',
+  className,
   validation=true,
   placeholder=`'-' 없이 입력해주세요`,
   errorMessage='올바른 형식의 전화번호가 아닙니다.',
 }) {
 return (
   <div
-  className='flex flex-col gap-y-2 justify-start items-center m-2'>
+  className={`flex flex-col gap-y-2 justify-start items-center m-2 ${className}`}>
   <label 
     htmlFor={`logIn-${id}`}
     tabIndex={0}
@@ -22,7 +23,8 @@ return (
     id={`logIn-${id}`}
     placeholder={placeholder}
     name={`logIn-${id}`}
-    className='flex-grow w-full h-8 px-1 border border-gray/300 rounded-lg text-sm'/>
+    
+    className='flex-grow w-full h-8 px-1 py-5 border border-gray/300 rounded-lg text-sm'/>
   {validation ? null:<p
   className='w-full -mt-2 text-xs text-error ml-2'
   >
@@ -36,6 +38,7 @@ LogInText.propTypes = {
   type: propTypes.string,
   content: propTypes.string,
   validation: propTypes.bool,
+  className: propTypes.string,
   placeholder: propTypes.string,
   errorMessage: propTypes.string,
 };

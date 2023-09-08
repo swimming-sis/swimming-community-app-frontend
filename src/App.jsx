@@ -8,6 +8,11 @@ import Spinner from './components/Spinner';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Main from './pages/Main/Main';
+import PoolSearch from './pages/Main/PoolSearch';
+import Community from './pages/Community/Community';
+import MyLog from './pages/MyLog/MyLog';
+
 
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
@@ -31,6 +36,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/main" element={<Main />} />
+              <Route path="/search" element={<PoolSearch />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/mylog" element={<MyLog />} />
             </Routes>
             {/* <RouterProvider router={router} /> */}
           </Suspense>

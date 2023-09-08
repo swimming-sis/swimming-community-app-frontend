@@ -1,11 +1,15 @@
 import propTypes from "prop-types";
 
 
-function ButtonSubmit ({color="bg-primary", content="시작하기",className}) {
+function ButtonSubmit ({
+  color="text-white", 
+  bgcolor="bg-primary", 
+  content="시작하기",
+  className}) {
 
 return (
-  <div className={className}>
-    <button type="button" className={`w-full py-2 rounded-xl text-base font-semibold text-white ${color}` } >
+  <div className={`${className}`}>
+    <button type="button" className={`w-[calc(100%-20px)] py-2 rounded-xl text-base font-semibold ml-2.5 my-2 ${color} ${bgcolor}` } >
       {content}
     </button>
   </div>
@@ -13,8 +17,12 @@ return (
 }
 ButtonSubmit.propTypes={
   color: propTypes.string,
-  content: propTypes.string,
+  bgcolor: propTypes.string,
   className: propTypes.string,
+  content: propTypes.oneOfType([
+    propTypes.string,
+    propTypes.object,
+  ]),
 }
 
 export default ButtonSubmit 
