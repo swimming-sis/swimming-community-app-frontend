@@ -9,6 +9,7 @@ function Pencil({size=20}) {
       fill="none"
       viewBox="0 0 20 20"
       className='mr-4'
+      aria-label='수정하기'
     >
       <path
         stroke="#001B33"

@@ -9,6 +9,7 @@ function Search({size = 24, className}) {
       fill="none"
       viewBox="0 0 19 19"
       className={className}
+      aria-label='검색하기'
     >
       <path
         fill="#000"

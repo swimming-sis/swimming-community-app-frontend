@@ -9,6 +9,7 @@ function X({className}) {
       fill="none"
       viewBox="0 0 12 12"
       className={className}
+      aria-label='삭제'
     >
       <path
         fill="#001B33"

@@ -7,6 +7,7 @@ function Back() {
       fill="none"
       viewBox="0 0 9 15"
       className="ml-4"
+      aria-label="뒤로가기"
     >
       <path
         fill="#001B33"

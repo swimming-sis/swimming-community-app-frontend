@@ -5,7 +5,7 @@ import Search from '@/components/Icon/Search';
 import X from '@/components/Icon/X';
 import propTypes from 'prop-types';
 
-function Header({ condition = 'search', content = '', noEdit=false}) {
+function Header({ condition = 'default', content = '', noEdit=true}) {
   const [value, setValue] = useState("");
 
 
@@ -24,9 +24,17 @@ function Header({ condition = 'search', content = '', noEdit=false}) {
     <>
       {condition==='default' &&
       <header className={`flex ${noEdit&&'justify-between'} items-center h-10 font-semibold mt-3 font-pretendard z-50`}>
-        <Back />
-        <p className={`text-secondary ${noEdit || 'flex-grow text-center mr-9'}`}>{content}</p>
-        {noEdit&&<Pencil />}
+        <button type="button">
+          <Back />
+        </button>
+        <p 
+        tabIndex={0}
+        className={`text-secondary ${noEdit || 'flex-grow text-center mr-9'}`}>
+          {content}
+          </p>
+        {noEdit&&<button type="button">
+          <Pencil />
+        </button>}
       </header> }
       {condition==='search' &&
       <header className="z-50">
@@ -42,13 +50,6 @@ function Header({ condition = 'search', content = '', noEdit=false}) {
           id="searchSwimmingPool"
           onChange={handleChange}
           className='w-[calc(100%-20px)] p-2 rounded-lg mx-auto border border-secondary'/>
-          <button
-          type="submit"
-          onClick={handleSearch}
-          className='absolute
-          right-7 top-[39px]'>
-          <Search/>
-          </button>
           {value && <button
           type="button"
           className='absolute right-16 top-[48px] btn-clear'
@@ -56,6 +57,13 @@ function Header({ condition = 'search', content = '', noEdit=false}) {
           >
             <X/>
           </button>}
+          <button
+          type="submit"
+          onClick={handleSearch}
+          className='absolute
+          right-7 top-[39px]'>
+          <Search/>
+          </button>
         </form>
       </header> }
     </>
