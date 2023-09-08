@@ -1,10 +1,12 @@
-function Logo() {
+import propTypes from 'prop-types';
+
+function Logo({width=250,height=130}) {
   return (
     <figure>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="250"
-        height="130"
+        width={width}
+        height={height}
         fill="none"
         viewBox="0 0 250 130"
         className="w-full"
@@ -38,5 +40,11 @@ function Logo() {
     </figure>
   );
 }
+Logo.propTypes = {
+  width: propTypes.number,
+  height: propTypes.number,
+}
+
+
 
 export default Logo;
