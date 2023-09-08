@@ -5,7 +5,7 @@ return (
   <button
   type="button"
   className={`w-[84px] px-2 py-[18px]  font-normal
-  ${status ? 'bg-primary text-white' : 'bg-quaternary text-secondary border border-2 border-tertiary'}
+  ${status ? 'bg-primary text-white' : 'bg-quaternary text-secondary border-2 border-tertiary'}
   ${shape==='square' && ''}
   ${shape==='left-round' && 'rounded-tl-lg rounded-bl-lg'}
   ${shape==='right-round' && 'rounded-tr-lg rounded-br-lg'}

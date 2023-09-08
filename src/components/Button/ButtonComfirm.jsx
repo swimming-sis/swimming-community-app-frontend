@@ -6,7 +6,7 @@ return (
   <button
   type="submit"
   className={`w-[120px] p-2 rounded-lg font-normal
-  ${confirm ? 'bg-primary text-white' : 'bg-quaternary text-secondary border border-2 border-tertiary'}`}>
+  ${confirm ? 'bg-primary text-white' : 'bg-quaternary text-secondary border-2 border-tertiary'}`}>
     {content}
   </button>
 )
