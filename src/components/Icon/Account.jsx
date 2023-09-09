@@ -1,11 +1,14 @@
-function Account() {
+import propTypes from 'prop-types';
+
+function Account({className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
+      width="20"
+      height="20"
       fill="none"
       viewBox="0 0 18 18"
+      className={className}
     >
       <path
         stroke="#001B33"
@@ -17,5 +20,8 @@ function Account() {
     </svg>
   );
 }
+Account.propTypes = {
+  className: propTypes.string,
+};
 
 export default Account;

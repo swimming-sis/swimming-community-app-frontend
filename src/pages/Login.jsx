@@ -2,6 +2,8 @@ import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import Chat from '@/components/Icon/Chat';
 import LogInText from '@/components/Input/LogInText';
 import Logo from '@/components/Logo';
+import { Link } from 'react-router-dom';
+
 
 function Login() {
   return (
@@ -36,9 +38,11 @@ function Login() {
         }
       />
 
-      <ButtonSubmit content={'로그인'} />
+      <Link to='/main'>
+        <ButtonSubmit content={'로그인'} />
+      </Link>
       <div className='flex flex-col items-center mb-8'>
-        <a href="/" className='text-sm font-semibold'>회원가입</a>
+        <Link to='/signup' className='text-sm font-semibold'>회원가입</Link>
         <a href="/" className='text-sm text-primary'>아이디/비밀번호 찾기</a>
       </div>
     </div>

@@ -1,8 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
-// import { RouterProvider } from 'react-router-dom';
-// import router from './routes';
 import { Suspense } from 'react';
 import Spinner from './components/Spinner';
 import { Routes, Route } from 'react-router-dom';
@@ -12,6 +10,7 @@ import Main from './pages/Main/Main';
 import PoolSearch from './pages/Main/PoolSearch';
 import Community from './pages/Community/Community';
 import MyLog from './pages/MyLog/MyLog';
+import SignUp from './pages/SignUp';
 
 
 // 쿼리 클라이언트 객체 생성
@@ -40,6 +39,7 @@ function App() {
               <Route path="/search" element={<PoolSearch />} />
               <Route path="/community" element={<Community />} />
               <Route path="/mylog" element={<MyLog />} />
+              <Route path="/signup" element={<SignUp/>} />
             </Routes>
             {/* <RouterProvider router={router} /> */}
           </Suspense>

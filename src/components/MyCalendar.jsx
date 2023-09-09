@@ -72,8 +72,8 @@ function MyCalendar() {
   }, [monthOffset, today]);
 
   return (
-    <div className="w-full border shadow-lg p-2  rounded-2xl">
-      <header className="flex justify-between items-center mb-6 mt-4">
+    <div className="border shadow-md rounded-2xl mx-2.5">
+      <header className="flex justify-between items-center  p-2 border-b">
         <h2 className="sr-only">캘린더</h2>
         <p
           tabIndex={0}
@@ -90,21 +90,21 @@ function MyCalendar() {
         </button>
         <button
           onClick={() => setMonthOffset(monthOffset + 1)}
-          className="py-1 px-3  rounded order-3"
+          className="py-1 px-3 rounded order-3"
           aria-label="다음 달">
           <Direction direction={false} />
         </button>
       </header>
-      <div className={`grid grid-cols-7 gap-1 text-sm font-semibold`}>
+      <div className={`grid grid-cols-7 gap-0.5 text-sm font-semibold pt-2 px-4`}>
         {daysOfWeek.map((day, index) => (
           <div
             key={index}
-            className={`text-center h-12 ${day === 'SUN' ? 'text-error' : 'text-primary'}`}>
+            className={`text-center h-6 ${day === 'SUN' ? 'text-error' : 'text-primary'}`}>
             {day}
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-2 text-sm py-1">
+      <div className="grid grid-cols-7 gap-0.5 text-sm py-1 px-4 text-secondary">
         {currentMonth.map((day, index) => (
           <button
             type="button"
