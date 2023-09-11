@@ -40,7 +40,7 @@ function Header({ condition = 'default', content = '', noEdit=true}) {
       <header className="z-50">
         <form className='flex flex-col h-10 font-semibold mt-3 relative'>
           <label
-          htmlFor="flex-grow searchSwimmingPool"
+          htmlFor="searchSwimmingPool"
           className=' text-secondary mb-2 ml-4'
           tabIndex={0}>전국 수영장 검색하기</label>
           <input
@@ -49,7 +49,9 @@ function Header({ condition = 'default', content = '', noEdit=true}) {
           value={value}
           id="searchSwimmingPool"
           onChange={handleChange}
-          className='w-[calc(100%-20px)] p-2 rounded-lg mx-auto border border-secondary'/>
+          placeholder="원하는 지역을 검색해 보세요"
+          className='w-[calc(100%-20px)] py-2 px-4 rounded-lg mx-auto border border-secondary placeholder:font-normal placeholder:text-sm'
+          />
           {value && <button
           type="button"
           className='absolute right-16 top-[48px] btn-clear'

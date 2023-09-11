@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-function Star({fill=true}) {
+function Star({fill=true,className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +10,7 @@ function Star({fill=true}) {
       viewBox="0 0 47.94 47.94"
       xmlSpace="preserve"
       fill={fill ? "#FEB700" : "none"}
+      className={className}
     >
       <path
         stroke="#FEB700"
@@ -20,7 +21,9 @@ function Star({fill=true}) {
 }
 
 Star.propTypes = {
-  fill: propTypes.bool
+  fill: propTypes.bool,
+  className: propTypes.string
+
 }
 
 
