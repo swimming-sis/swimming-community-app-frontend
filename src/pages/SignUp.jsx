@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 function SignUp ({validationTel='send'}) {
   return (
-    <form className="font-pretendard flex flex-col h-full">
+    <form className="font-pretendard flex flex-col h-full min-w-[320px] max-w-[699px] mx-auto px-[10px]">
       <h1 className="sr-only">어푸어푸 로그인</h1>
       <Logo width={200} height={100} className={'mt-10 mb-8'} />
       <LogInText

@@ -1,23 +1,43 @@
-import Category from "./Category";
+import propTypes from 'prop-types';
 
-function CategoryRadio() {
-  const categoryArr = ['전체', '자유', '일상', '고민', '코디', '용품', '정보'];
+function CategoryRadio({ value, id, isChecked, onChange }) {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onChange({
+      target: {
+        value: id,
+      },
+    });
+  };
+
   return (
-    <form>
-      <fieldset>
-        <legend className="sr-only">카테고리</legend>
-        <div
-        className="flex justify-center gap-x-0.5">
-          {categoryArr.map((value, index) => (
-            <Category
-              key={index}
-              value={value}
-              index={index} />
-          ))}
-        </div>
-      </fieldset>
-    </form>
+    <>
+      <label
+        htmlFor={`categoryRadio-${id}`}
+        className={`py-1 px-4 rounded-2xl text-xs border-2 border-primary flex-shrink-0 font-semibold mr-2
+  ${isChecked ? 'bg-primary text-white' : 'text-primary'}`}
+
+        onClick={handleClick}
+      >
+          {value}
+      </label>
+          <input 
+            type="radio" 
+            id={`categoryRadio-${id}`} 
+            name="category"
+            value={value}
+            checked={isChecked}
+            onChange={onChange}
+            className='sr-only' />
+    </>
   );
 }
+
+CategoryRadio.propTypes = {
+  value: propTypes.string.isRequired,
+  id: propTypes.string.isRequired,
+  isChecked: propTypes.bool,
+  onChange: propTypes.func,
+};
 
 export default CategoryRadio;

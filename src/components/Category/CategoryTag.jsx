@@ -1,11 +1,11 @@
 import propTypes from 'prop-types';
 
-function Category ({value,index}) {
+function CategoryTag ({value,className}) {
 return (
 
   <span 
-  id={`categorytag-${index}`}
-  className={`py-1 px-2 rounded-2xl text-xs border-2 border-secondary text-secondary`}
+  className={`py-1 px-2 rounded-2xl text-xs border-2 border-primary text-primary mr-2 font-semibold
+  ${className}`}
   tabIndex="0">
     {value}
   </span>
@@ -13,9 +13,9 @@ return (
 )
 
 }
-Category.propTypes = {
+CategoryTag.propTypes = {
   value: propTypes.string.isRequired,
-  index: propTypes.number.isRequired
+  className: propTypes.string
 }
 
-export default Category
+export default CategoryTag

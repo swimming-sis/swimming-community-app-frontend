@@ -8,7 +8,6 @@ function Pencil({size=20}) {
       height={size}
       fill="none"
       viewBox="0 0 20 20"
-      className='mr-4'
       aria-label='수정하기'
     >
       <path

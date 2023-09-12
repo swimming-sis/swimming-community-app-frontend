@@ -1,13 +1,14 @@
 import propTypes from 'prop-types';
 
-function Heart({fill=false}) {
+function Heart({fill=false, className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
+      width="14"
+      height="14"
       fill={fill ? "#FF3743" : "none"}
       viewBox="0 0 12 12"
+      className={className}
     >
       <path
         stroke="#FF3743"
@@ -17,7 +18,8 @@ function Heart({fill=false}) {
   );
 }
 Heart.propTypes = {
-  fill: propTypes.bool
+  fill: propTypes.bool,
+  className: propTypes.string
 }
 
 export default Heart;

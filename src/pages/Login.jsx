@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 function Login() {
   return (
-    <div className='font-pretendard flex flex-col h-screen'>
+    <div className='font-pretendard flex flex-col  min-w-[320px] max-w-[699px] mx-auto px-[10px] h-screen overflow-y-scroll'>
       <h1 className="sr-only">어푸어푸 로그인</h1>
       <Logo width={200} height={100} className={'mt-10 mb-8'} />
       <LogInText
@@ -22,11 +22,14 @@ function Login() {
         id={'loginPw'}
         content={'비밀번호'}
         type="password"
-        className='mb-auto'
         validation={true}
         placeholder={''}
         errorMessage={'비밀번호를 확인해주세요.'}
       />
+      <div className='mb-auto flex gap-x-1 justify-end mr-2.5 items-center'>
+        <input type="checkbox" name="autoLogIn" id="autoLogIn" />
+        <label htmlFor="autoLogIn" className='font-pretendard font-medium text-secondary text-sm'>자동 로그인</label>
+      </div>
       <ButtonSubmit
         color="text-black"
         bgcolor="bg-kakaoyellow"

@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-function Chat({fill=false}) {
+function Chat({fill=false, className}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,6 +8,7 @@ function Chat({fill=false}) {
       height="14"
       fill={fill ? "#001B33" : "none"}
       viewBox="0 0 14 14"
+      className={className}
     >
       <path
         stroke="#001B33"
@@ -19,6 +20,7 @@ function Chat({fill=false}) {
   );
 }
 Chat.propTypes = {
-  fill: propTypes.bool
+  fill: propTypes.bool,
+  className: propTypes.string
 }
 export default Chat;

@@ -4,6 +4,8 @@ import Location from './Icon/Location';
 import PoolMarker from './Icon/PoolMarker';
 import Circle from './Icon/Circle';
 import propTypes from 'prop-types';
+import Plus from './Icon/Plus';
+import Minus from './Icon/Minus';
 
 
 function PoolMap({value = '수영장'}) {
@@ -16,7 +18,7 @@ function PoolMap({value = '수영장'}) {
 
   const [map, setMap] = useState(false);
   const [markers, setMarkers] = useState([])
-  const [zoomLevel, setZoomLevel] = useState(4);  
+  const [zoomLevel, setZoomLevel] = useState(10);  
 
 
   useEffect(() => {
@@ -100,11 +102,11 @@ function PoolMap({value = '수영장'}) {
 
 
   return (
-    <div>
+    <div className='relative'>
       <Map
         center={state.center}
         level={zoomLevel}
-        className="w-[calc(100%-20px)] h-[200px] mx-auto rounded-3xl relative">
+        className="w-[calc(100%-20px)] h-[200px] mx-auto rounded-3xl">
         {!state.isLoading && <CustomOverlayMap position={state.center}
         yAnchor={-0.5}>
           <Circle/>
@@ -121,7 +123,7 @@ function PoolMap({value = '수영장'}) {
       ))}
 
       </Map>
-      <div className="absolute z-10 right-6 top-[14%]">
+      <div className="absolute z-10 right-6 top-2">
         <button
           type="button"
           className="relative border bg-white shadow-sm w-7 h-7 rounded-md"
@@ -132,24 +134,20 @@ function PoolMap({value = '수영장'}) {
       <button
         type="button"
         onClick={() => setMap(!map)}
-        className=" absolute px-4 py-2  bg-primary text-white font-semibold font-prestige shadow-md rounded-full z-10 top-[14%] left-5">
+        className=" absolute px-4 py-2  bg-primary text-white font-semibold font-prestige shadow-md rounded-full z-10 top-2 left-5">
         주변 수영장 검색하기
       </button>
       <div
-        className='flex flex-col absolute top-[28%] right-6 z-10'>
+        className='flex flex-col absolute bottom-4 right-6 z-10'>
         <button
-        className='w-6 h-6 px-0.5 text-gray/600 text-center border bg-white rounded-t-md shadow-sm font-semibold text-xl'
+        className='w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-t-md shadow-sm font-semibold text-xl'
         onClick={() => setZoomLevel(zoomLevel + 1)}>
-          <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[10%]'>
-            -
-            </span>
+            <Minus className='mx-auto'/>
           </button>
         <button
-        className='w-6 h-6 px-0.5 text-gray/600 text-center border bg-white rounded-b-md shadow-sm font-semibold text-xl'
+        className='w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-b-md shadow-sm font-semibold text-xl'
         onClick={() => setZoomLevel(zoomLevel - 1)}>
-          <span className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[90%]'>
-            +
-            </span>
+            <Plus className='mx-auto'/>
           </button>
       </div>
     </div>
