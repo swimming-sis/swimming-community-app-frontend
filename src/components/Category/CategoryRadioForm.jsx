@@ -25,10 +25,6 @@ function CategoryRadioForm() {
 
   const handleChange = (event) => {
     setSelectedCategory(event.target.value);
-    // if (swiper) {
-    //   const index = categoryArr.findIndex(category => category.id === event.target.value);
-    //   swiper.slideTo(index);
-    // }
 };
 
   return (
@@ -40,44 +36,9 @@ function CategoryRadioForm() {
           enable: true,
           sticky: true
         }} 
-        // slidesPerView= {'auto'}
-        // spaceBetween= {30}
-        // slidesOffsetBefore ={5}
-        // slidesOffsetAfter = {20}
-        autoHeight={true}
-                breakpoints={{
-          100: {
-            slidesPerView: 4,
-            slidesOffsetBefore : 0,
-            slidesOffsetAfter : 20
-          },
-          200: {
-            slidesPerView: 4,
-            slidesOffsetBefore : 0,
-            slidesOffsetAfter : 20
-          },
-          320: {
-            slidesPerView: 4,
-            slidesOffsetBefore : 0,
-            slidesOffsetAfter : 20
-          },
-          330: {
-            slidesPerView: 5,
-            slidesOffsetBefore : 0,
-            slidesOffsetAfter : 20
-          },
-          380: {
-            slidesPerView: 6,
-            slidesOffsetBefore : 5,
-            slidesOffsetAfter : 20
-          },
-          470: {
-            slidesPerView: 7,
-            slidesOffsetBefore : 5,
-            slidesOffsetAfter : 20
-          },
-
-        }}
+        spaceBetween= {0}
+        slidesOffsetAfter = {20}
+        slidesPerView= {'auto'}
         className='h-8'
         >
           {categoryArr.map((category) => (

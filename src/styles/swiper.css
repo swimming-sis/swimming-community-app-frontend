@@ -4,6 +4,5 @@ flex-direction: row;
 width: 100vw;
 }
 .swiper-slide{
-  /* width: 50px !important */
-  /* ; */
+  width: 65px;
 }
