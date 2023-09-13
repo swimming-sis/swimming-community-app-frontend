@@ -95,7 +95,7 @@ function MyCalendar() {
           <Direction direction={false} />
         </button>
       </header>
-      <div className={`grid grid-cols-7 gap-0.5 text-sm font-semibold pt-2 px-4`}>
+      <div className={`grid grid-cols-7 gap-0.5 text-xs font-semibold pt-2 px-4`}>
         {daysOfWeek.map((day, index) => (
           <div
             key={index}
@@ -104,7 +104,7 @@ function MyCalendar() {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-7 gap-0.5 text-sm py-1 px-4 text-secondary">
+      <div className="grid grid-cols-7 gap-0.5 text-xs py-0 px-4 text-secondary">
         {currentMonth.map((day, index) => (
           <button
             type="button"

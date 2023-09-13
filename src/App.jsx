@@ -1,16 +1,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { Suspense } from 'react';
 import Spinner from './components/Spinner';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import Login from './pages/Login';
+// import Login from './pages/Login';
 import Main from './pages/Main/Main';
 import PoolSearch from './pages/Main/PoolSearch';
 import Community from './pages/Community/Community';
 import MyLog from './pages/MyLog/MyLog';
 import SignUp from './pages/SignUp';
+import { AuthProvider } from './contexts/Auth';
 
 
 // 쿼리 클라이언트 객체 생성
@@ -30,22 +32,27 @@ function App() {
     <>
       {/* 쿼리 클라이언트를 앱에 공급 */}
       <QueryClientProvider client={queryClient}>
+      <HelmetProvider>
         <div className="App">
           <Suspense fallback={<Spinner size={200} />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/main" element={<Main />} />
-              <Route path="/search" element={<PoolSearch />} />
-              <Route path="/community" element={<Community />} />
-              <Route path="/mylog" element={<MyLog />} />
-              <Route path="/signup" element={<SignUp/>} />
-            </Routes>
+            <AuthProvider>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                {/* <Route path="/login" element={<Login />} /> */}
+                <Route path="/main" element={<Main />} />
+                <Route path="/search" element={<PoolSearch />} />
+                <Route path="/community" element={<Community />} />
+                <Route path="/mylog" element={<MyLog />} />
+                <Route path="/signup" element={<SignUp/>} />
+              </Routes>
+            </AuthProvider>
             {/* <RouterProvider router={router} /> */}
           </Suspense>
         </div>
         {/* 탠스택 쿼리 개발 도구 */}
         {/* <ReactQueryDevtools /> */}
+
+      </HelmetProvider>
       </QueryClientProvider>
       <Toaster />
     </>

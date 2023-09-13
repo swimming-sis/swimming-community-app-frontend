@@ -8,7 +8,7 @@ function Home() {
       <h1 className='sr-only'>어푸어푸</h1>
       <div className="w-full h-screen">
         <Logo width={200} height={100} className={'absolute top-1/3 left-1/2 -translate-x-1/2'} />
-        <Link to='/login'>
+        <Link to='/signup'>
         <ButtonSubmit className={'absolute bottom-0 w-[calc(100%-20px)] h-28'} />
         </Link>
       </div>
