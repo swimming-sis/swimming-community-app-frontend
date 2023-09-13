@@ -4,7 +4,7 @@ import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import LogInText from '@/components/Input/LogInText';
 import Logo from '@/components/Logo';
 // import Timer from '@/components/Timer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 // import toast from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
@@ -399,13 +399,21 @@ useEffect(()=>{
             </div>
           )} */}
         <ButtonSubmit 
-        className="flex flex-col items-center my-8" 
+        className="flex flex-col items-center mt-4" 
         content={'회원가입'}
         disabled={!isValidformState.username ||!isValidformState.nickName ||
           !isValidformState.password ||
           !isValidformState.passwordConfirm ||
           !isValidformState.phoneNumber}/>
       </form>
+      <Link to='/'>
+        <button
+        type="button"
+        className='block mx-auto text-xs text-secondary font-pretendard mb-10
+        '>
+          홈으로 돌아가기
+        </button>
+      </Link>
     </>
   );
 }
