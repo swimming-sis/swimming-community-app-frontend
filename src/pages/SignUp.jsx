@@ -59,12 +59,8 @@ function SignUp() {
       
       console.log(response.body);
       console.log(response.status);
-      if (!response.ok) {
-        const responseBody = await response.text(); // Or 'response.json()' if the response is JSON
-        console.log('Response Body:', responseBody);
-        
-        throw new Error('Response is not OK');
-      }
+      if (!response.ok) throw new Error('Response is not OK');
+
       // throw new Error('Response is not OK');
 
       const data = await response.json();
@@ -278,7 +274,7 @@ useEffect(() => {
     try {
       // 중복 확인 요청을 보냅니다.
       const response = await fetch(
-        `http://127.0.0.1:8090/api/collections/dummyUser/records/?filter=(tel='${value}')`
+        `http://127.0.0.1:8090/api/collections/dummyUser/records/?filter=(phoneNumber='${value}')`
       );
       
       if (!response.ok) throw new Error('Response is not OK');
