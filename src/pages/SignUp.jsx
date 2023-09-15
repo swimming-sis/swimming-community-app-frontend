@@ -4,31 +4,31 @@ import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import LogInText from '@/components/Input/LogInText';
 import Logo from '@/components/Logo';
 // import Timer from '@/components/Timer';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import toast from 'react-hot-toast';
-import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
 import debounce from '@/utils/debounce';
-import { useEffect } from 'react';
+import useAuthStore from '@/zustand/useAuthStore';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 
-const usernameRegex = /^[a-z0-9]{4,12}$/;
+const userNameRegex = /^[a-z]+[a-z0-9]{3,11}$/g;
 const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&*]{2,8}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])|(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
-// {validationTel='send'}
+
 function SignUp() {
   const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
-    username: '',
+    userName: '',
     nickName: '',
     password: '',
     passwordConfirm: '',
     phoneNumber: '',
   });
   const [isValidformState, setIsValidFormState] = useState({
-    username: false,
+    userName: false,
     nickName: false,
     password: false,
     passwordConfirm: false,
@@ -36,41 +36,24 @@ function SignUp() {
   });
 
   const [errorMessages, setErrorMessages] = useState({
-    username: '',
+    userName: '',
     nickName: '',
     password: '',
     passwordConfirm: '',
     phoneNumber: '',
   });
 
+  const signUp = useAuthStore((state) => state.signUp);
 
   const handleRegister = async (e) => {
-    e.preventDefault()
-
-    const url = 'http://127.0.0.1:8090/api/collections/dummyUser/records';
+    e.preventDefault();
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formState),
-      });
-      
-      console.log(response.body);
-      console.log(response.status);
-      if (!response.ok) throw new Error('Response is not OK');
-
-      // throw new Error('Response is not OK');
-
-      const data = await response.json();
-
-      console.log('Success:', data);
-
+      await signUp(formState);
+      console.log('Success: 회원가입 성공');
     } catch (error) {
       console.error('Error:', error);
-
     }
+
     navigate('/');
   };
 
@@ -81,26 +64,25 @@ function SignUp() {
       [name]: value,
     }));
 
-    
     switch (name) {
-      case 'username':
-        if (!usernameRegex.test(value)) {
+      case 'userName':
+        if (!userNameRegex.test(value)) {
           setErrorMessages((prev) => ({
             ...prev,
-            username: '영문 소문자와 숫자 조합으로 4~12자리로 입력해주세요.',
+            userName: '영문 소문자와 숫자 조합으로 4~12자리로 입력해주세요.',
           }));
           setIsValidFormState((prev) => ({
             ...prev,
-            username: false,
+            userName: false,
           }));
         } else {
           setErrorMessages((prev) => ({
             ...prev,
-            username: '', // Clear the error message when the input is valid
+            userName: '',
           }));
           setIsValidFormState((prev) => ({
             ...prev,
-            username: true,
+            userName: true,
           }));
         }
         break;
@@ -118,7 +100,7 @@ function SignUp() {
         } else {
           setErrorMessages((prev) => ({
             ...prev,
-            nickName: '', // Clear the error message when the input is valid
+            nickName: '',
           }));
           setIsValidFormState((prev) => ({
             ...prev,
@@ -137,7 +119,6 @@ function SignUp() {
           setIsValidFormState((prev) => ({
             ...prev,
             password: false,
-            // Check if the confirmed password matches the new one
             passwordConfirm:
               prev.passwordConfirm === ''
                 ? prev.passwordConfirm
@@ -196,124 +177,123 @@ function SignUp() {
           }));
           setIsValidFormState((prev) => ({
             ...prev,
-            phoneNumber: true, // 수정된 부분
+            phoneNumber: true,
           }));
         }
         break;
     }
-
   };
 
   const handleDebounceInput = debounce(handleInput, 500);
 
-useEffect(() => {
-  const checkDuplication = async () => {
-    let value = formState.username;
+  useEffect(() => {
+    const checkDuplication = async () => {
+      let value = formState.userName;
 
-    try {
-      const response = await fetch(
-        `http://127.0.0.1:8090/api/collections/dummyUser/records/?filter=(username='${value}')`
-      );
-      
-      if (!response.ok) throw new Error('Response is not OK');
-      const data = await response.json();
-      
-      if (data.items.length > 0 && formState.username === value) { 
-        setErrorMessages((prev) => ({
-          ...prev,
-          username: `다른 사람이 이미 사용하고 있는 아이디에요.`,
-        }));
-        setIsValidFormState((prev) => ({
-          ...prev,
-          username: false,
-        }));
+      try {
+        const response = await fetch(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/userName?userName=${value}`, {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json'}
+          })
+        
+        if (!response.ok) throw new Error('Response is not OK');
+        const data = await response.json();
+        if (data.result) {
+          setErrorMessages((prev) => ({
+            ...prev,
+            userName: `다른 사람이 이미 사용하고 있는 아이디입니다.`,
+          }));
+          setIsValidFormState((prev) => ({
+            ...prev,
+            userName: false,
+          }));
+        }
+        } catch (error) {
+          console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    };
 
     checkDuplication();
-}, [formState.username]);
-useEffect(() => {
-  const checkDuplication = async () => {
-    let value = formState.nickName;
 
-    try {
-      // 중복 확인 요청을 보냅니다.
-      const response = await fetch(
-        `http://127.0.0.1:8090/api/collections/dummyUser/records/?filter=(nickName='${value}')`
-      );
-    
-      if (!response.ok) throw new Error('Response is not OK');
-      const data = await response.json();
-
-    
-      // 만약 해당 값이 이미 존재한다면 에러 메시지를 설정하고 유효성 검사 상태를 업데이트합니다.
-      if (data.items.length > 0 && formState.nickName === value) { 
-        setErrorMessages((prev) => ({
-          ...prev,
-          nickName: `다른 사람이 이미 사용하고 있는 닉네임이에요.`,
-        }));
-        setIsValidFormState((prev) => ({
-          ...prev,
-          nickName: false,
-        }));
-      }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-    checkDuplication();
+  }, [formState.userName]);
   
-}, [formState.nickName]);
-useEffect(() => {
-  const checkDuplication = async () => {
-    let value = formState.phoneNumber;
+  useEffect(() => {
+    const checkDuplication = async () => {
+      let value = formState.nickName;
 
-    try {
-      // 중복 확인 요청을 보냅니다.
-      const response = await fetch(
-        `http://127.0.0.1:8090/api/collections/dummyUser/records/?filter=(phoneNumber='${value}')`
-      );
-      
-      if (!response.ok) throw new Error('Response is not OK');
-      const data = await response.json();
-      
-      // 만약 해당 값이 이미 존재한다면 에러 메시지를 설정하고 유효성 검사 상태를 업데이트합니다.
-      if (data.items.length > 0 && formState.phoneNumber === value) { 
-        setErrorMessages((prev) => ({
-          ...prev,
-          phoneNumber: `다른 사람이 이미 사용하고 있는 번호에요.`,
-        }));
-        setIsValidFormState((prev) => ({
-          ...prev,
-          phoneNumber: false,
-        }));
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/nickName?nickName=${value}`,{
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+
+        if (!response.ok) throw new Error('Response is not OK');
+        const data = await response.json();
+  
+        if (data.result) {
+          setErrorMessages((prev) => ({
+            ...prev,
+            nickName: `다른 사람이 이미 사용하고 있는 닉네임입니다.`,
+          }));
+          setIsValidFormState((prev) => ({
+            ...prev,
+            nickName: false,
+          }));
+        }
+      } catch (error) {
+        console.error('Error:', error);
       }
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+    };
+    checkDuplication();
+  }, [formState.nickName]);
+
+  useEffect(() => {
+    const checkDuplication = async () => {
+      let value = formState.phoneNumber;
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber?phoneNumber=${value}`,{
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        
+
+        if (!response.ok) throw new Error('Response is not OK');
+        const data = await response.json();
+
+        if (data.result) {
+          setErrorMessages((prev) => ({
+            ...prev,
+            phoneNumber: `다른 사람이 이미 사용하고 있는 번호입니다.`,
+          }));
+          setIsValidFormState((prev) => ({
+            ...prev,
+            phoneNumber: false,
+          }));
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
 
     checkDuplication();
-  
-}, [formState.phoneNumber]);
-useEffect(()=>{
-  if (!isValidformState.username ||
-    !isValidformState.nickName ||
-    !isValidformState.password ||
-    !isValidformState.passwordConfirm ||
-    !isValidformState.phoneNumber) 
-    setFormState(formState)
-},[formState,isValidformState])
+  }, [formState.phoneNumber]);
 
   return (
     <>
       <Helmet>
-        <title className="sr-only">어푸어푸 로그인</title>
+        <title className="sr-only">어푸어푸 회원가입</title>
       </Helmet>
-      <Logo width={200} height={100} className={'mt-10 mb-8'} />
+      <Link to="/">
+        <Logo width={200} height={100} className={'mt-10 mb-8'} />
+      </Link>
       <form
         className="font-pretendard flex flex-col h-full min-w-[320px] max-w-[699px] mx-auto px-[10px]"
         onSubmit={handleRegister}>
@@ -321,12 +301,12 @@ useEffect(()=>{
           id={'loginId'}
           content={'아이디'}
           type="text"
-          name="username"
-          value={formState.username}
-          validation={isValidformState.username}
+          name="userName"
+          value={formState.userName}
+          validation={isValidformState.userName}
           onChange={handleDebounceInput}
           placeholder={'영문 소문자와 숫자를 포함한 4~12자리로 입력해 주세요.'}
-          errorMessage={errorMessages.username}
+          errorMessage={errorMessages.userName}
         />
         <LogInText
           id={'loginName'}
@@ -398,22 +378,18 @@ useEffect(()=>{
               </button>
             </div>
           )} */}
-        <ButtonSubmit 
-        className="flex flex-col items-center mt-4" 
-        content={'회원가입'}
-        disabled={!isValidformState.username ||!isValidformState.nickName ||
-          !isValidformState.password ||
-          !isValidformState.passwordConfirm ||
-          !isValidformState.phoneNumber}/>
+        <ButtonSubmit
+          className="flex flex-col items-center mt-4"
+          content={'회원가입'}
+          disabled={
+            !isValidformState.userName ||
+            !isValidformState.nickName ||
+            !isValidformState.password ||
+            !isValidformState.passwordConfirm ||
+            !isValidformState.phoneNumber
+          }
+        />
       </form>
-      <Link to='/'>
-        <button
-        type="button"
-        className='block mx-auto text-xs text-secondary font-pretendard mb-10
-        '>
-          홈으로 돌아가기
-        </button>
-      </Link>
     </>
   );
 }

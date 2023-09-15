@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        pretendard: ["Pretendard"],
+        pretendard: ["Pretendard Variable"],
       },
       colors: {
         primary: "#0086FF",

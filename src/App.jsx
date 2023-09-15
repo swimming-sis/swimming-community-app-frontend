@@ -1,18 +1,18 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
-import { Suspense } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Spinner from './components/Spinner';
-import { Routes, Route } from 'react-router-dom';
+import Community from './pages/Community/Community';
 import Home from './pages/Home';
-// import Login from './pages/Login';
+import Login from './pages/Login';
 import Main from './pages/Main/Main';
 import PoolSearch from './pages/Main/PoolSearch';
-import Community from './pages/Community/Community';
 import MyLog from './pages/MyLog/MyLog';
 import SignUp from './pages/SignUp';
-import { AuthProvider } from './contexts/Auth';
+import PoolSearchList from './pages/Main/PoolSearchList';
 
 
 // 쿼리 클라이언트 객체 생성
@@ -35,17 +35,18 @@ function App() {
       <HelmetProvider>
         <div className="App">
           <Suspense fallback={<Spinner size={200} />}>
-            <AuthProvider>
               <Routes>
                 <Route path="/" element={<Home />} />
-                {/* <Route path="/login" element={<Login />} /> */}
+                <Route path="/login" element={<Login />} />
                 <Route path="/main" element={<Main />} />
-                <Route path="/search" element={<PoolSearch />} />
+                <Route path="/search" element={<PoolSearch />}>
+                  <Route path="list" element={<PoolSearchList/>} />
+                </Route>
                 <Route path="/community" element={<Community />} />
                 <Route path="/mylog" element={<MyLog />} />
                 <Route path="/signup" element={<SignUp/>} />
               </Routes>
-            </AuthProvider>
+
             {/* <RouterProvider router={router} /> */}
           </Suspense>
         </div>

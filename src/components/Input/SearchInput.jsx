@@ -2,14 +2,18 @@ import { useState } from 'react';
 import Search from '@/components/Icon/Search';
 import X from '@/components/Icon/X';
 import propTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 function SearchInput({
   content = '전국 수영장 검색하기',
   id = 'searchSwimmingPool',
+  name= 'search',
   hidden = false,
+  onSubmit ,
   placeholder = "원하는 지역을 검색해 보세요",
 }) {
   const [value, setValue] = useState('');
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -19,11 +23,11 @@ function SearchInput({
   };
 
   const handleSearch = () => {
-    console.log(value);
+    navigate('list')
   };
 
   return (
-    <form className="flex flex-col h-10 font-semibold my-1 relative">
+    <form className="flex flex-col h-10 font-semibold my-1 relative px-2.5">
       <label 
       htmlFor={id} 
       hidden={hidden}
@@ -33,7 +37,7 @@ function SearchInput({
       </label>
       <input
         type="search"
-        name={id}
+        name={name}
         value={value}
         id={id}
         onChange={handleChange}
@@ -52,6 +56,7 @@ function SearchInput({
       <button
         type="submit"
         onClick={handleSearch}
+        onSubmit={onSubmit}
         className={hidden ? 'absolute right-4 top-2 btn-clear':'absolute right-4 top-[3.25rem]'}
         aria-label='검색하기'
         >
@@ -62,8 +67,10 @@ function SearchInput({
 }
 SearchInput.propTypes = {
   id: propTypes.string,
-  content: propTypes.string,
+  name: propTypes.string,
   hidden: propTypes.bool,
+  onSubmit: propTypes.func,
+  content: propTypes.string,
   placeholder: propTypes.string,
 };
 export default SearchInput;

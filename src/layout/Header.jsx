@@ -5,7 +5,7 @@ import SearchInput from '@/components/Input/SearchInput';
 
 import propTypes from 'prop-types';
 
-function Header({ type = 'default', content = '', noEdit=true}) {
+function Header({ type = 'default', content = '', noEdit=true, onSubmit,value}) {
 
   return (
     <>
@@ -24,7 +24,7 @@ function Header({ type = 'default', content = '', noEdit=true}) {
         </button>}
       </header> }
       {type==='search' &&
-      <header className="z-50">
+      <header className="z-50" onSubmit={onSubmit} value={value}>
         <SearchInput />
       </header> }
     </>
@@ -32,8 +32,10 @@ function Header({ type = 'default', content = '', noEdit=true}) {
 }
 Header.propTypes = {
   type: propTypes.string,
+  value: propTypes.string,
   content: propTypes.string,
-  noEdit: propTypes.bool
+  noEdit: propTypes.bool,
+  onSubmit: propTypes.func
 };
 
 export default Header;

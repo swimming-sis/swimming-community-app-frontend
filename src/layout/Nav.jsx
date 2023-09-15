@@ -6,8 +6,8 @@ import { NavLink } from 'react-router-dom';
 
 function Nav() {
   return (
-    <nav className="fixed bottom-0 left-0 w-full mx-auto  text-secondary font-pretendard text-xs font-semibold">
-      <ul className="flex justify-evenly items-center h-14 bg-white max-w-[699px] mx-auto shadow-[0px_-4px_4px_0px_rgba(0,0,0,0.25)]">
+    <nav className="fixed bottom-0 left-0 w-full mx-auto  text-secondary font-pretendard text-xs font-semibold bg-white z-50">
+      <ul className="flex justify-evenly items-center h-14  max-w-[699px] mx-auto shadow-[0px_-4px_4px_0px_rgba(0,0,0,0.25)]">
         <li>
           <NavLink to="/main"
           className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
@@ -15,7 +15,7 @@ function Nav() {
           </NavLink>
         </li>
       <li>
-          <NavLink to="/search"
+          <NavLink to="/search/list"
           className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
             <Search size={17} />
             검색

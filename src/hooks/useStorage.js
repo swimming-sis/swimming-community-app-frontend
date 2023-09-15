@@ -19,7 +19,7 @@ function useStorage(key, defaultValue) {
 
   const remove = useCallback(() => {
     deleteData(key);
-    setStorageData();
+    setStorageData(defaultValue);
   }, [key]);
 
   return useMemo(

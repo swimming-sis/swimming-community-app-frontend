@@ -1,0 +1,16 @@
+.mapFigcaption{
+  position: absolute;
+  font-family: "Pretendard Variable";
+  font-size: 0.5rem;
+  background: #fff;
+  border: 1px solid gray;
+  border-radius: 30px;
+  padding: 2px 8px;
+  top: 0px;
+  left: 32px;
+  visibility: hidden;
+}
+
+.mapFigure{
+  position: relative;
+}
