@@ -1,6 +1,7 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import Search from '@/components/Icon/Search';
 import X from '@/components/Icon/X';
+import useMapStore from '@/zustand/useMapStore';
 import propTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,8 +13,11 @@ function SearchInput({
   onSubmit ,
   placeholder = "원하는 지역을 검색해 보세요",
 }) {
-  const [value, setValue] = useState('');
+  // const [value, setValue] = useState();
+  const { value, setValue} = useMapStore();
+
   const navigate = useNavigate()
+  
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -27,7 +31,9 @@ function SearchInput({
   };
 
   return (
-    <form className="flex flex-col h-10 font-semibold my-1 relative px-2.5">
+    <form 
+    onSubmit={onSubmit}
+    className="flex flex-col h-10 font-semibold my-1 relative px-2.5">
       <label 
       htmlFor={id} 
       hidden={hidden}
@@ -56,7 +62,7 @@ function SearchInput({
       <button
         type="submit"
         onClick={handleSearch}
-        onSubmit={onSubmit}
+        
         className={hidden ? 'absolute right-4 top-2 btn-clear':'absolute right-4 top-[3.25rem]'}
         aria-label='검색하기'
         >

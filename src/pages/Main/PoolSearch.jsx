@@ -9,18 +9,14 @@ import { Outlet } from 'react-router-dom';
 
 function PoolSearch() {
 
-  const {  keyword, setKeyword } = useMapStore();
+  const {keyword, value, mixed, mixKeyword } = useMapStore();
+
   const handleSearch = (e) => {
-    e.preventDefault();
-    const value = document.querySelector('input[name="search"]').value;
-    setKeyword(value);
-    console.log(keyword);
+    e.preventDefault()
+    mixKeyword(keyword,value)
   };
   useEffect(()=>{
-    setKeyword();
-    console.log();
-    
-  },[keyword])
+  },[mixed])
 
   return (
     <div className="min-w-[320px] max-w-[699px] mx-auto font-pretendard h-screen overflow-y-scroll mb-20">

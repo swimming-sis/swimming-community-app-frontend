@@ -14,3 +14,7 @@
 .mapFigure{
   position: relative;
 }
+
+/* .mapSvg{
+  pointer-events: "none";
+} */

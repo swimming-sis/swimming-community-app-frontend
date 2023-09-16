@@ -1,8 +1,6 @@
 import { create } from 'zustand';
 
-
-const useMapStore = create(set => ({
-
+const useMapStore = create((set) => ({
   // 맵 컨테이너 관리
   mapContainer: null,
   setMapContainer: (container) => set(() => ({ mapContainer: container })),
@@ -13,7 +11,14 @@ const useMapStore = create(set => ({
 
   //맵 내부 키워드 관리
   keyword: '수영장',
-  setKeyword: (keyword) => set(() => ({ keyword })),
+  value: '',
+  setValue: (value) => set(() => ({ value })),
+  mixed: '',
+  mixKeyword: (keyword, value) =>
+    set((state) => {
+      let mixed = value.includes(keyword) ? value : `${value} ${keyword}`;
+      return { ...state, mixed };
+    }),
 
   //키워드로 받은 리스트관리
   items: [],
@@ -32,7 +37,7 @@ const useMapStore = create(set => ({
     });
   },
 
-  removeItem: (index) => set(state => ({ items: state.items.filter((_, i) => i !== index) }))
+  removeItem: (index) => set((state) => ({ items: state.items.filter((_, i) => i !== index) })),
 }));
 
 export default useMapStore;
