@@ -7,6 +7,7 @@ import { setItemWithExpireTime } from '@/utils/expireTime';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -29,10 +30,11 @@ function Login() {
         if (userData && userData.user) {
           // window.localStorage.setItem('token',userData.token);
           setItemWithExpireTime('token',userData.token,1.8e+7)
-          console.log('로그인 성공');
+          setItemWithExpireTime('user',userData.user.userName,1.8e+7)
+          toast.success('🥰');
 
         } else {
-          console.error('로그인 실패: 사용자 데이터가 유효하지 않음');
+          toast.error('사용자 데이터가 유효하지 않습니다.');
         }
       } catch (error) {
         console.error('로그인 실패:', error);

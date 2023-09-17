@@ -152,7 +152,7 @@ const handleInput = (e) => {
         {(searchActive
           ? searchData: postData).map((post) => (
               <CommunityList
-                id={post.postId}
+              postId={post.postId}
                 key={post.postId}
                 title={post.title}
                 content={post.body}

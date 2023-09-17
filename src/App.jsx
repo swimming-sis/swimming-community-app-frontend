@@ -32,6 +32,7 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  
   return (
     <>
       {/* 쿼리 클라이언트를 앱에 공급 */}
