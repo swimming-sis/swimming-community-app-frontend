@@ -7,13 +7,23 @@ import 'swiper/css';
 import 'swiper/css/a11y';
 // import 'swiper/css/free-mode';
 import '@/styles/Swiper.css'
+import propTypes from 'prop-types';
 
-function CategoryRadioForm() {
+
+function CategoryRadioForm({onClick,write=false}) {
   // const [swiper, setSwiper] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categoryArr = [
     { id: 'all', value: '전체' },
+    { id: 'free', value: '자유' },
+    { id: 'daily', value: '일상' },
+    { id: 'think', value: '고민' },
+    { id: 'cody', value: '코디' },
+    { id: 'supply', value: '용품' },
+    { id: 'info', value: '정보' },
+  ];
+  const categoryWriteArr = [
     { id: 'free', value: '자유' },
     { id: 'daily', value: '일상' },
     { id: 'think', value: '고민' },
@@ -28,33 +38,41 @@ function CategoryRadioForm() {
 };
 
   return (
-    <form className="my-3 w-full overflow-x-hidden">
+    <div 
+    className="mt-4 mb-2 w-full overflow-x-hidden"
+    onClick={onClick}>
       <CategoryRadioGroup>
-        <Swiper 
-        modules={[FreeMode]}
-        freeMode={{
-          enable: true,
-          sticky: true
-        }} 
-        spaceBetween= {0}
-        slidesOffsetAfter = {20}
-        slidesPerView= {'auto'}
-        className='h-8'
-        >
-          {categoryArr.map((category) => (
-            <SwiperSlide key={category.id}>
-              <CategoryRadio
-                id={category.id}
-                value={category.value}
-                onChange={handleChange}
-                isChecked={selectedCategory === category.value}
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <Swiper 
+  modules={[FreeMode]}
+  freeMode={{
+    enable: true,
+    sticky: true
+  }} 
+  spaceBetween= {0}
+  slidesOffsetBefore = {10}
+  slidesOffsetAfter = {30}
+  slidesPerView= {'auto'}
+  autoHeight={true}
+  className='h-10'
+>
+{(write ? categoryWriteArr : categoryArr).map((category) => (
+    <SwiperSlide key={category.id}>
+      <CategoryRadio
+        id={category.id}
+        value={category.value}
+        onChange={handleChange}
+        isChecked={selectedCategory === category.id} // 여기도 id로 비교하도록 변경
+      />
+    </SwiperSlide>
+))}
+</Swiper>
       </CategoryRadioGroup>
-    </form>
+    </div>
   );
 }
+CategoryRadioForm.propTypes = {
+  onClick: propTypes.func,
+  write: propTypes.bool,
+};
 
 export default CategoryRadioForm;

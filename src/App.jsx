@@ -13,6 +13,10 @@ import PoolSearch from './pages/Main/PoolSearch';
 import MyLog from './pages/MyLog/MyLog';
 import SignUp from './pages/SignUp';
 import PoolSearchList from './pages/Main/PoolSearchList';
+import PublicRoute from './components/Login/PublicRoute';
+import PrivateRoute from './components/Login/PrivateRoute';
+import CommunityWrite from './pages/Community/\bCommunityWrite';
+import CommunityDetail from './pages/Community/CommunityDetail';
 
 
 // 쿼리 클라이언트 객체 생성
@@ -36,18 +40,39 @@ function App() {
         <div className="App">
           <Suspense fallback={<Spinner size={200} />}>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/main" element={<Main />} />
-                <Route path="/search" element={<PoolSearch />}>
-                  <Route path="list" element={<PoolSearchList/>} />
+                <Route path="/" element={
+                  <PublicRoute component={<Home />} />
+                } />
+                <Route path="/login" element={
+                  <PublicRoute component={<Login />} />
+                } />
+                <Route path="/signup" element={
+                  <PublicRoute component={<SignUp/>} />
+                } />
+                <Route path="/main" element={
+                  <PrivateRoute component={<Main />} />
+                } />
+                <Route path="/search" element={
+                  <PrivateRoute component={<PoolSearch />}/>
+                }>
+                  <Route path="list" element={
+                    <PrivateRoute component={<PoolSearchList/>} />
+                  } />
                 </Route>
-                <Route path="/community" element={<Community />} />
-                <Route path="/mylog" element={<MyLog />} />
-                <Route path="/signup" element={<SignUp/>} />
+                <Route path="/community" element={
+                  <PrivateRoute component={<Community />} />
+                } />
+                <Route path="/communityWrite" element={
+                  <PrivateRoute component={<CommunityWrite />} />
+                } />
+                <Route path="/community/:communityId" element={
+                  <PrivateRoute component={<CommunityDetail />} />
+                } />
+                <Route path="/mylog" element={
+                  <PrivateRoute component={<MyLog />} />
+                } />
               </Routes>
 
-            {/* <RouterProvider router={router} /> */}
           </Suspense>
         </div>
         {/* 탠스택 쿼리 개발 도구 */}

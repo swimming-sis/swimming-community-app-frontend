@@ -1,25 +1,26 @@
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import Logo from '@/components/Logo';
-import useStorage from '@/hooks/useStorage';
+// import useStorage from '@/hooks/useStorage';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 
 
 function Home() {
-  const storage = useStorage('users', null);
-  const navigate = useNavigate();
-  const userData = storage.storageData;
+  // const storage = useStorage('users', null);
+  // const navigate = useNavigate();
+  // const userData = storage.storageData;
 
   
 
-  const handleCheck = () => {
-    if (userData) {
-      navigate('/main');
-    } else {
+//   const handleCheck = () => {
+//     if (userData) {
+//       navigate('/main');
+//     } else {
 
-    navigate('/');
-  }
-}
+//     navigate('/');
+//   }
+// }
 
 
   return (
@@ -29,9 +30,11 @@ function Home() {
       </Helmet>
       <div className="w-full h-screen">
         <Logo width={200} height={100} className={'absolute top-1/3 left-1/2 -translate-x-1/2'} />
-          <ButtonSubmit
-          className={'absolute bottom-0 w-[calc(100%-20px)] h-28'} 
-          onClick={handleCheck}/>
+          <Link to='/login'>
+            <ButtonSubmit
+            className={'absolute bottom-0 w-[calc(100%-20px)] h-28'}
+            />
+          </Link>
       </div>
     </div>
   );

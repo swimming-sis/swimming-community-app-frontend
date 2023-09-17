@@ -63,7 +63,7 @@ const authStore = create((set, get) => ({
       token: result.jwt,
     });
     
-    return { user: result }; 
+    return { user: result ,token:result.jwt}; 
   },
   
   

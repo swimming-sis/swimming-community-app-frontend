@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
 
+const tokenItem = localStorage.getItem("token");
+let authHeader = "";
+
+if (tokenItem) {
+  // eslint-disable-next-line no-useless-escape
+  const tokenValue = JSON.parse(tokenItem).value.replace(/\'/g,"");
+  authHeader = `Bearer ${tokenValue}`;
+}
+
 const defaultOptions = {
   method: 'GET',
+  headers:{
+    Authorization: authHeader,
+  }
 };
 
 function useFetchData(endpoint, options = {}) {
@@ -9,38 +21,34 @@ function useFetchData(endpoint, options = {}) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-
+  const fetchData = async () => {
     setIsLoading(true);
 
-    async function fetchData() {
-      try {
-        const response = await fetch(endpoint, {
-          ...defaultOptions,
-          ...options,
-          signal: controller.signal,
-        });
-        const responseData = await response.json();
-        setData(responseData);
-      } catch (error) {
-        if (!(error instanceof DOMException)) {
-          setError(error);
-        }
-      } finally {
-        setIsLoading(false);
+    try {
+      const response = await fetch(endpoint, {
+        ...defaultOptions,
+        ...options,
+      });
+      const responseData = await response.json();
+      setData(responseData);
+    } catch (error) {
+      if (!(error instanceof DOMException)) {
+        setError(error);
       }
+    } finally {
+      setIsLoading(false);
     }
+  };
 
+  useEffect(() => {
     fetchData();
-
-    return () => {
-      controller.abort();
-    };
+  
+    return () => {};
+  
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endpoint]);
 
-  return { data, isLoading, error };
+  return { data, isLoading, error , fetchData}; 
 }
 
-export default useFetchData;
+export default useFetchData

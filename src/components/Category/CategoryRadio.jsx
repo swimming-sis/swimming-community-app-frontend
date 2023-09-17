@@ -1,8 +1,8 @@
 import propTypes from 'prop-types';
 
 function CategoryRadio({ value, id, isChecked, onChange }) {
-  const handleClick = (e) => {
-    e.preventDefault();
+  const handleClick = () => {
+  
     onChange({
       target: {
         value: id,

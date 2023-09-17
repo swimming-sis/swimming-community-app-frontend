@@ -2,8 +2,8 @@ import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import Chat from '@/components/Icon/Chat';
 import LogInText from '@/components/Input/LogInText';
 import Logo from '@/components/Logo';
-import useStorage from '@/hooks/useStorage';
 import debounce from '@/utils/debounce';
+import { setItemWithExpireTime } from '@/utils/expireTime';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -11,7 +11,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
   const signIn = useAuthStore((state) => state.signIn);
-  const storage = useStorage('users', null);
+
   const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
@@ -27,17 +27,17 @@ function Login() {
       try {
         const userData = await signIn(formState);
         if (userData && userData.user) {
+          // window.localStorage.setItem('token',userData.token);
+          setItemWithExpireTime('token',userData.token,1.8e+7)
           console.log('로그인 성공');
-          if (autoLogin) {
-            storage.update(userData.user.userName);
-          }
+
         } else {
           console.error('로그인 실패: 사용자 데이터가 유효하지 않음');
         }
       } catch (error) {
         console.error('로그인 실패:', error);
       }
-    navigate('/main');
+      navigate('/main');
   };
 
   const handleInput = debounce((e) => {

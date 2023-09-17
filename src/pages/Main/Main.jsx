@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async"
 
 function Main() {
   return (
-    <div className="min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen overflow-y-scroll mb-20">
+    <div className="min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
       <Helmet>
         <title className="sr-only">메인 페이지</title>
       </Helmet>

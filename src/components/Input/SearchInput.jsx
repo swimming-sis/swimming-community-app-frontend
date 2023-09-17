@@ -1,34 +1,22 @@
 // import { useState } from 'react';
 import Search from '@/components/Icon/Search';
 import X from '@/components/Icon/X';
-import useMapStore from '@/zustand/useMapStore';
+
 import propTypes from 'prop-types';
-import { useNavigate } from 'react-router-dom';
+
 
 function SearchInput({
   content = '전국 수영장 검색하기',
   id = 'searchSwimmingPool',
-  name= 'search',
+  name= 'keyword',
   hidden = false,
   onSubmit ,
   placeholder = "원하는 지역을 검색해 보세요",
+  onChange,
+  onClick,
+  value,
 }) {
-  // const [value, setValue] = useState();
-  const { value, setValue} = useMapStore();
 
-  const navigate = useNavigate()
-  
-
-  const handleChange = (e) => {
-    setValue(e.target.value);
-  };
-  const handleTextClear = () => {
-    setValue('');
-  };
-
-  const handleSearch = () => {
-    navigate('list')
-  };
 
   return (
     <form 
@@ -46,24 +34,22 @@ function SearchInput({
         name={name}
         value={value}
         id={id}
-        onChange={handleChange}
+        onChange={onChange}
         placeholder={placeholder}
         className="w-full py-2 px-4 rounded-lg mx-auto border border-secondary placeholder:font-normal placeholder:text-sm"
       />
       {value && (
         <button
           type="button"
-          className={hidden ? 'absolute right-12 top-4 btn-clear':'absolute right-12 top-[3.75rem] btn-clear'}
+          className={hidden ? 'absolute right-14 top-4 btn-clear':'absolute right-14 top-[3.75rem] btn-clear'}
           aria-label='입력내용 삭제'
-          onClick={handleTextClear}>
+          onClick={onClick}>
           <X />
         </button>
       )}
       <button
-        type="submit"
-        onClick={handleSearch}
-        
-        className={hidden ? 'absolute right-4 top-2 btn-clear':'absolute right-4 top-[3.25rem]'}
+        type="submit"     
+        className={hidden ? 'absolute right-6 top-2 btn-clear':'absolute right-6 top-[3.25rem]'}
         aria-label='검색하기'
         >
         <Search />
@@ -74,8 +60,11 @@ function SearchInput({
 SearchInput.propTypes = {
   id: propTypes.string,
   name: propTypes.string,
+  value: propTypes.string,
   hidden: propTypes.bool,
+  onClick: propTypes.func,
   onSubmit: propTypes.func,
+  onChange: propTypes.func,
   content: propTypes.string,
   placeholder: propTypes.string,
 };
