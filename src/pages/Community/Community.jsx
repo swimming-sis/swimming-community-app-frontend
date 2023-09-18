@@ -30,7 +30,8 @@ function Community() {
 
   useEffect(() => {
     if (fetchListData.data?.result?.content) {
-      setPostData(fetchListData.data.result.content);
+      const orderDate = fetchListData.data.result.content.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+      setPostData(orderDate)
     }
   }, [fetchListData]);
 
@@ -118,7 +119,6 @@ const handleInput = (e) => {
   
   
   
-  
   useEffect(()=>{
     debouncedSetKeyword(value);
   
@@ -152,7 +152,7 @@ const handleInput = (e) => {
         {(searchActive
           ? searchData: postData).map((post) => (
               <CommunityList
-              postId={post.postId}
+                id={post.postId}
                 key={post.postId}
                 title={post.title}
                 content={post.body}

@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -47,15 +48,18 @@ const authStore = create((set, get) => ({
       body: JSON.stringify( loginUser ),
     });
   
-    if (!response.ok) {
-      throw new Error('로그인 요청 실패');
-    }
-  
     const { resultCode, result } = await response.json();
+
+    if (!response.ok || resultCode !== "SUCCESS") {
+      if (result?.errorCode === "INVALID_PASSWORD") {
+        toast.error('비밀번호가 다릅니다. 🥹');
+      } else {
+        toast.error('사용자 정보가 올바르지 않습니다. 🥹');
+      }
   
-    if (resultCode !== "SUCCESS") {
-      throw new Error('로그인 실패');
+      return null; 
     }
+  
   
     set({
       isAuth: resultCode === "SUCCESS",

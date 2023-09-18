@@ -27,17 +27,17 @@ function Login() {
 
       try {
         const userData = await signIn(formState);
-        if (userData && userData.user) {
+        if (userData.token && userData.user) {
           // window.localStorage.setItem('token',userData.token);
           setItemWithExpireTime('token',userData.token,1.8e+7)
           setItemWithExpireTime('user',userData.user.userName,1.8e+7)
-          toast.success('🥰');
+          toast.success('로그인 되었습니다. 🥰');
 
         } else {
-          toast.error('사용자 데이터가 유효하지 않습니다.');
+          return
         }
       } catch (error) {
-        console.error('로그인 실패:', error);
+        return
       }
       navigate('/main');
   };

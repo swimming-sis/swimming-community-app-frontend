@@ -13,7 +13,7 @@ function Header({ type = 'default', content = '', noEdit=true, onSubmit,value, o
   return (
     <>
       {type==='default' &&
-      <header className={`flex ${noEdit&&'justify-between'} items-center h-10 font-semibold mt-3 mx-4 font-pretendard z-50`}>
+      <header className={`flex ${noEdit&&'justify-between'} h-12 items-center  font-semibold mt-3 mx-4 font-pretendard z-50`}>
         <button 
         type="button"
         onClick={() => navigate(-1)}>

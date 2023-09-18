@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 
 
 function SendingForm({
+  value,
   onSubmit,
   onChange
 })  {
@@ -16,6 +17,7 @@ return(
   name="comment" 
   id="commentSend"
   onChange={onChange}
+  value={value}
   placeholder='댓글을 입력해 보세요'
   className='w-full border shadow-md h-9 rounded-md px-2 text-xs' />
   <button 
@@ -29,6 +31,7 @@ return(
 
 SendingForm.propTypes = {
 
+  value: propTypes.string,
   onChange: propTypes.func,
   onSubmit: propTypes.func,
 

@@ -197,6 +197,7 @@ function SignUp() {
           })
         
         if (!response.ok) throw new Error('Response is not OK');
+        
         const data = await response.json();
         if (data.result) {
           setErrorMessages((prev) => ({

@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
 const defaultOptions = {
-  method: 'GET',
+  method: 'DELETE',
   headers: {},
 };
 
-function useFetchData(endpoint, options = {}) {
+function useDeleteData(endpoint, options = {}) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchData = async () => {
+  const deleteData = async () => {
     setIsLoading(true);
 
     const tokenItem = localStorage.getItem('token');
@@ -33,6 +33,8 @@ function useFetchData(endpoint, options = {}) {
         ...options,
         headers: headersWithAuth,
       });
+      
+      if (!response.ok) throw new Error(response.status);
       const responseData = await response.json();
       setData(responseData);
     } catch (error) {
@@ -45,14 +47,14 @@ function useFetchData(endpoint, options = {}) {
   };
 
   useEffect(() => {
-    fetchData();
+    deleteData();
 
     return () => {};
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endpoint]);
 
-  return { data, isLoading, error, fetchData };
+  return { data, isLoading, error, deleteData };
 }
 
-export default useFetchData;
+export default useDeleteData;

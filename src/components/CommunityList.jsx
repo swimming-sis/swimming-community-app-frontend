@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 function CommunityList ({
   edit = false, 
-  communityId, 
+  id, 
   title,
   content,
   user,
@@ -21,7 +21,7 @@ function CommunityList ({
     <li 
     tabIndex={0}
     className='relative border rounded-2xl py-2.5 px-3 min-w-0 max-w-[699px] w-full mx-auto font-pretendard shadow-md mt-2'>
-      <Link to={`/community/${communityId}`} key={communityId}>
+      <Link to={`/community/${id}`} id={id}>
         <div className=' flex items-center justify-start w-5/6 mb-1'>
           <CategoryTag content={categoryTag} className='flex-shrink-0' />
           <strong className='inline-block font-semibold text-sm truncate'>{title}</strong>
@@ -53,7 +53,7 @@ function CommunityList ({
   )
 }
 CommunityList.propTypes = {
-  communityId: propTypes.number,
+  id: propTypes.number,
   edit: propTypes.bool,
   likeCount: propTypes.number,
   chatCount: propTypes.number,
