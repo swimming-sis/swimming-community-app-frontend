@@ -20,7 +20,7 @@ function ModalComponent({ children }) {
     <div
       onClick={handleOutsideClick}
       className="fixed flex top-0 left-0 bottom-0 right-0 bg-[rgba(0,134,255,0.5)] items-center justify-center z-50">
-      <div onClick={handleContentClick} className="relative bg-white p-8 rounded-xl shadow-lg">
+      <div onClick={handleContentClick} className="relative bg-white p-8 text-sm rounded-xl shadow-lg border-tertiary">
         {children}
       </div>
     </div>

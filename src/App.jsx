@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
@@ -18,11 +18,11 @@ import PrivateRoute from './components/Login/PrivateRoute';
 import CommunityWrite from './pages/Community/\bCommunityWrite';
 import CommunityDetail from './pages/Community/CommunityDetail';
 import CommunityDetailEdit from './pages/Community/CommunityDetailEdit';
-import Account from './components/Icon/Account';
 import MyAccountComment from './pages/MyAccount/MyAccountComment';
 import MyAccountWrited from './pages/MyAccount/MyAccountWrited';
 import MyAccountReview from './pages/MyAccount/MyAccountReview';
 import MyAccountEdit from './pages/MyAccount/MyAccountEdit';
+import MyAccount from './pages/MyAccount/MyAccount';
 
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
@@ -53,7 +53,7 @@ function App() {
                   path="/accountEdit"
                   element={<PrivateRoute component={<MyAccountEdit />} />}
                 />
-                <Route path="/account" element={<PrivateRoute component={<Account />} />}>
+                <Route path="/account" element={<PrivateRoute component={<MyAccount />} />}>
                   <Route path="comment" element={<PrivateRoute component={<MyAccountComment />} />} />
                   <Route path="writed" element={<PrivateRoute component={<MyAccountWrited />} />} />
                   <Route path="review" element={<PrivateRoute component={<MyAccountReview />} />} />
@@ -79,7 +79,7 @@ function App() {
             </Suspense>
           </div>
           {/* 탠스택 쿼리 개발 도구 */}
-          <ReactQueryDevtools />
+          {/* <ReactQueryDevtools /> */}
         </HelmetProvider>
       </QueryClientProvider>
       <Toaster />

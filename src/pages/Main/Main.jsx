@@ -24,9 +24,15 @@ function Main() {
       </Helmet>
       <header className="relative">
         <Logo width={100} height={50} className={'my-2.5'} />
-        <Account className="absolute top-3 right-6" />
+        <button >
+          <Link to='/account'>
+            <Account className="absolute top-3 right-6" />
+          </Link>
+        </button>
       </header>
-      <MyCalendar />
+      <Link to='/mylog'>
+        <MyCalendar />
+      </Link>
       <p className="text-secondary font-semibold mt-6 ml-4 font-pretendard">우리들의 수영 이야기</p>
       <ol className="font-pretendard text-secondary text-xs border py-4 px-2 m-2.5 rounded-2xl shadow-md">
         {postData.map((post) => {
