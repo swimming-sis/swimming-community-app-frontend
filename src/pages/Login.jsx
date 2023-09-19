@@ -1,5 +1,7 @@
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import Chat from '@/components/Icon/Chat';
+import Hide from '@/components/Icon/Hide';
+import Show from '@/components/Icon/Show';
 import LogInText from '@/components/Input/LogInText';
 import Logo from '@/components/Logo';
 import debounce from '@/utils/debounce';
@@ -11,10 +13,9 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
-  const signIn = useAuthStore((state) => state.signIn);
-
   const navigate = useNavigate();
-
+  const signIn = useAuthStore((state) => state.signIn);
+  const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState({
     userName: '',
     password: '',
@@ -25,21 +26,21 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-      try {
-        const userData = await signIn(formState);
-        if (userData.token && userData.user) {
-          // window.localStorage.setItem('token',userData.token);
-          setItemWithExpireTime('token',userData.token,1.8e+7)
-          setItemWithExpireTime('user',userData.user.userName,1.8e+7)
-          toast.success('로그인 되었습니다. 🥰');
+    try {
+      const userData = await signIn(formState);
+      if (userData.token && userData.user) {
+        // window.localStorage.setItem('token',userData.token);
+        setItemWithExpireTime('token', userData.token, 1.8e7);
+        setItemWithExpireTime('user', userData.user.userName, 1.8e7);
 
-        } else {
-          return
-        }
-      } catch (error) {
-        return
+        toast.success('로그인 되었습니다. 🥰');
+      } else {
+        return;
       }
-      navigate('/main');
+    } catch (error) {
+      return;
+    }
+    navigate('/main');
   };
 
   const handleInput = debounce((e) => {
@@ -50,6 +51,10 @@ function Login() {
     });
   }, 400);
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="font-pretendard flex flex-col  min-w-[320px] max-w-[699px] mx-auto px-[10px] h-screen overflow-y-scroll">
       <Helmet>
@@ -58,9 +63,7 @@ function Login() {
       <Link to="/">
         <Logo width={200} height={100} className={'mt-10 mb-8'} />
       </Link>
-      <form 
-      className="flex flex-col h-screen" 
-      onSubmit={handleLogin}>
+      <form className="relative flex flex-col h-screen" onSubmit={handleLogin}>
         <LogInText
           id={'loginId'}
           content={'아이디'}
@@ -75,7 +78,7 @@ function Login() {
         <LogInText
           id={'loginPw'}
           content={'비밀번호'}
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           name="password"
           validation={true}
           placeholder={''}
@@ -83,6 +86,13 @@ function Login() {
           onChange={handleInput}
           errorMessage={'비밀번호를 확인해주세요.'}
         />
+        <button 
+        type='button'
+        className='absolute right-8 top-[133px]'
+        onClick={toggleShowPassword}>
+          {showPassword ? <Hide /> : <Show />}
+        </button>
+
         <div className="flex gap-x-1 justify-end mr-2.5 items-start flex-grow mb-8">
           <input
             type="checkbox"
@@ -106,7 +116,7 @@ function Login() {
             </div>
           }
         />
-          <ButtonSubmit content={'로그인'} />
+        <ButtonSubmit content={'로그인'} />
       </form>
       <div className="flex flex-col items-center mb-8">
         <Link to="/signup" className="text-sm font-semibold">

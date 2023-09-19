@@ -14,7 +14,7 @@ function CategoryRadio({ value, id, isChecked, onChange }) {
     <>
       <label
         htmlFor={`categoryRadio-${id}`}
-        className={`py-1 px-4 rounded-2xl text-xs border-2 border-primary flex-shrink-0 font-semibold mr-2
+        className={`py-1 px-4 rounded-2xl text-xs border-2 border-primary flex-shrink-0 font-semibold mr-2 shadow-md
   ${isChecked ? 'bg-primary text-white' : 'text-primary'}`}
 
         onClick={handleClick}

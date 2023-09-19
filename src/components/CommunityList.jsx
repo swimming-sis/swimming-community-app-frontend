@@ -5,6 +5,7 @@ import Pencil from './Icon/Pencil';
 import X from './Icon/X';
 import CategoryTag from './Category/CategoryTag';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 function CommunityList ({
   edit = false, 
@@ -17,6 +18,24 @@ function CommunityList ({
   likeCount=0,
   chatCount=0
 }) {
+  const [currentDatetime, setCurrentDatetime] = useState('');
+
+  useEffect(() => {
+    const updateCurrentDatetime = () => {
+      const now = new Date();
+      const formattedDatetime = now.toISOString();
+      setCurrentDatetime(formattedDatetime);
+    };
+
+    
+    updateCurrentDatetime();
+    const intervalId = setInterval(updateCurrentDatetime, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return(
     <li 
     tabIndex={0}
@@ -29,7 +48,7 @@ function CommunityList ({
         <p className='text-sm mb-2 truncate'>{content}</p>
         <div className='flex gap-x-1 items-center'>
           <p className='text-gray/500 font-semibold text-xs ml-1'>{user}</p>
-          <time dateTime='YYYY-MM-DDThh:mm:ss' className='text-gray/500 font-light text-[0.625rem]'>{datetime}</time>
+          <time dateTime={currentDatetime} className='text-gray/500 font-light text-[0.625rem]'>{datetime}</time>
         </div>
         {edit &&
         <div className=' flex justify-end gap-x-1 absolute right-2.5 top-2'>

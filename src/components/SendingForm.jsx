@@ -1,8 +1,9 @@
+import { memo } from "react";
 import Airplain from "./Icon/Airplane"
 import propTypes from 'prop-types';
 
 
-function SendingForm({
+const SendingForm = memo(function SendingForm({
   value,
   onSubmit,
   onChange
@@ -27,14 +28,14 @@ return(
 </form>
 )
 
-}
+})
 
 SendingForm.propTypes = {
-
+  
   value: propTypes.string,
   onChange: propTypes.func,
   onSubmit: propTypes.func,
-
 }
+  
 
 export default SendingForm

@@ -1,17 +1,20 @@
 import { useState } from 'react';
 
 const defaultOptions = {
-  method: 'DELETE',
-  headers: {},
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+  },
 };
 
-function useDeleteData(endpoint, options = {}) {
+function useFetchPutData(endpoint, options = {}) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const deleteData = async () => {
+  async function putData(body = {}) {
     setIsLoading(true);
+    const controller = new AbortController();
 
     const tokenItem = localStorage.getItem('token');
     let authHeader = '';
@@ -31,10 +34,13 @@ function useDeleteData(endpoint, options = {}) {
       const response = await fetch(endpoint, {
         ...defaultOptions,
         ...options,
+        signal: controller.signal,
         headers: headersWithAuth,
+        body: JSON.stringify(body),
       });
-      
-      if (!response.ok) throw new Error(response.status);
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
       const responseData = await response.json();
       setData(responseData);
     } catch (error) {
@@ -44,10 +50,13 @@ function useDeleteData(endpoint, options = {}) {
     } finally {
       setIsLoading(false);
     }
-  };
 
+    return () => {
+      controller.abort();
+    };
+  }
 
-  return { data, isLoading, error, deleteData };
+  return { data, isLoading, error, putData };
 }
 
-export default useDeleteData;
+export default useFetchPutData;

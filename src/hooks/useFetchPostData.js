@@ -11,6 +11,7 @@ function useFetchPostData(endpoint, options = {}) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [response, setResponse] = useState(null);
 
   async function fetchData(body = {}) {
     setIsLoading(true);
@@ -29,15 +30,16 @@ function useFetchPostData(endpoint, options = {}) {
       ...defaultOptions.headers,
       Authorization: authHeader,
     };
-
+    
     try {
-      const response = await fetch(endpoint, {
+      const response= await fetch(endpoint, {
         ...defaultOptions,
         ...options,
         signal: controller.signal,
         headers: headersWithAuth,
         body: JSON.stringify(body),
       });
+      setResponse(response)
 
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
@@ -52,11 +54,11 @@ function useFetchPostData(endpoint, options = {}) {
     }
 
     return () => {
-      controller.abort();
+      controller.abort()
     };
   }
 
-  return { data, isLoading, error, fetchData };
+  return { data, response, isLoading, error, fetchData };
 }
 
 export default useFetchPostData;
