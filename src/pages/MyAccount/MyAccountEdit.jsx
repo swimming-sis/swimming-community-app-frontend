@@ -172,6 +172,17 @@ const handleSubmit = (e)=>{
   const handleConfirm = async () => {
 
     if (actionType === 'edit') {
+          const dataToSend = {};
+
+    // 닉네임이 실제로 변경되었다면 그 값을 사용
+    if (formState.nickName !== fetchAccountData?.result.nickname) {
+        dataToSend.nickname = formState.nickname;
+    }
+
+    // 전화번호가 실제로 변경되었다면 그 값을 사용
+    if (formState.phoneNumber !== fetchAccountData?.result.phoneNumber) {
+        dataToSend.phoneNumber = formState.phoneNumber;
+    }
 
       setFormState((prevState) => ({
         ...prevState,
@@ -286,13 +297,14 @@ const handleSubmit = (e)=>{
       <Header content={'내 정보 변경'} noEdit={false} />
       <form
         onSubmit={handleSubmit}
-        className="font-pretendard flex flex-col h-screen min-w-[320px] max-w-[699px] mx-auto px-[10px]">
+        className="font-pretendard flex flex-col h-screen min-w-[320px] max-w-[699px] mx-auto px-2.5">
         <LogInText
           id={'myAccountEditName'}
           content={'닉네임'}
           type="text"
           name="nickName"
           onChange={handleDebounceInput}
+          key={formState.nickName}
           defaultValue={fetchAccountData?.result.nickName}
           validation={isValidformState.nickName}
           placeholder={'영문, 한글 또는 숫자로 2~8자리 입력해 주세요.'}
@@ -303,7 +315,6 @@ const handleSubmit = (e)=>{
           content={'비밀번호'}
           type="password"
           name="password"
-          value={formState.password}
           onChange={handleDebounceInput}
           validation={isValidformState.password}
           placeholder={'숫자,영문,특수문자 중 3개 이상을 포함하여 8글자 이상 입력해주세요.'}
@@ -314,7 +325,6 @@ const handleSubmit = (e)=>{
           content={'비밀번호 확인'}
           type="password"
           name="passwordConfirm"
-          value={formState.passwordConfirm}
           onChange={handleDebounceInput}
           validation={isValidformState.passwordConfirm}
           placeholder={''}
@@ -327,6 +337,7 @@ const handleSubmit = (e)=>{
           type="tel"
           name="phoneNumber"
           className={'mb-8'}
+  
           defaultValue={fetchAccountData?.result.phoneNumber}
           onChange={handleDebounceInput}
           validation={isValidformState.phoneNumber}
@@ -360,7 +371,7 @@ const handleSubmit = (e)=>{
         <ButtonSubmit
         type='button'
         onClick={handleEdit}
-          className="fixed w-[calc(100%-20px)] left-1 bottom-12 flex flex-col items-center"
+          className="fixed w-[calc(100%-20px)]  min-w-[320px] max-w-[699px] px-2.5 mx-auto left-0 right-0 bottom-12 flex flex-col items-center"
           content={'수정하기'}
           disabled={
             !isValidformState.nickName ||

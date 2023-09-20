@@ -90,7 +90,7 @@ Header.propTypes = {
   onClick: propTypes.func,
   onSubmit: propTypes.func,
   onChange: propTypes.func,
-  onNavigate: propTypes.func,
+  onNavigate: propTypes.bool,
   onClickEdit: propTypes.func,
   onClickBack: propTypes.func,
   deleteButton: propTypes.bool,

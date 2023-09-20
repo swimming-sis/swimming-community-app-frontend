@@ -303,7 +303,6 @@ function SignUp() {
           content={'아이디'}
           type="text"
           name="userName"
-          value={formState.userName}
           validation={isValidformState.userName}
           onChange={handleDebounceInput}
           placeholder={'영문 소문자와 숫자를 포함한 4~12자리로 입력해 주세요.'}
@@ -315,7 +314,6 @@ function SignUp() {
           type="text"
           name="nickName"
           onChange={handleDebounceInput}
-          value={formState.nickName}
           validation={isValidformState.nickName}
           placeholder={'영문, 한글 또는 숫자로 2~8자리 입력해 주세요.'}
           errorMessage={errorMessages.nickName}
@@ -325,7 +323,6 @@ function SignUp() {
           content={'비밀번호'}
           type="password"
           name="password"
-          value={formState.password}
           onChange={handleDebounceInput}
           validation={isValidformState.password}
           placeholder={'숫자,영문,특수문자 중 3개 이상을 포함하여 8글자 이상 입력해주세요.'}
@@ -336,7 +333,6 @@ function SignUp() {
           content={'비밀번호 확인'}
           type="password"
           name="passwordConfirm"
-          value={formState.passwordConfirm}
           onChange={handleDebounceInput}
           validation={isValidformState.passwordConfirm}
           placeholder={''}
@@ -348,7 +344,6 @@ function SignUp() {
           content={'휴대전화번호'}
           type="tel"
           name="phoneNumber"
-          value={formState.phoneNumber}
           onChange={handleDebounceInput}
           validation={isValidformState.phoneNumber}
           className="mb-8 flex-grow"

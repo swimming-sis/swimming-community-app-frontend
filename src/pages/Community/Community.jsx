@@ -147,7 +147,11 @@ const handleInput = (e) => {
         onSubmit={handleSearchKeyword}
         placeholder="검색하고 싶은 내용을 입력해보세요."
       />
-      <CategoryRadioForm onClick={handleChoiceCategory} />
+      <CategoryRadioForm 
+      onClick={handleChoiceCategory} 
+      selectedCategory={category ? category : '전체'} 
+      onCategroyChange={handleChoiceCategory}
+      />
       <ul>
         {(searchActive
           ? searchData: postData).map((post) => (

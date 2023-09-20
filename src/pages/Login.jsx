@@ -49,7 +49,7 @@ function Login() {
       ...formState,
       [name]: value,
     });
-  }, 400);
+  }, 200);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);

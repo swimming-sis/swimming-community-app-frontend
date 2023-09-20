@@ -40,7 +40,7 @@ function CommunityDetailEdit() {
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/delete`
   );
   
-  const { title, body } = postData;
+  const { title, body} = postData;
 
   // postData수정
   useEffect(() => {
@@ -55,9 +55,11 @@ function CommunityDetailEdit() {
     }
   }, [fetchListData?.data]);
 
-
   const handleCheckCategory = (e) => {
-    setFormState({ ...formState, category: e.target.value });
+    setFormState((prev) => ({
+      ...prev, 
+      category: e.target.value 
+    }));
   };
   const handleInput = debounce((e) => {
     const { name, value } = e.target;
@@ -141,7 +143,12 @@ function CommunityDetailEdit() {
       <section>
         <h1 className="sr-only">게시글 내용</h1>
 
-        <CategoryRadioForm write={true} onClick={handleCheckCategory} />
+        <CategoryRadioForm 
+        write={true} 
+        onClick={handleCheckCategory} 
+        selectedCategory={formState.category} 
+        onCategroyChange={handleCheckCategory}
+        />
 
         <div className="flex mb-4 items-center">
           <label htmlFor="categoryWrite" className="flex-shrink-0 mr-2 text-sm text-secondary">

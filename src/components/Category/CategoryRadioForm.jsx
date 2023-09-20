@@ -1,6 +1,6 @@
 import CategoryRadio from './CategoryRadio';
 import CategoryRadioGroup from './CategoryRadioGroup';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
@@ -10,9 +10,9 @@ import '@/styles/Swiper.css'
 import propTypes from 'prop-types';
 
 
-function CategoryRadioForm({onClick,write=false}) {
-  // const [swiper, setSwiper] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+
+function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChange}) {
+  // const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categoryArr = [
     { id: 'all', value: '전체' },
@@ -33,9 +33,13 @@ function CategoryRadioForm({onClick,write=false}) {
   ];
 
 
-  const handleChange = (event) => {
-    setSelectedCategory(event.target.value);
-};
+  const handleChange = (e) => {
+    // setSelectedCategory(e.target.value);
+    if (onCategoryChange) {
+      onCategoryChange(e.target.value);  
+    }
+  };
+
 
   return (
     <div 
@@ -61,7 +65,7 @@ function CategoryRadioForm({onClick,write=false}) {
         id={category.id}
         value={category.value}
         onChange={handleChange}
-        isChecked={selectedCategory === category.id} // 여기도 id로 비교하도록 변경
+        isChecked={selectedCategory === category.value} 
       />
     </SwiperSlide>
 ))}
@@ -71,8 +75,10 @@ function CategoryRadioForm({onClick,write=false}) {
   );
 }
 CategoryRadioForm.propTypes = {
-  onClick: propTypes.func,
   write: propTypes.bool,
+  onClick: propTypes.func,
+  selectedCategory: propTypes.string,
+  onCategoryChange: propTypes.func,
 };
 
 export default CategoryRadioForm;

@@ -11,6 +11,7 @@ function LogInText({
   placeholder,
   errorMessage,
   defaultValue,
+  ...restProp
 }) {
 return (
   <div
@@ -28,6 +29,7 @@ return (
     name={name}
     onChange={onChange}
     defaultValue={defaultValue}
+    {...restProp}
     className={` flex-grow w-full h-8 px-1 py-5 border border-gray/300 rounded-lg text-sm placeholder:text-xs`}/>
   {validation ? null:<p
   className='w-full -mt-2 text-xs text-error ml-2'
@@ -41,6 +43,7 @@ LogInText.propTypes = {
   id: propTypes.string,
   name: propTypes.string,
   type: propTypes.string,
+  disabled: propTypes.bool,
   onChange: propTypes.func,
   content: propTypes.string,
   validation: propTypes.bool,

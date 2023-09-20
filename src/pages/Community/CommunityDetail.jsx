@@ -58,7 +58,7 @@ function CommunityDetail() {
   //작성자인지 확인
   useEffect(() => {
     const localUser = window.localStorage.getItem('user');
-    if (userName === JSON.parse(localUser).value.userName) {
+    if (userName === JSON.parse(localUser).value) {
       setEditState(true);
     }
   }, [postData]);
