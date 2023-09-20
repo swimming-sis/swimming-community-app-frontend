@@ -23,7 +23,7 @@ import MyAccountWrited from './pages/MyAccount/MyAccountWrited';
 import MyAccountReview from './pages/MyAccount/MyAccountReview';
 import MyAccountEdit from './pages/MyAccount/MyAccountEdit';
 import MyAccount from './pages/MyAccount/MyAccount';
-import CommunityDetailCommentEdit from './pages/Community/CommunityDetailCommentEdit';
+
 
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
@@ -71,10 +71,7 @@ function App() {
                   path="/community/:communityId"
                   element={<PrivateRoute component={<CommunityDetail />} />}
                 />
-                <Route
-                  path="/community/:communityId/editComment"
-                  element={<PrivateRoute component={<CommunityDetailCommentEdit />} />}
-                />
+
                 <Route
                   path="/community/:communityId/edit"
                   element={<PrivateRoute component={<CommunityDetailEdit />} />}

@@ -17,6 +17,8 @@ const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&
 const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])|(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
+let mountedAndFetched = false;
+
 function MyAccountEdit() {
   const navigate = useNavigate();
   const [content, setContent] = useState('');
@@ -27,6 +29,7 @@ function MyAccountEdit() {
     passwordConfirm: '',
     phoneNumber: '',
   });
+
   const [isValidformState, setIsValidFormState] = useState({
     nickName: false,
     password: false,
@@ -48,15 +51,14 @@ function MyAccountEdit() {
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/modify`
   );
 
+  const handleEdit = () => {
+    setContent('수정하시겠습니까?');
+    openModal('edit');
+  };
 
-const handleEdit = ()=>{
-
-    setContent('수정하시겠습니까?')
-    openModal('edit')
-    }
-const handleSubmit = (e)=>{
-  e.preventDefault()
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   const handleInput = async (e) => {
     const { name, value } = e.target;
@@ -170,31 +172,30 @@ const handleSubmit = (e)=>{
   };
 
   const handleConfirm = async () => {
-
     if (actionType === 'edit') {
-          const dataToSend = {};
+      const dataToSend = {};
 
-    // 닉네임이 실제로 변경되었다면 그 값을 사용
-    if (formState.nickName !== fetchAccountData?.result.nickname) {
+      // 닉네임이 실제로 변경되었다면 그 값을 사용
+      if (formState.nickName !== fetchAccountData?.result.nickname) {
         dataToSend.nickname = formState.nickname;
-    }
+      }
 
-    // 전화번호가 실제로 변경되었다면 그 값을 사용
-    if (formState.phoneNumber !== fetchAccountData?.result.phoneNumber) {
+      // 전화번호가 실제로 변경되었다면 그 값을 사용
+      if (formState.phoneNumber !== fetchAccountData?.result.phoneNumber) {
         dataToSend.phoneNumber = formState.phoneNumber;
-    }
+      }
 
       setFormState((prevState) => ({
         ...prevState,
         formState,
       }));
       try {
+        console.log(formState);
         await putAccountData(formState);
         toast.success('회원 정보가 수정되었어요. 😊');
       } catch (error) {
         toast.error('회원 정보를 수정하지 못했어요. 😵');
       }
-
 
       closeModal();
       navigate('/');
@@ -226,7 +227,7 @@ const handleSubmit = (e)=>{
 
         if (!response.ok) throw new Error('Response is not OK');
         const data = await response.json();
-        
+
         if (data.result) {
           setErrorMessages((prev) => ({
             ...prev,
@@ -255,7 +256,6 @@ const handleSubmit = (e)=>{
         }));
         return;
       }
-
 
       try {
         const response = await fetch(
@@ -288,6 +288,23 @@ const handleSubmit = (e)=>{
 
     checkDuplication();
   }, [formState.phoneNumber, fetchAccountData?.result.phoneNumber]);
+
+  useEffect(() => {
+    if (!mountedAndFetched && fetchAccountData?.resultCode === 'SUCCESS') {
+      const { nickName, phoneNumber, userName } = fetchAccountData.result;
+
+      setFormState((formState) => ({
+        ...formState,
+        userName,
+        nickName,
+        phoneNumber,
+      }));
+
+      console.log('페이지 로딩 후 기본 사용자 정보를 formState로 업데이트\n');
+
+      mountedAndFetched = true;
+    }
+  }, [fetchAccountData]);
 
   return (
     <>
@@ -337,7 +354,6 @@ const handleSubmit = (e)=>{
           type="tel"
           name="phoneNumber"
           className={'mb-8'}
-  
           defaultValue={fetchAccountData?.result.phoneNumber}
           onChange={handleDebounceInput}
           validation={isValidformState.phoneNumber}
@@ -369,8 +385,8 @@ const handleSubmit = (e)=>{
             </div>
           )} */}
         <ButtonSubmit
-        type='button'
-        onClick={handleEdit}
+          type="button"
+          onClick={handleEdit}
           className="fixed w-[calc(100%-20px)]  min-w-[320px] max-w-[699px] px-2.5 mx-auto left-0 right-0 bottom-12 flex flex-col items-center"
           content={'수정하기'}
           disabled={
@@ -380,13 +396,11 @@ const handleSubmit = (e)=>{
             !isValidformState.phoneNumber
           }
         />
-          <ModalComponent>
-        <p className="my-4">
-          {content}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+        <ModalComponent>
+          <p className="my-4">{content}</p>
+          <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+          <ButtonConfirm onClick={handleConfirm} />
+        </ModalComponent>
       </form>
     </>
   );

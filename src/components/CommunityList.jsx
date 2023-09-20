@@ -65,7 +65,7 @@ function CommunityList ({
       {edit &&
             <div className=' flex justify-end gap-x-1 absolute right-2.5 top-2'>
               <button type="button">
-                <Link to={`/community/${id}/editComment`} id={id}>
+                <Link to={`/community/${id}`} id={id}>
                   <Pencil />
                 </Link>
               </button>

@@ -3,6 +3,8 @@ import CommentList from '@/components/CommentList';
 import ModalComponent from '@/components/ModalComponent';
 import useFetchData from '@/hooks/useFetchData';
 import useDeleteData from '@/hooks/useFetchDeleteData';
+import useFetchPutData from '@/hooks/useFetchPutData';
+import debounce from '@/utils/debounce';
 import useModalStore from '@/zustand/useModalStore';
 import { Fragment } from 'react';
 import { useState } from 'react';
@@ -14,12 +16,20 @@ function MyAccountComment() {
   const [commentData, setCommentData] = useState([]);
   const [communityId, setCommunityId] = useState(null);
   const [commentId, setCommentId] = useState(null);
-  const { openModal, closeModal, actionType, content, setContent } = useModalStore();
-  const { data:fetchCommentData,fetchData} = useFetchData(
+  const [comment, setComment] = useState('');
+  const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
+  const { data: fetchCommentData, fetchData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/comments/my`
   );
   const { deleteData } = useDeleteData(
-    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/comments/${commentId}/delete`
+    `${
+      import.meta.env.VITE_UPUHUPUH_DB_URL
+    }/api/v1/posts/${communityId}/comments/${commentId}/delete`
+  );
+  const { putData } = useFetchPutData(
+    `${
+      import.meta.env.VITE_UPUHUPUH_DB_URL
+    }/api/v1/posts/${communityId}/comments/${commentId}/modify`
   );
   useEffect(() => {
     if (fetchCommentData?.result?.content) {
@@ -30,29 +40,43 @@ function MyAccountComment() {
     }
   }, [fetchCommentData]);
 
+  const handleInput = debounce((e)=>{
+    setComment(e.target.value)
+  },200)
+
   const handleCancle = () => {
     closeModal();
   };
-  const handleConfirm = async() => {
+  const handleConfirm = async () => {
     try {
       if (actionType === 'comment') {
         await deleteData();
-        fetchData()
+        fetchData();
+        closeModal();
+        navigate('/account/comment');
+      } else if (actionType === 'edit') {
+        await putData({ comment });
+        fetchData();
         closeModal();
         navigate('/account/comment');
       }
-
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   };
-  const handleComment = (e)=>{
-    setCommunityId(e.currentTarget.getAttribute('data-post-id'))
-    setCommentId(e.currentTarget.getAttribute('data-comment-id'))
-    setContent('댓글을 삭제 하시겠습니까?\n삭제된 댓글은 복구되지 않습니다.')
-    openModal('comment')
-  }
+  const handleComment = (e) => {
+    setCommunityId(e.currentTarget.getAttribute('data-post-id'));
+    setCommentId(e.currentTarget.getAttribute('data-comment-id'));
+    setContent('댓글을 삭제 하시겠습니까?\n삭제된 댓글은 복구되지 않습니다.');
+    openModal('comment');
+  };
 
+  const handleEdit = (e) => {
+    setCommunityId(e.currentTarget.getAttribute('data-post-id'));
+    setCommentId(e.currentTarget.getAttribute('data-comment-id'));
+    setContent('댓글을 수정 하시겠습니까?\n수정 전 댓글은 복구되지 않습니다.');
+    openModal('edit');
+  };
 
   return (
     <>
@@ -66,9 +90,10 @@ function MyAccountComment() {
             chatCount={commentData.length}
             datetime={comment.createdAt}
             user={comment.nickName}
-            // className={index === 0 ? '' : 'border-t'}
-            edit={true}
-            onClick={handleComment}
+            userName={comment.userName}
+            onClick={handleEdit}
+            onChange={handleInput}
+            onClickDelete={handleComment}
           />
         );
       })}

@@ -13,22 +13,33 @@ import { useParams } from 'react-router-dom';
 import CategoryTag from '../../components/Category/CategoryTag';
 import { useNavigate } from 'react-router-dom';
 import useDeleteData from '../../hooks/useFetchDeleteData';
+import useFetchPutData from '@/hooks/useFetchPutData';
+import ModalComponent from '@/components/ModalComponent';
+import { Fragment } from 'react';
+import ButtonConfirm from '@/components/Button/ButtonComfirm';
+import useModalStore from '@/zustand/useModalStore';
 
 function CommunityDetail() {
   const navigate = useNavigate();
   let { communityId } = useParams();
+  const [postId, setPostId] = useState(null);
+  const [commentId, setCommentId] = useState(null);
   const [postData, setPostData] = useState([]);
   const [like, setLike] = useState({
     result: false,
     resultCode: '',
     likeState: false,
   });
-  const [commentData, setCommentData] = useState([]);
+  
   const [editState, setEditState] = useState(false);
+  const [editCommentData, setEditCommentData] = useState(false);
+  const [commentData, setCommentData] = useState([]);
   const [formState, setFormState] = useState({
     comment: '',
     value: '',
+    editComment:''
   });
+  const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
   const fetchListData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/detail`
   );
@@ -37,6 +48,11 @@ function CommunityDetail() {
   );
   const { fetchData: fetchPostData } = useFetchPostData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/comments/write`
+  );
+  const { putData: putCommentData } = useFetchPutData(
+    `${
+      import.meta.env.VITE_UPUHUPUH_DB_URL
+    }/api/v1/posts/${postId}/comments/${commentId}/modify`
   );
   const fetchLikeData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/likes`
@@ -47,9 +63,14 @@ function CommunityDetail() {
   const { data: postLikeStatus, fetchData: postLikeData } = useFetchPostData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/likes`
   );
+  const { deleteData:deleteCommentData } = useDeleteData(
+    `${
+      import.meta.env.VITE_UPUHUPUH_DB_URL
+    }/api/v1/posts/${communityId}/comments/${commentId}/delete`
+  );
 
   const debouncedSetComment = useCallback(
-    debounce((value) => setFormState((prev) => ({ ...prev, comment: value })), 200),
+    debounce((value) => setFormState((prev) => ({ ...prev, comment: value })), 500),
     []
   );
 
@@ -61,7 +82,44 @@ function CommunityDetail() {
     if (userName === JSON.parse(localUser).value) {
       setEditState(true);
     }
-  }, [postData]);
+
+  }, [postData, commentData]);
+
+
+  //모달 취소 핸들러
+  const handleCancle = () => {
+    closeModal();
+  };
+
+//모달 확인 핸들러
+  const handleConfirm = async () => {
+    try {
+      if (actionType === 'comment') {
+        await deleteCommentData();
+        fetchCommentData.fetchData();
+        closeModal();
+      } else if (actionType === 'edit') {
+        await putCommentData({ comment:editCommentData });
+        fetchCommentData.fetchData();
+        closeModal();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleEdit = (e) => {
+    setPostId(e.currentTarget.getAttribute('data-post-id'));
+    setCommentId(e.currentTarget.getAttribute('data-comment-id'));
+    setContent('댓글을 수정 하시겠습니까?\n수정 전 댓글은 복구되지 않습니다.');
+    openModal('edit');
+  };
+  const handleComment = (e) => {
+    setPostId(e.currentTarget.getAttribute('data-post-id'));
+    setCommentId(e.currentTarget.getAttribute('data-comment-id'));
+    setContent('댓글을 삭제 하시겠습니까?\n삭제된 댓글은 복구되지 않습니다.');
+    openModal('comment');
+  };
 
   // 페이지 로드 시 서버에서 현재 사용자의 좋아요 상태 확인
   useEffect(() => {
@@ -120,6 +178,7 @@ function CommunityDetail() {
     }
   }, [fetchCommentData.data]);
 
+
   //댓글 입력제어
   const handleInput = (e) => {
     setFormState({
@@ -128,7 +187,11 @@ function CommunityDetail() {
     });
     debouncedSetComment(e.target.value);
   };
-
+  //댓글 수정창
+  const handleEditInput = (e) => {
+    setEditCommentData(e.target.value);
+    debouncedSetComment(e.target.value);
+  };
   //댓글 onSubmit
   const handleSendingComment = async (e) => {
     e.preventDefault();
@@ -170,6 +233,7 @@ function CommunityDetail() {
     await fetchListData.fetchData();
   };
 
+
   return (
     <div className="flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
       <Helmet>
@@ -210,15 +274,20 @@ function CommunityDetail() {
           댓글 {commentCnt} <span aria-hidden="true">&gt;</span>
         </h2>
         <>
-          {commentData.map((comment, index) => {
+          {commentData.map((comment) => {
             return (
               <CommentList
+                commentId = {comment.commentId}
+                postId = {comment.postId}
                 key={comment.commentId}
                 commentContent={comment.comment}
                 chatCount={commentCnt}
                 datetime={comment.createdAt}
                 user={comment.nickName}
-                className={index === 0 ? '' : 'border-t'}
+                userName={comment.userName}
+                onChange={handleEditInput}
+                onClick={handleEdit}
+                onClickDelete={handleComment}
               />
             );
           })}
@@ -229,6 +298,18 @@ function CommunityDetail() {
           onSubmit={handleSendingComment}
         />
       </section>
+      <ModalComponent>
+        <p className="my-4">
+          {content.split('\n').map((line, index) => (
+            <Fragment key={index}>
+              {line}
+              <br />
+            </Fragment>
+          ))}
+        </p>
+        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+        <ButtonConfirm onClick={handleConfirm} />
+      </ModalComponent>
     </div>
   );
 }
