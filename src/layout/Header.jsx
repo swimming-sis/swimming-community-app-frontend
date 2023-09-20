@@ -2,7 +2,6 @@
 import Back from '@/components/Icon/Back';
 import Pencil from '@/components/Icon/Pencil';
 import SearchInput from '@/components/Input/SearchInput';
-
 import propTypes from 'prop-types';
 import { memo } from 'react';
 import { useNavigate } from 'react-router-dom';

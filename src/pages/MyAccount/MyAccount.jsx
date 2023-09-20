@@ -1,65 +1,69 @@
 import ButtonMyCount from '@/components/Button/ButtonMyCount';
-import Header from '@/layout/Header';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 // import propTypes from 'prop-types';
 import useFetchData from '../../hooks/useFetchData';
 import { Link } from 'react-router-dom';
-import ModalComponent from '@/components/ModalComponent';
-import { Fragment } from 'react';
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import useModalStore from '@/zustand/useModalStore';
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
+import { useEffect } from 'react';
+import Crown from '@/components/Icon/Crown';
 
 function MyAccount() {
   const navigate = useNavigate();
-  const [content, setContent] = useState('');
-  const { closeModal, openModal, actionType } = useModalStore();
+
+  const [postData, setPostData] = useState([]);
+  const [commentData, setCommentData] = useState([]);
+
   const { data: fetchAccountData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/`
   );
-
-  const handleCancle = () => {
-    closeModal();
-  };
-
-  const handleConfirm = () => {
-    if (actionType === 'writed') {
-      closeModal();
-      navigate('/account/writed');
-    } else if (actionType === 'comment') {
-      closeModal();
-      navigate('/account/comment');
-    } else if (actionType === 'review') {
-      closeModal();
-      navigate('/account/review');
-    }else if (actionType === 'edit') {
-      closeModal();
-      navigate('/account/review');
+  const {data: fetchListData} = useFetchData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/my`
+  );
+  const fetchCommentData = useFetchData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/comments/my`
+  );
+  // postData의 갯수 가져오기
+  useEffect(() => {
+    if (fetchListData?.result?.content) {
+      const orderDate = fetchListData.result.content.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+      setPostData(orderDate)
     }
-  };
+  }, [fetchListData]);
 
-  // const handleWrited = ()=>{
-  //   setContent('게시글을 삭제 하시겠습니까?\n삭제된 게시글은 복구되지 않습니다.')
-  //   openModal('writed')
+  
+  useEffect(() => {
+    if (fetchCommentData.data?.result?.content) {
+      const orderDate = fetchCommentData.data.result.content.sort(
+        (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+      );
+      setCommentData(orderDate);
+    }
+  }, [fetchCommentData.data]);
+
+  // const handleConfirm = () => {
+  //   
+  //  
+  //   } else if (actionType === 'review') {
+  //     closeModal();
+  //     navigate('/account/review');
+  //   }else if (actionType === 'edit') {
+  //     closeModal();
+  //     navigate('/account/review');
   //   }
-  // const handleComment = ()=>{
-  //   setContent('댓글을 삭제 하시겠습니까?\n삭제된 댓글은 복구되지 않습니다.')
-  //   openModal('comment')
-  //   }
+  // };
+
+
   // const handleReview = ()=>{
   //   setContent('리뷰를 삭제 하시겠습니까?\n삭제된 리뷰는 복구되지 않습니다.')
   //   openModal('review')
   //   }
-  // const handleEdit = ()=>{
-  //   setContent('수정하시겠습니까?')
-  //   openModal('edit')
-  //   }
+
 
   return (
-    <div className="min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll">
+    <div className="min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
       <Helmet>
         <title>내 계정</title>
       </Helmet>
@@ -70,7 +74,7 @@ function MyAccount() {
         }}
       />
       <ul className="text-sm py-4 px-2.5">
-        <li className="flex my-4">
+        <li className="flex my-4 ">
           <strong className="w-20">아이디</strong>
           <p>{fetchAccountData?.result.userName}</p>
         </li>
@@ -82,20 +86,21 @@ function MyAccount() {
           <strong className="w-20">전화번호</strong>
           <p>{fetchAccountData?.result.phoneNumber}</p>
         </li>
-        <li className="my-4">
-          <strong className="w-20">나의 활동</strong>
+        <li className="flex mt-8 items-end">
+          <span className='text-[26px] mr-2'><Crown/></span> <strong className="w-20">
+          나의 활동</strong>
         </li>
       </ul>
       <div className="flex gap-x-1">
         <Link className="block w-full flex-grow" to="/account/writed">
           <ButtonMyCount 
-          content={`글 n개`} 
+          content={`글 ${postData.length}개`} 
           shape={'left-round'} 
           />
         </Link>
         <Link className="block w-full flex-grow" to="/account/comment">
           <ButtonMyCount 
-          content={`댓글 n개`} 
+          content={`댓글 ${commentData.length}개`} 
           shape={'square'} 
           />
         </Link>
@@ -107,18 +112,7 @@ function MyAccount() {
         </Link>
       </div>
       <Outlet />
-      <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+
     </div>
   );
 }

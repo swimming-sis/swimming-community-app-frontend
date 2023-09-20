@@ -5,6 +5,10 @@ const useMapStore = create((set) => ({
   mapContainer: null,
   setMapContainer: (container) => set(() => ({ mapContainer: container })),
 
+  // 맵 검색 오버레이 관리
+  searchCustomOverlay: null,
+  setSearchCustomOverlay: (searchCustomOverlay) => set(() => ({  searchCustomOverlay })),
+
   //맵 렌더링 옵션 관리
   options: {},
   setOptions: (opts) => set((state) => ({ options: { ...state.options, ...opts } })),

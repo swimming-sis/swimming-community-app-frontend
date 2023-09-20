@@ -95,7 +95,6 @@ function CommunityDetail() {
           resultCode: data.resultCode,
           likeState: data.result,
         }));
-        // console.log('useEffect 내부 초기 렌더링:', like);
       } catch (error) {
         console.log(error);
       }
@@ -210,7 +209,7 @@ function CommunityDetail() {
         <h2 className="text-xs font-semibold text-gray/500 ml-2 mt-3 mb-2">
           댓글 {commentCnt} <span aria-hidden="true">&gt;</span>
         </h2>
-        <ol className="border shadow-md rounded-lg text-sm">
+        <>
           {commentData.map((comment, index) => {
             return (
               <CommentList
@@ -223,7 +222,7 @@ function CommunityDetail() {
               />
             );
           })}
-        </ol>
+        </>
         <SendingForm
           value={formState.value}
           onChange={handleInput}

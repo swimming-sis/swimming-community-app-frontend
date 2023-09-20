@@ -152,7 +152,7 @@ const handleInput = (e) => {
       selectedCategory={category ? category : '전체'} 
       onCategroyChange={handleChoiceCategory}
       />
-      <ul>
+      <>
         {(searchActive
           ? searchData: postData).map((post) => (
               <CommunityList
@@ -167,7 +167,7 @@ const handleInput = (e) => {
                 datetime={post.createdAt}
               />
             ))}
-      </ul>
+      </>
       <Top onClick={handleTop} className="fixed bottom-20 right-6 shadow-2xl rounded-full" />
     </div>
   );

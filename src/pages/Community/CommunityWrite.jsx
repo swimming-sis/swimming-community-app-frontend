@@ -97,7 +97,11 @@ return (
     noEdit={false} 
     onClickBack={handleBack} 
     onNavigate={true}/>
-    <CategoryRadioForm write={true} onClick={handleCheckCategory}/>
+    <CategoryRadioForm 
+    write={true} 
+    onClick={handleCheckCategory}
+    selectedCategory={formState.category} 
+    onCategroyChange={handleCheckCategory}/>
     <div className="flex mb-4 items-center">
       <label 
       htmlFor="categoryWrite"

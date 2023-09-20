@@ -15,7 +15,7 @@ import SignUp from './pages/SignUp';
 import PoolSearchList from './pages/Main/PoolSearchList';
 import PublicRoute from './components/Login/PublicRoute';
 import PrivateRoute from './components/Login/PrivateRoute';
-import CommunityWrite from './pages/Community/\bCommunityWrite';
+import CommunityWrite from './pages/Community/CommunityWrite';
 import CommunityDetail from './pages/Community/CommunityDetail';
 import CommunityDetailEdit from './pages/Community/CommunityDetailEdit';
 import MyAccountComment from './pages/MyAccount/MyAccountComment';
@@ -23,6 +23,7 @@ import MyAccountWrited from './pages/MyAccount/MyAccountWrited';
 import MyAccountReview from './pages/MyAccount/MyAccountReview';
 import MyAccountEdit from './pages/MyAccount/MyAccountEdit';
 import MyAccount from './pages/MyAccount/MyAccount';
+import CommunityDetailCommentEdit from './pages/Community/CommunityDetailCommentEdit';
 
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
@@ -69,6 +70,10 @@ function App() {
                 <Route
                   path="/community/:communityId"
                   element={<PrivateRoute component={<CommunityDetail />} />}
+                />
+                <Route
+                  path="/community/:communityId/editComment"
+                  element={<PrivateRoute component={<CommunityDetailCommentEdit />} />}
                 />
                 <Route
                   path="/community/:communityId/edit"

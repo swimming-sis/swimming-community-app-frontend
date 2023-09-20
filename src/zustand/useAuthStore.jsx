@@ -1,6 +1,5 @@
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
 
 const initalAuthState = {
   isAuth: false,
@@ -112,6 +111,6 @@ const authStore = create((set, get) => ({
   },
 }));
 
-const useAuthStore = devtools(authStore);
+const useAuthStore = authStore;
 
 export default useAuthStore;

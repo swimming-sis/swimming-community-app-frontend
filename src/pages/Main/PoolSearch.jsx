@@ -1,7 +1,7 @@
 // import Map from "@/components/Map"
 import MapComponent from '@/components/MapComponent';
 import RootLayout from '@/layout/RootLayout';
-import debounce from '@/utils/debounce';
+// import debounce from '@/utils/debounce';
 import useMapStore from '@/zustand/useMapStore';
 
 
@@ -10,16 +10,18 @@ import { Outlet } from 'react-router-dom';
 
 function PoolSearch() {
 
-  const {keyword, value, setValue, mixKeyword } = useMapStore();
+  const {  keyword, value, setValue, mixKeyword,  } = useMapStore();
 
   const handleSearch = (e) => {
     e.preventDefault()
+
     mixKeyword(keyword,value)
+  
   };
   
-  const handleChange = debounce((e) => {
+  const handleChange = (e) => {
     setValue(e.target.value);
-  },500);
+  };
 
   const handleTextClear = () => {
     setValue('');
