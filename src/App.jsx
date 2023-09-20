@@ -23,6 +23,7 @@ import MyAccountWrited from './pages/MyAccount/MyAccountWrited';
 import MyAccountReview from './pages/MyAccount/MyAccountReview';
 import MyAccountEdit from './pages/MyAccount/MyAccountEdit';
 import MyAccount from './pages/MyAccount/MyAccount';
+import PoolSearchReivew from './pages/Main/PoolSearchReview';
 
 
 // 쿼리 클라이언트 객체 생성
@@ -60,7 +61,8 @@ function App() {
                   <Route path="review" element={<PrivateRoute component={<MyAccountReview />} />} />
                 </Route>
                 <Route path="/search" element={<PrivateRoute component={<PoolSearch />} />}>
-                  <Route path="list" element={<PrivateRoute component={<PoolSearchList />} />} />
+                  <Route path="/search/list" element={<PrivateRoute component={<PoolSearchList />} />} />
+                  <Route path="/search/review" element={<PrivateRoute component={<PoolSearchReivew />} />} />
                 </Route>
                 <Route path="/community" element={<PrivateRoute component={<Community />} />} />
                 <Route

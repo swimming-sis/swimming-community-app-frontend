@@ -63,7 +63,7 @@ function MyAccount() {
 
 
   return (
-    <div className="min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
+    <div className="relative min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
       <Helmet>
         <title>내 계정</title>
       </Helmet>
@@ -110,6 +110,18 @@ function MyAccount() {
           shape={'right-round'} 
           />
         </Link>
+      </div>
+      <div>
+        <button
+        type="button"
+        className='absolute right-4 top-24 border px-2.5 py-1.5 rounded-lg'>
+          로그아웃
+        </button>
+        <button
+        type="button"
+        className='absolute right-4 top-24 border px-2.5 py-1.5 rounded-lg'>
+          회원탈퇴
+        </button>
       </div>
       <Outlet />
 

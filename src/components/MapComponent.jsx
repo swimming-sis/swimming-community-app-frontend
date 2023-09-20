@@ -4,10 +4,12 @@ import Plus from './Icon/Plus';
 import useMapStore from '@/zustand/useMapStore';
 import Location from './Icon/Location';
 import '@/styles/map.css';
+import { useNavigate } from 'react-router-dom';
 
 const { kakao } = window;
 
 function MapComponent() {
+  const navigate = useNavigate()
   const [map, setMap] = useState(null);
   const [customOverlay, setCustomOverlay] = useState(null);
   const [, ] = useState(null);
@@ -121,6 +123,7 @@ function MapComponent() {
 
         // 지도 중심을 이동시킴
         map?.panTo(options.center);
+        navigate('/search/list')
       });
     } else {
       alert('Geolocation이 지원되지 않는 브라우저입니다');
@@ -212,8 +215,9 @@ function MapComponent() {
       size: 10,
       sort: kakao.maps.services.SortBy.DISTANCE,
     };
-
+    
     ps.keywordSearch(mixed, poolSearch, searchOptions);
+    navigate('/search/list')
   };
   //zoomIn zoomOut
 

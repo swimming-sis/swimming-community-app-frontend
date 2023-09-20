@@ -42,6 +42,13 @@ const useMapStore = create((set) => ({
   },
 
   removeItem: (index) => set((state) => ({ items: state.items.filter((_, i) => i !== index) })),
+
+  review: {},
+  setReview: (review) => set(() => ({ review })),
+
+  click:(e)=>{
+    console.log(e.target)
+  }
 }));
 
 export default useMapStore;
