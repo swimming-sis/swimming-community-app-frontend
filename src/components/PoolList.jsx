@@ -14,13 +14,13 @@ function PoolList({id,title='',address='',tel='',link,rating='0.0', distance, on
          <p className="text-base font-semibold text-primary ">{title}</p>
          {address && <p className="text-gray/700">{address}</p>}
          {tel && <p className="text-gray/700">{tel}</p>}
-         <div className="flex items-center mt-2">
-           {link && <House link={true}/> }
-           <a href={link} className="text-primary flex-grow font-semibold ml-1">
+         <div className="flex items-center mt-2 flex-nowrap max-w-full">
+           {link && <House link={true} className={'min-w-0 flex-shrink-0'}/> }
+           <a href={link} className="text-primary font-semibold ml-1 truncate min-w-0 flex-grow">
              {link}
            </a>
            <p className='absolute top-3 right-3 text-sm text-secondary'>{distance}</p>
-           <div className='flex'>
+           <div className='flex min-w-0'>
              <Star className="mr-2" />
              <span>{rating}</span>
            </div>
@@ -36,8 +36,8 @@ function PoolList({id,title='',address='',tel='',link,rating='0.0', distance, on
           {address && <p className="text-gray/700">{address}</p>}
           {tel && <p className="text-gray/700">{tel}</p>}
           <div className="flex items-center mt-2">
-            {link && <House link={true}/> }
-            <p className="text-primary flex-grow font-semibold ml-1">
+            {link && <House link={true} className={'min-w-0 flex-shrink-0'}/> }
+            <p className="text-primary flex-grow font-semibold ml-1  truncate min-w-0">
               {link}
             </p>
             <p className='absolute top-3 right-3 text-sm text-secondary'>{distance}</p>

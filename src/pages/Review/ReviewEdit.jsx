@@ -56,7 +56,7 @@ const {contents,ratingStar} =reviewState
   const handleCancle = () => {
     closeModal();
   };
-console.log(formState);
+
   const handleConfirm = async () => {
     try {
       if (actionType === 'back') {

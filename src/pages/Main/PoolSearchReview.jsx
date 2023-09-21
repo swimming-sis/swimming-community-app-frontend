@@ -21,10 +21,12 @@ function PoolSearchReivew() {
     placeUrl: '',
     roadAddressName: '',
     uniqueNumber: 0,
+    ratingStar:0,
   });
   const [reviewId, setReviewId] = useState(null);
   const [poolId, setPoolId] = useState(null);
   const [reviewData, setReviewData] = useState([]);
+  const [ratingStar, setRatingStar] = useState([]);
   const {data:fetchPoolData} = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools/${swimmingPoolId}`
   );
@@ -60,6 +62,22 @@ function PoolSearchReivew() {
       setReviewData(updateReview);
     }
   }, [fetchReviewData]);
+  useEffect(() => {
+    if (fetchReviewData?.resultCode === 'SUCCESS') {
+      const ratingStarArr = fetchReviewData.result.content
+      setRatingStar(ratingStarArr);
+      const avg = ratingStar.reduce((accumulator, currentValue) => {
+        return (accumulator + currentValue.ratingStar)/ratingStar.length;
+      }, 0);
+      const roundUpAvg=Math.round(avg* 10)/10
+      setPoolData({
+        ...poolData,
+        ratingStar:roundUpAvg
+      });
+    }
+  }, [fetchReviewData, poolData.ratingStar]);
+
+
 
   //모달 취소 핸들러
   const handleCancle = () => {
@@ -99,6 +117,7 @@ function PoolSearchReivew() {
         link={poolData.placeUrl}
         id={poolData.id}
         review={true}
+        rating={poolData.ratingStar}
       />
       <section className="relative">
         <h1 className="ml-6 mt-4 mb-2 font-semibold ">리뷰</h1>
@@ -120,11 +139,13 @@ function PoolSearchReivew() {
             onClick={handleReview}
           />
         ))}
-        <Link
+        {(reviewData.length>0 )
+        ?<Link
           className="block w-[calc(100%-20px)] border py-2 my-4 mx-2.5 rounded-2xl shadow-md text-center font-semibold text-gray-500"
           to={`/search/list/${swimmingPoolId}/reviewList`}>
           +&nbsp;리뷰 더보기
         </Link>
+        :<p className='text-center text-gray-500 font-semibold my-24'> 지금 첫 리뷰를 작성해 보세요 😊 </p>}
       </section>
       <ModalComponent>
         <p className="my-4">
