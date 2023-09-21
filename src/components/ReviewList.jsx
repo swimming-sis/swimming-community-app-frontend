@@ -1,25 +1,23 @@
 import propTypes from 'prop-types';
-import Heart from './Icon/Heart';
-import Chat from './Icon/Chat';
 import Pencil from './Icon/Pencil';
 import X from './Icon/X';
-import CategoryTag from './Category/CategoryTag';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Star from './Icon/Star';
 
-function CommunityList ({
-  edit = false, 
-  id, 
-  user,
-  title,
-  content,
+function ReviewList({
+  userName = '',
+  id,
+  user ,
+  link = true,
+  content ,
   onClick,
   datetime,
-  categoryTag,
-  likeCount=0,
-  chatCount=0
+  ratingStar = 0,
+  reviewId,
 }) {
   const [currentDatetime, setCurrentDatetime] = useState('');
+  const localUser = JSON.parse(window.localStorage.getItem('user')).value;
 
   useEffect(() => {
     const updateCurrentDatetime = () => {
@@ -28,7 +26,6 @@ function CommunityList ({
       setCurrentDatetime(formattedDatetime);
     };
 
-    
     updateCurrentDatetime();
     const intervalId = setInterval(updateCurrentDatetime, 1000);
 
@@ -37,58 +34,76 @@ function CommunityList ({
     };
   }, []);
 
-  return(
-    <div className='relative border rounded-2xl py-2.5 px-3 min-w-0 max-w-[699px] w-full mx-auto font-pretendard mt-2'>
-      <ol>
-        <li
-        tabIndex={0}
-        >
-          <Link to={`/community/${id}`} id={id}>
-            <div className=' flex items-center justify-start w-5/6 mb-1'>
-              <CategoryTag content={categoryTag} className='flex-shrink-0' />
-              <strong className='inline-block font-semibold text-sm truncate'>{title}</strong>
+  return (
+    <div className='relative'>
+      <ol className="relative border rounded-2xl py-2.5 px-3 min-w-0 max-w-[699px] w-[calc(100%-20px)] mx-2.5 font-pretendard shadow-md mt-2">
+        {!link ? (
+          <li tabIndex={0}>
+            <div className="flex gap-x-1 items-center">
+              <p className="text-gray/500 font-semibold text-xs ml-1 py-2">{user}</p>
+              <time dateTime={currentDatetime} className="text-gray/500 font-light text-[0.625rem]">
+                {datetime}
+              </time>
             </div>
-            <p className='text-sm mb-2 truncate'>{content}</p>
-            <div className='flex gap-x-1 items-center'>
-              <p className='text-gray/500 font-semibold text-xs ml-1'>{user}</p>
-              <time dateTime={currentDatetime} className='text-gray/500 font-light text-[0.625rem]'>{datetime}</time>
+            <p className="text-sm mb-2 truncate py-2">{content}</p>
+            <div className="flex justify-end items-center text-sm h-6 absolute right-3 bottom-1.5">
+              <Star />
+              <span className="ml-2">{ratingStar}</span>
             </div>
-            <div className='flex justify-end items-center text-sm h-6 absolute right-3 bottom-1.5'>
-              <Heart className='w-4 h-auto'/>
-              <span className='mr-2 ml-0.5'>{likeCount}</span>
-              <Chat className='w-4 h-auto'/>
-              <span className='ml-0.5'>{chatCount}</span>
-            </div>
-          </Link>
-        </li>
+          </li>
+        ) : (
+          <li tabIndex={0}>
+            <Link to={`/search/list/${id}/reviewList`} id={id}>
+              <div className="flex gap-x-1 items-center">
+                <p className="text-gray/500 font-semibold text-xs ml-1 py-2">{user}</p>
+                <time
+                  dateTime={currentDatetime}
+                  className="text-gray/500 font-light text-[0.625rem]">
+                  {datetime}
+                </time>
+              </div>
+              <p className="text-sm mb-2 truncate py-2">{content}</p>
+              <div className="flex justify-end items-center text-sm h-6 absolute right-3 bottom-1.5">
+                <Star />
+                <span className="ml-2">{ratingStar}</span>
+              </div>
+            </Link>
+          </li>
+        )}
       </ol>
-      {edit &&
-            <div className=' flex justify-end gap-x-1 absolute right-2.5 top-2'>
-              <button type="button">
-                <Link to={`/community/${id}`} id={id}>
-                  <Pencil />
-                </Link>
-              </button>
-              <button
-              onClick={onClick}
-              data-post-id={id}
-              type="button">
-                <X />
-              </button>
-            </div>}
+      {userName === localUser && (
+        <div className=" flex justify-end gap-x-1 absolute right-6 top-2">
+          <button type="button">
+            <Link to={`/search/list/${id}/reviewList/${reviewId}/edit`} id={id} key={reviewId}>
+              <Pencil />
+            </Link>
+          </button>
+          <button
+            onClick={onClick}
+            data-swimmingpool-id={id}
+            data-review-id={reviewId}
+            type="button">
+            <X />
+          </button>
+        </div>
+      )}
     </div>
-  )
+  );
 }
-CommunityList.propTypes = {
-  id: propTypes.number,
+ReviewList.propTypes = {
+  id: propTypes.oneOfType([
+    propTypes.string,
+    propTypes.number,
+  ]),
   edit: propTypes.bool,
+  link: propTypes.bool,
+  user: propTypes.string,
   onClick: propTypes.func,
-  likeCount: propTypes.number,
-  chatCount: propTypes.number,
-  user: propTypes.string.isRequired,
-  title: propTypes.string.isRequired,
-  content: propTypes.string.isRequired,
-  datetime: propTypes.string.isRequired,
-  categoryTag: propTypes.string.isRequired,
-}
-export default CommunityList
+  content: propTypes.string,
+  reviewId: propTypes.number,
+  datetime: propTypes.string,
+  userName: propTypes.string,
+  tagCount: propTypes.number,
+  ratingStar: propTypes.number,
+};
+export default ReviewList;

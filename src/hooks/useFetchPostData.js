@@ -20,7 +20,7 @@ function useFetchPostData(endpoint, options = {}) {
     const tokenItem = localStorage.getItem('token');
     let authHeader = '';
 
-    if (tokenItem) {
+    if (tokenItem ) {
       // eslint-disable-next-line no-useless-escape
       const tokenValue = JSON.parse(tokenItem).value.replace(/\'/g, '');
       authHeader = `Bearer ${tokenValue}`;

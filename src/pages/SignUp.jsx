@@ -10,9 +10,11 @@ import debounce from '@/utils/debounce';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Timer from '@/components/Timer';
+import useFetchPostData from '@/hooks/useFetchPostData';
+import toast from 'react-hot-toast';
 
-
-const userNameRegex = /^[a-z]+[a-z0-9]{3,11}$/g;
+const userNameRegex = /^[a-z][a-z0-9]{3,15}$/;
 const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&*]{2,8}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])|(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
@@ -42,8 +44,20 @@ function SignUp() {
     passwordConfirm: '',
     phoneNumber: '',
   });
-
+  const [phoneValidation, setPhoneValidation] = useState({
+    sendState: false,
+    validationState: false,
+    sendNumber: null,
+    validationNumber: null,
+    validationData:false
+  });
   const signUp = useAuthStore((state) => state.signUp);
+  const { fetchData: postSendValidation } = useFetchPostData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber/send`
+  );
+  const { data: validationData, fetchData: postValidation } = useFetchPostData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber/check`
+  );
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -69,7 +83,7 @@ function SignUp() {
         if (!userNameRegex.test(value)) {
           setErrorMessages((prev) => ({
             ...prev,
-            userName: '영문 소문자와 숫자 조합으로 4~12자리로 입력해주세요.',
+            userName: '영문 소문자와 숫자 조합으로 4~16자리로 입력해주세요.',
           }));
           setIsValidFormState((prev) => ({
             ...prev,
@@ -127,12 +141,11 @@ function SignUp() {
         } else {
           setErrorMessages((prev) => ({
             ...prev,
-            password: '', // Clear the error message when the input is valid
+            password: '', 
           }));
           setIsValidFormState((prev) => ({
             ...prev,
             password: true,
-            // Check if the confirmed password matches the new one
             passwordConfirm: value === formState.passwordConfirm,
           }));
         }
@@ -184,20 +197,30 @@ function SignUp() {
     }
   };
 
-  const handleDebounceInput = debounce(handleInput, 500);
+  const handleValidationNumber = debounce((e) => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+      validationNumber: e.target.value,
+    }));
+  }, 200);
+
+  const handleDebounceInput = debounce(handleInput, 200);
 
   useEffect(() => {
     const checkDuplication = async () => {
       let value = formState.userName;
 
       try {
-        const response = await fetch(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/userName?userName=${value}`, {
-          method: 'GET',
-          headers: {'Content-Type': 'application/json'}
-          })
-        
+        const response = await fetch(
+          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/userName?userName=${value}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        );
+
         if (!response.ok) throw new Error('Response is not OK');
-        
+
         const data = await response.json();
         if (data.result) {
           setErrorMessages((prev) => ({
@@ -209,22 +232,22 @@ function SignUp() {
             userName: false,
           }));
         }
-        } catch (error) {
-          console.error('Error:', error);
+      } catch (error) {
+        console.error('Error:', error);
       }
     };
 
     checkDuplication();
-
   }, [formState.userName]);
-  
+
   useEffect(() => {
     const checkDuplication = async () => {
       let value = formState.nickName;
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/nickName?nickName=${value}`,{
+          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/nickName?nickName=${value}`,
+          {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -234,7 +257,7 @@ function SignUp() {
 
         if (!response.ok) throw new Error('Response is not OK');
         const data = await response.json();
-  
+
         if (data.result) {
           setErrorMessages((prev) => ({
             ...prev,
@@ -258,13 +281,14 @@ function SignUp() {
 
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber?phoneNumber=${value}`,{
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        
+          `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber?phoneNumber=${value}`,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
         if (!response.ok) throw new Error('Response is not OK');
         const data = await response.json();
@@ -287,6 +311,57 @@ function SignUp() {
     checkDuplication();
   }, [formState.phoneNumber]);
 
+  const handleSendNumber = async() => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+      sendState: true,
+      validationState: !phoneValidation.validationState,
+    }));
+    toast.success('인증번호가 전송되었어요 🤗')
+    await postSendValidation({ to: formState.phoneNumber });
+  };
+  console.log(phoneValidation, formState.phoneNumber);
+
+
+  const handleValidation = async() => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+      
+    }));
+    await postValidation({checkNumber:phoneValidation.validationNumber,
+      phoneNumber:formState.phoneNumber})
+      try{
+        const result = validationData?.result
+        console.log(result);
+        if (result){
+          toast.success('인증에 성공했어요. 회원가입 버튼을 눌러주세요!')
+        }else(
+          toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
+          )
+        }catch(error){
+          toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
+      }
+  };
+
+  useEffect(()=>{
+    setTimeout(() => {
+      setPhoneValidation((prev) => ({
+        ...prev,
+        sendState: false,
+      }));
+    }, 180000);
+
+  },[phoneValidation.validationState])
+
+  useEffect(()=>{
+    if (validationData?.resultCode === 'SUCCESS') {
+      setPhoneValidation((prev) => ({
+        ...prev,
+        validationData: validationData.result,
+      }));
+    }
+  },[validationData])
+
   return (
     <>
       <Helmet>
@@ -305,7 +380,7 @@ function SignUp() {
           name="userName"
           validation={isValidformState.userName}
           onChange={handleDebounceInput}
-          placeholder={'영문 소문자와 숫자를 포함한 4~12자리로 입력해 주세요.'}
+          placeholder={'영문 소문자와 숫자를 포함한 4~16자리로 입력해 주세요.'}
           errorMessage={errorMessages.userName}
         />
         <LogInText
@@ -338,42 +413,46 @@ function SignUp() {
           placeholder={''}
           errorMessage={errorMessages.passwordConfirm}
         />
-        {/* <div className="flex"> */}
-        <LogInText
-          id={'loginTel'}
-          content={'휴대전화번호'}
-          type="tel"
-          name="phoneNumber"
-          onChange={handleDebounceInput}
-          validation={isValidformState.phoneNumber}
-          className="mb-8 flex-grow"
-          placeholder={"'-'없이 입력해 주세요."}
-          errorMessage={errorMessages.phoneNumber}
-        />
-        {/* <button
-              type="submit"
+        <div className="flex items-center">
+          <LogInText
+            id={'loginTel'}
+            content={'휴대전화번호'}
+            type="tel"
+            name="phoneNumber"
+            onChange={handleDebounceInput}
+            validation={isValidformState.phoneNumber}
+            className="mb-8 flex-grow"
+            placeholder={"'-'없이 입력해 주세요."}
+            errorMessage={errorMessages.phoneNumber}
+          />
+          <button
+            type="button"
+            onClick={handleSendNumber}
+            disabled={!isValidformState.phoneNumber}
+            className={`text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl mr-2.5 ${isValidformState.phoneNumber?'bg-primary': 'bg-gray-600'}`}>
+            인증하기
+          </button>
+        </div>
+        {phoneValidation.sendState && (
+          <div className="relative flex ">
+            <input
+              type="number"
+              
+              onChange={handleValidationNumber}
+              name="loginTelCheck"
+              id="loginTelCheck"
+              className="flex-grow h-8 px-1 py-5 border border-gray/300 rounded-lg ml-2.5 mr-2"
+            />
+            <label htmlFor="loginTelCheck" className="전화번호 인증"></label>
+            <Timer className="absolute right-28 top-2" />
+            <button
+            onClick={handleValidation}
+              type="button"
               className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
-              인증하기
+              인증완료
             </button>
           </div>
-          {validationTel === 'send' && (
-            <div className="relative flex ">
-              <input
-                type="number"
-                name="loginTelCheck"
-                id="loginTelCheck"
-                className="flex-grow h-8 px-1 py-5 border border-gray/300 rounded-lg ml-2.5 mr-2
-        "
-              />
-              <label htmlFor="loginTelCheck" className="전화번호 인증"></label>
-              <Timer className="absolute right-28 top-2" />
-              <button
-                type="submit"
-                className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
-                인증완료
-              </button>
-            </div>
-          )} */}
+        )}
         <ButtonSubmit
           className="flex flex-col items-center mt-4"
           content={'회원가입'}
@@ -382,7 +461,8 @@ function SignUp() {
             !isValidformState.nickName ||
             !isValidformState.password ||
             !isValidformState.passwordConfirm ||
-            !isValidformState.phoneNumber
+            !isValidformState.phoneNumber ||
+            !phoneValidation.validationData
           }
         />
       </form>
@@ -390,7 +470,5 @@ function SignUp() {
   );
 }
 
-// SignUp.propTypes = {
-//   validationTel: propTypes.string,
-// };
+
 export default SignUp;

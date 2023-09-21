@@ -25,7 +25,7 @@ function ReviewTagCheckbox({ isActive=false, num }) {
       <label
         htmlFor="reviewTag"
         tabIndex={0}
-        className={`${style.reviewTagLabelInactive} ${!isActive && style.reviewTagLabelActive}`}>
+        className={`${style.reviewTagLabelInactive} ${!isActive || style.reviewTagLabelActive}`}>
         {reviewTag[num]}
       </label>
     </>
@@ -33,8 +33,8 @@ function ReviewTagCheckbox({ isActive=false, num }) {
 }
 
 ReviewTagCheckbox.propTypes = {
-  isActive: propTypes.bool.isRequired,
-  num: propTypes.number.isRequired,
+  isActive: propTypes.bool,
+  num: propTypes.number,
 };
 
 export default ReviewTagCheckbox;

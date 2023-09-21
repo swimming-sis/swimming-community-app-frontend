@@ -70,25 +70,15 @@ const authStore = create((set, get) => ({
   },
   
   
-  
-
   /* 로그아웃 */
-  signOut: async () => {
-    const response = await fetch(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/join`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${get().token}`, // 현재 토큰
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('로그아웃 실패!');
-    }
-
+  logOut: async () => {
     set({
       ...initalAuthState,
     });
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
   },
 
   /* 회원탈퇴 */
@@ -102,12 +92,15 @@ const authStore = create((set, get) => ({
     });
 
     if (!response.ok) {
-      throw new Error('계정 탈퇴 실패!');
+      toast.error('계정 탈퇴에 실패했습니다.');
     }
 
     set({
       ...initalAuthState,
     });
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   },
 }));
 

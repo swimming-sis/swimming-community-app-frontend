@@ -22,20 +22,18 @@ function CommunityDetailEdit() {
   const navigate = useNavigate();
   let { communityId } = useParams();
   const [postData, setPostData] = useState([]);
-  const [content, setContent] = useState('');
   const [formState, setFormState] = useState({
     category: '',
     title: '',
     body: '',
   });
-  const { closeModal, openModal, actionType } = useModalStore();
+  const { closeModal, openModal, actionType, content, setContent } = useModalStore();
   const fetchListData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/detail`
   );
   const { putData } = useFetchPutData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/modify`
   );
-
   const { deleteData } = useDeleteData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/delete`
   );

@@ -1,23 +1,21 @@
+import ButtonConfirm from '@/components/Button/ButtonComfirm';
 import CommentList from '@/components/CommentList';
 import Chat from '@/components/Icon/Chat';
 import Heart from '@/components/Icon/Heart';
+import ModalComponent from '@/components/ModalComponent';
 import SendingForm from '@/components/SendingForm';
 import useFetchData from '@/hooks/useFetchData';
 import useFetchPostData from '@/hooks/useFetchPostData';
+import useFetchPutData from '@/hooks/useFetchPutData';
 import RootLayout from '@/layout/RootLayout';
 import debounce from '@/utils/debounce';
-import { useCallback, useEffect, useState } from 'react';
+import useModalStore from '@/zustand/useModalStore';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CategoryTag from '../../components/Category/CategoryTag';
-import { useNavigate } from 'react-router-dom';
 import useDeleteData from '../../hooks/useFetchDeleteData';
-import useFetchPutData from '@/hooks/useFetchPutData';
-import ModalComponent from '@/components/ModalComponent';
-import { Fragment } from 'react';
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import useModalStore from '@/zustand/useModalStore';
 
 function CommunityDetail() {
   const navigate = useNavigate();

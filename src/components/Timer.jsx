@@ -2,7 +2,7 @@ import propTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 
 function Timer({className}) {
-  const [seconds, setSeconds] = useState(300);
+  const [seconds, setSeconds] = useState(180);
 
   useEffect(() => {
     const id = setInterval(() => {

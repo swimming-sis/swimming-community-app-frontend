@@ -90,7 +90,7 @@ function Login() {
         type='button'
         className='absolute right-8 top-[133px]'
         onClick={toggleShowPassword}>
-          {showPassword ? <Hide /> : <Show />}
+          {showPassword ? <Show /> :  <Hide />}
         </button>
 
         <div className="flex gap-x-1 justify-end mr-2.5 items-start flex-grow mb-8">

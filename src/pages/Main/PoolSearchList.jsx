@@ -37,15 +37,16 @@ const handleClick = async(item)=>{
 }
   return (
          <>
-        {items[0]?.map((item, index) => (
+        {items[0]?.map((item) => (
           <PoolList
-            key={index}
+            key={item.id}
             title={item.place_name}
             address={item.road_address_name}
             tel={item.phone}
             link={item.place_url}
             distance={item.distance <1000 ? item.distance+'m': +item.distance/1000+'km'}
             onClick={() => handleClick(item)}
+            id={item.id}
           />
         ))}
       </>

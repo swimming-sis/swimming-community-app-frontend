@@ -1,21 +1,30 @@
 import propTypes from 'prop-types';
 
-function StarForRating({ value, fill, onChange }) {
+function StarForRating({ value, fill, onChange,  }) {
+  const handleClick = () => {
+    if (onChange) {
+      onChange(value);
+    }
+
+  };
   return (
     <span
       role="radio"
       value={value}
+      name='ratingStar'
+      aria-checked={fill}
       tabIndex="0"
-      className="inline-block cursor-pointer"
+      className="flex justify-center items-center cursor-pointer text-center"
       aria-label={`별점${value}개`}
-      onClick={onChange}
+      onClick={handleClick}
       onKeyDown={(event) => (event.key === 'Enter' || event.key === ' ' ? onChange() : undefined)}>
+        
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="15"
-        height="15"
+        width="22"
+        height="22"
         version="1.1"
-        viewBox="0 0 47.94 47.94"
+        viewBox="-3 -3 56 56"
         xmlSpace="preserve"
         fill={fill ? '#FEB700' : 'none'}>
         <path
@@ -31,6 +40,10 @@ StarForRating.propTypes = {
   value: propTypes.number.isRequired,
   fill: propTypes.bool.isRequired,
   onChange: propTypes.func.isRequired,
+  defaultValue: propTypes.oneOfType([
+    propTypes.string,
+    propTypes.number,
+  ]),
 };
 
 export default StarForRating;
