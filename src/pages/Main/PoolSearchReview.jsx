@@ -21,26 +21,29 @@ function PoolSearchReivew() {
     placeUrl: '',
     roadAddressName: '',
     uniqueNumber: 0,
-    ratingStar:0,
+    ratingStar: 0,
   });
   const [reviewId, setReviewId] = useState(null);
   const [poolId, setPoolId] = useState(null);
   const [reviewData, setReviewData] = useState([]);
   const [ratingStar, setRatingStar] = useState([]);
-  const {data:fetchPoolData} = useFetchData(
+  const { data: fetchPoolData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools/${swimmingPoolId}`
   );
-  const {data:fetchReviewData,fetchData} = useFetchData(
+  const { data: fetchReviewData, fetchData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools/${swimmingPoolId}/reviews/`
   );
-  const {deleteData:deleteReviewData} = useDeleteData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools/${poolId}/reviews/${reviewId}/delete`)
-  const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
+  const { deleteData: deleteReviewData } = useDeleteData(
+    `${
+      import.meta.env.VITE_UPUHUPUH_DB_URL
+    }/api/v1/swimmingPools/${poolId}/reviews/${reviewId}/delete`
+  );
+  const { openModal, closeModal, actionType, content, setContent } = useModalStore();
 
   //초기 수영장 값 가져오기
   useEffect(() => {
     if (fetchPoolData?.resultCode === 'SUCCESS') {
-      const { phone, placeName, placeUrl, roadAddressName, uniqueNumber } =
-        fetchPoolData.result;
+      const { phone, placeName, placeUrl, roadAddressName, uniqueNumber } = fetchPoolData.result;
       setPoolData((prev) => ({
         ...prev,
         phone,
@@ -57,54 +60,54 @@ function PoolSearchReivew() {
     if (fetchReviewData?.resultCode === 'SUCCESS') {
       const orderDate = fetchReviewData.result.content.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-      )
+      );
       const updateReview = orderDate.slice(0, 3);
       setReviewData(updateReview);
     }
   }, [fetchReviewData]);
 
   //별점계산
-  useEffect(() => {
-    if (fetchReviewData?.resultCode === 'SUCCESS') {
-      const ratingStarArr = fetchReviewData.result.content
-      setRatingStar(ratingStarArr);
-      if (ratingStarArr.length !==0) {
-        const sum = ratingStar.reduce((accumulator, currentValue) => {
-          return (accumulator + currentValue.ratingStar);
-        }, 0);
-        const avg = sum/ratingStar.length
-        const roundUpAvg=Math.round(avg* 10)/10
-        setPoolData({
-            ...poolData,
-            ratingStar:roundUpAvg
-          });
-      }else if(ratingStarArr.length===0){
-        setPoolData({
-          ...poolData,
-          ratingStar:0
-        });
-      }
-    }
-  }, [fetchReviewData]);
-  
+  // useEffect(() => {
+  //   if (fetchReviewData?.resultCode === 'SUCCESS') {
+  //     const ratingStarArr = fetchReviewData.result.content
+  //     setRatingStar(ratingStarArr);
+  //     if (ratingStarArr.length !==0) {
+  //       const sum = ratingStar.reduce((accumulator, currentValue) => {
+  //         return (accumulator + currentValue.ratingStar);
+  //       }, 0);
+  //       const avg = sum/ratingStar.length
+  //       const roundUpAvg=Math.round(avg* 10)/10
+  //       setPoolData({
+  //           ...poolData,
+  //           ratingStar:roundUpAvg
+  //         });
+  //     }else if(ratingStarArr.length===0){
+  //       setPoolData({
+  //         ...poolData,
+  //         ratingStar:0
+  //       });
+  //     }
+  //   }
+  // }, [fetchReviewData]);
 
+  console.log(reviewData);
 
   //모달 취소 핸들러
   const handleCancle = () => {
     closeModal();
   };
 
-//모달 확인 핸들러
+  //모달 확인 핸들러
   const handleConfirm = async () => {
     try {
       if (actionType === 'review') {
         await deleteReviewData();
         fetchData();
         closeModal();
-        toast.success('리뷰가 삭제 되었어요.')
+        toast.success('리뷰가 삭제 되었어요.');
       }
     } catch (error) {
-      toast.error('리뷰 삭제에 실패했어요.')
+      toast.error('리뷰 삭제에 실패했어요.');
     }
   };
 
@@ -137,7 +140,7 @@ function PoolSearchReivew() {
           <Pencil />
         </Link>
         {reviewData.map((review) => (
-            <ReviewList
+          <ReviewList
             key={review.reviewId}
             reviewId={review.reviewId}
             id={swimmingPoolId}
@@ -147,28 +150,36 @@ function PoolSearchReivew() {
             datetime={review.createdAt}
             ratingStar={review.ratingStar}
             onClick={handleReview}
+
           />
         ))}
-        {(reviewData.length>0 )
-        ?<Link
-          className="block w-[calc(100%-20px)] border py-2 my-4 mx-2.5 rounded-2xl shadow-md text-center font-semibold text-gray-500"
-          to={`/search/list/${swimmingPoolId}/reviewList`}>
-          +&nbsp;리뷰 더보기
-        </Link>
-        :<p className='text-center text-gray-500 font-semibold my-24'> 지금 첫 리뷰를 작성해 보세요 😊 </p>}
+        {reviewData.length > 0 ? (
+          <Link
+            className="block w-[calc(100%-20px)] border py-2 my-4 mx-2.5 rounded-2xl shadow-md text-center font-semibold text-gray-500"
+            to={`/search/list/${swimmingPoolId}/reviewList`}>
+            +&nbsp;리뷰 더보기
+          </Link>
+        ) : (
+          <p className="text-center text-gray-500 font-semibold my-24">
+            {' '}
+            지금 첫 리뷰를 작성해 보세요 😊{' '}
+          </p>
+        )}
       </section>
       <ModalComponent>
-  <p className="my-4">
-    {String(content).split("\n").map((line, index) => (
-      <Fragment key={index}>
-        {line}
-        <br />
-      </Fragment>
-    ))}
-  </p>
-  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
-</ModalComponent>
+        <p className="my-4">
+          {String(content)
+            .split('\n')
+            .map((line, index) => (
+              <Fragment key={index}>
+                {line}
+                <br />
+              </Fragment>
+            ))}
+        </p>
+        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+        <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
+      </ModalComponent>
     </div>
   );
 }

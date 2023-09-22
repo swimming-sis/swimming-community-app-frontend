@@ -62,7 +62,7 @@ PoolList.propTypes = {
   onClick: propTypes.func,
   rating: propTypes.number,
   address: propTypes.string,
-  distance: propTypes.oneOfType[(propTypes.number, propTypes.string)],
+  distance: propTypes.oneOfType([propTypes.number, propTypes.string]),
 };
 
 export default PoolList;
