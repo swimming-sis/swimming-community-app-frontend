@@ -4,11 +4,12 @@ import propTypes from 'prop-types';
 function TextArea ({
   placeholder="오늘의 수영일지를 기록해보세요", 
   id='logTextArea', defaultValue,
+  name='body',
   className='min-h-[280px]', 
   onChange}) {
 return (
   <textarea 
-  name='body' 
+  name={name} 
   id={id} 
   cols="40" 
   rows="10"
@@ -22,6 +23,7 @@ return (
 
 TextArea.propTypes = {
   id: propTypes.string,
+  name: propTypes.string,
   onChange: propTypes.func,
   className: propTypes.string,
   placeholder: propTypes.string,

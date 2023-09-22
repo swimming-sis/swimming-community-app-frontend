@@ -3,7 +3,6 @@ import moment from 'moment';
 import Direction from './Icon/Direction';
 import SwimmingKickBoard from './Icon/SwimmingKickBoard';
 import propTypes from 'prop-types';
-import { useMemo } from 'react';
 import { useCallback } from 'react';
 
 function MyCalendar({ onClick }) {
@@ -13,10 +12,10 @@ function MyCalendar({ onClick }) {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'TUR', 'FRI', 'SAT'];
-  let today = useMemo(() => moment().format('YYYY-MM-DD'), []);
-
+  
   
   useEffect(() => {
+    let today = () => moment().format('YYYY-MM-DD');
     let startOfMonth = moment().add(monthOffset, 'months').startOf('month');
     let endOfMonth = moment().add(monthOffset, 'months').endOf('month');
     let monthArr = [];

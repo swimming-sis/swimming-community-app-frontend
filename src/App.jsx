@@ -32,6 +32,7 @@ import MyLogList from './pages/MyLog/MyLogList';
 import MyLogSearch from './pages/MyLog/MyLogSearch';
 import MyAccountDelete from './pages/MyAccount/MyAccountDelete';
 
+
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
   // 모든 쿼리에 사용되는 기본 옵션
@@ -115,6 +116,10 @@ function App() {
                     element={<PrivateRoute component={<MyLogList />} />}
                   />
                   <Route
+                    path="/mylog/:date/edit"
+                    element={<PrivateRoute component={<MyLogList />} />}
+                  />
+                  <Route
                     path="/mylog/logs"
                     element={<PrivateRoute component={<MyLogSearch />} />}
                   />
@@ -122,6 +127,7 @@ function App() {
                 <Route path="/mylog/write" element={<PrivateRoute component={<MyLogWrite />} />} />
               </Routes>
             </Suspense>
+
           </div>
           {/* 탠스택 쿼리 개발 도구 */}
           {/* <ReactQueryDevtools /> */}

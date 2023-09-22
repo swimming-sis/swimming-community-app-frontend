@@ -1,37 +1,41 @@
 import ButtonSubmit from "@/components/Button/ButtonSubmit"
+import ModalComplex from "@/components/ModalComplex"
 import TextArea from "@/components/TextArea"
-import Header from "@/layout/Header"
-import { Helmet } from "react-helmet-async"
-import { useState } from "react"
-import debounce from "@/utils/debounce"
-import toast from "react-hot-toast"
+import DatePickerComponent from "@/components/datePicker"
 import useFetchPostData from "@/hooks/useFetchPostData"
-import { useNavigate } from "react-router-dom"
-import ButtonConfirm from "@/components/Button/ButtonComfirm"
-import ModalComponent from "@/components/ModalComponent"
-import { Fragment } from "react"
+import Header from "@/layout/Header"
+import debounce from "@/utils/debounce"
 import useModalStore from "@/zustand/useModalStore"
+import {  useState } from "react"
+import { Helmet } from "react-helmet-async"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
+import moment from 'moment';
 
+
+const numberRegex = /^[0-9]{1,}$/
 function MyLogWrite() {
+  let today = moment()
   const navigate = useNavigate()
-  const { fetchData } = useFetchPostData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs/write`)
+  const { fetchData:postLogData } = useFetchPostData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs/write`)
+  const { closeModal, openModal, actionType, setContent, setActionType } = useModalStore();
   const [formState, setFormState] = useState({
     calorie:0,
     contents:'',
     distance:'',
-    date:'',
+    date: moment().format('YYYY-MM-DD'),
     time:0,
   })
-  const { closeModal, openModal, actionType, content, setContent } = useModalStore();
 
+
+  const handleDatePicker = (e) =>{
+    setFormState({...formState, 
+      date:e.format('YYYY-MM-DD')})
+  }
 
 const handleSubmit = (e) => {
 e.preventDefault()
 }
-
-const handleCancle = () => {
-  closeModal();
-};
 
 const handleConfirm = async () => {
   try{
@@ -39,19 +43,20 @@ const handleConfirm = async () => {
   if (actionType === 'back') {
       closeModal();
       navigate('/mylog')
-    }else if(actionType==='write'){
+      setActionType('')
 
-    await fetchData(formState)
+    }else if(actionType==='write'){
+    await postLogData(formState)
       closeModal();
       navigate('/mylog')
       toast.success('일지가 작성되었어요.')
+      setActionType('')
     }
   }
   catch{
     toast.error('서버와의 통신이 제대로 이루어지지 않았어요.')
   }
 };
-
 
 const handleBack = () => {
   if (formState.calorie===''&&formState.contents===''&&formState.distance===''&&formState.time===''&&formState.date===''){
@@ -62,18 +67,30 @@ const handleBack = () => {
   }
 };
 
+
 const handleInput = debounce((e) => {
   const { name, value } = e.target;
-  setFormState({
-    ...formState,
-    [name]: value,
-  });
+  if (name==='contents'){
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+    return;
+  }else{
+    if(!numberRegex.test(value)){
+      toast.error('숫자만 입력해주세요')
+    }else{
+      setFormState({
+        ...formState,
+        [name]: value,
+      });
+    }
+  }
 }, 400);
 const handleDone = ()=>{
 setContent('일지를 작성 하시겠습니까?')
 openModal('write')
 }
-
 
 
   return (
@@ -87,43 +104,58 @@ openModal('write')
     noEdit={false} 
     onClickBack={handleBack} 
     onNavigate={true}/>
-  
-    <div className="flex mb-4 items-center">
-      <label 
-      htmlFor="categoryWrite"
-      className="flex-shrink-0 mr-2 text-sm text-secondary">
-        거리(m)
-        </label>
-      <input 
-      type="text" 
-      name="title" 
-      id="categoryWrite" 
-      onChange={handleInput}
-      className="border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
-      <label 
-      htmlFor="categoryWrite"
-      className="flex-shrink-0 mr-2 text-sm text-secondary">
-        칼로리(kcal)
-        </label>
-      <input 
-      type="text" 
-      name="title" 
-      id="categoryWrite" 
-      onChange={handleInput}
-      className="border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
-      <label 
-      htmlFor="categoryWrite"
-      className="flex-shrink-0 mr-2 text-sm text-secondary">
-        수영시간(분)
-        </label>
-      <input 
-      type="text" 
-      name="title" 
-      id="categoryWrite" 
-      onChange={handleInput}
-      className="border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
+    <div className="pt-4 py-2">
+      <DatePickerComponent
+      defaultValue={today}
+      onChange={handleDatePicker}/>
+    </div>
+    <div className="flex mb-4 items-center flex-col">
+      <div 
+      className="flex w-full items-center my-2">
+        <label
+        htmlFor="distanceLog"
+        className="flex-shrink-0 w-28 mr-2 text-sm text-secondary">
+          거리(m)
+          </label>
+        <input
+        type="number"
+        name="distance"
+        id="distanceLog"
+        onChange={handleInput}
+        
+        className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
+      </div>
+      <div 
+      className="flex w-full items-center my-2">
+        <label
+        htmlFor="calorieLog"
+        className="flex-shrink-0 w-28 mr-2 text-sm text-secondary">
+          칼로리(kcal)
+          </label>
+        <input
+        type="number"
+        name="calorie"
+        id="calorieLog"
+        onChange={handleInput}
+        className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
+      </div>
+      <div 
+      className="flex w-full items-center my-2">
+        <label
+        htmlFor="timeLog"
+        className="flex-shrink-0 w-28 mr-2 text-sm text-secondary">
+          수영시간(분)
+          </label>
+        <input
+        type="number"
+        name="time"
+        id="timeLog"
+        onChange={handleInput}
+        className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
+      </div>
     </div>
     <TextArea 
+    name='contents'
     placeholder="일지를 작성해 보세요"
     onChange={handleInput}
     className="h-60 mb-auto flex-grow"/>
@@ -131,18 +163,7 @@ openModal('write')
     onClick={handleDone}
     type='button' 
     content="작성완료" className="mt-10 mb-10" />
-<ModalComponent>
-  <p className="my-4">
-    {String(content).split("\n").map((line, index) => (
-      <Fragment key={index}>
-        {line}
-        <br />
-      </Fragment>
-    ))}
-  </p>
-  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
-</ModalComponent>
+  <ModalComplex onClick={handleConfirm} />
   </form>
   )
 }
