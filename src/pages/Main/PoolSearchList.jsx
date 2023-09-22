@@ -29,27 +29,27 @@ const handleClick = async(item)=>{
     roadAddressName: item.road_address_name,
   };
 
-  setMapState(updatedMapState);
-
-  console.log(updatedMapState);
-  
+  setMapState(updatedMapState); 
   await fetchMapData(updatedMapState);
 }
   return (
-         <>
-        {items[0]?.map((item) => (
-          <PoolList
-            key={item.id}
-            title={item.place_name}
-            address={item.road_address_name}
-            tel={item.phone}
-            link={item.place_url}
-            distance={item.distance <1000 ? item.distance+'m': +item.distance/1000+'km'}
-            onClick={() => handleClick(item)}
-            id={item.id}
-          />
-        ))}
-      </>
+    <>
+    {items[0]?.map((item) => {
+      return (
+        <PoolList
+          key={item.id}
+          title={item.place_name}
+          address={item.road_address_name}
+          tel={item.phone}
+          link={item.place_url}
+          distance={item.distance < 1000 ? `${item.distance}m` : `${item.distance / 1000}km`}
+          onClick={() => handleClick(item)}
+          id={item.id}
+          review={false}
+        />
+      );
+    })}
+  </>
 
   );
 };

@@ -36,9 +36,9 @@ function PoolSearch() {
       <RootLayout type="search" onSubmit={handleSearch} onClick={handleTextClear} onChange={handleChange} value={value}/>
       <div className="flex flex-col gap-y-4 text-sm mt-14">
         <MapComponent />
-        <ul>
+        <>
           <Outlet/>
-        </ul>
+        </>
       </div>
     </div>
   );

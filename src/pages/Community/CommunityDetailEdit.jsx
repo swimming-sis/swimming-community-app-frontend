@@ -169,17 +169,17 @@ function CommunityDetailEdit() {
         />
       </section>
       <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+  <p className="my-4">
+    {String(content).split("\n").map((line, index) => (
+      <Fragment key={index}>
+        {line}
+        <br />
+      </Fragment>
+    ))}
+  </p>
+  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
+</ModalComponent>
     </form>
   );
 }

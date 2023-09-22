@@ -66,8 +66,8 @@ function MyAccountWrited() {
           categoryTag={post.category}
           chatCount={post.commentCnt}
           datetime={post.createdAt}
-          edit={true}
           onClick={handleWrited}
+          userName={post.userName}
         />
       ))}
       <ModalComponent>

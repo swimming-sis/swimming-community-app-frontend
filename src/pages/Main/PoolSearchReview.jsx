@@ -62,21 +62,31 @@ function PoolSearchReivew() {
       setReviewData(updateReview);
     }
   }, [fetchReviewData]);
+
+  //별점계산
   useEffect(() => {
     if (fetchReviewData?.resultCode === 'SUCCESS') {
       const ratingStarArr = fetchReviewData.result.content
       setRatingStar(ratingStarArr);
-      const avg = ratingStar.reduce((accumulator, currentValue) => {
-        return (accumulator + currentValue.ratingStar)/ratingStar.length;
-      }, 0);
-      const roundUpAvg=Math.round(avg* 10)/10
-      setPoolData({
-        ...poolData,
-        ratingStar:roundUpAvg
-      });
+      if (ratingStarArr.length !==0) {
+        const sum = ratingStar.reduce((accumulator, currentValue) => {
+          return (accumulator + currentValue.ratingStar);
+        }, 0);
+        const avg = sum/ratingStar.length
+        const roundUpAvg=Math.round(avg* 10)/10
+        setPoolData({
+            ...poolData,
+            ratingStar:roundUpAvg
+          });
+      }else if(ratingStarArr.length===0){
+        setPoolData({
+          ...poolData,
+          ratingStar:0
+        });
+      }
     }
-  }, [fetchReviewData, poolData.ratingStar]);
-
+  }, [fetchReviewData]);
+  
 
 
   //모달 취소 핸들러
@@ -148,17 +158,17 @@ function PoolSearchReivew() {
         :<p className='text-center text-gray-500 font-semibold my-24'> 지금 첫 리뷰를 작성해 보세요 😊 </p>}
       </section>
       <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+  <p className="my-4">
+    {String(content).split("\n").map((line, index) => (
+      <Fragment key={index}>
+        {line}
+        <br />
+      </Fragment>
+    ))}
+  </p>
+  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
+</ModalComponent>
     </div>
   );
 }

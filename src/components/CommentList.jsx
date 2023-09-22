@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { memo } from 'react';
-import Pencil from './Icon/Pencil';
-import X from './Icon/X';
 // import useModalStore from '@/zustand/useModalStore';
 
 const CommentList = memo(function CommentList({
@@ -69,16 +67,22 @@ const localUser = JSON.parse(window.localStorage.getItem('user')).value;
         </li>
       </ol>
       {userName===localUser && (
-        <div className=" flex justify-end gap-x-1 absolute right-2.5 top-2">
+        <div className="flex justify-end absolute right-2 top-2 text-xs text-gray-500 ">
           <button
             type="button"
+            className='p-1'
             onClick={handleEdit}
             data-post-id={postId}
             data-comment-id={commentId}>
-            <Pencil />
+            수정
           </button>
-          <button onClick={onClickDelete} data-post-id={postId} data-comment-id={commentId} type="button">
-            <X />
+          <button 
+          className='p-1'
+          onClick={onClickDelete} 
+          data-post-id={postId} 
+          data-comment-id={commentId} 
+          type="button">
+            삭제
           </button>
         </div>
       )}

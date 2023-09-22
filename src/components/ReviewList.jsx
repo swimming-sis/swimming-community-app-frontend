@@ -1,6 +1,4 @@
 import propTypes from 'prop-types';
-import Pencil from './Icon/Pencil';
-import X from './Icon/X';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Star from './Icon/Star';
@@ -72,18 +70,26 @@ function ReviewList({
         )}
       </ol>
       {userName === localUser && (
-        <div className=" flex justify-end gap-x-1 absolute right-6 top-2">
-          <button type="button">
-            <Link to={`/search/list/${id}/reviewList/${reviewId}/edit`} id={id} key={reviewId}>
-              <Pencil />
+        <div className=" flex justify-end absolute right-4 top-2 text-xs text-gray-500 ">
+          <button 
+          type="button">
+            <Link 
+            className='p-1'
+            to={`/search/list/${id}/reviewList/${reviewId}/edit`} 
+            id={id} 
+            key={reviewId}>
+              수정
             </Link>
           </button>
           <button
+          className='p-1'
             onClick={onClick}
             data-swimmingpool-id={id}
             data-review-id={reviewId}
             type="button">
-            <X />
+            
+              삭제
+            
           </button>
         </div>
       )}

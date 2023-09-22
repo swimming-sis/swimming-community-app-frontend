@@ -123,18 +123,18 @@ return (
     onClick={handleDone}
     type='button' 
     content="작성완료" className="mt-10 mb-10" />
-          <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+<ModalComponent>
+  <p className="my-4">
+    {String(content).split("\n").map((line, index) => (
+      <Fragment key={index}>
+        {line}
+        <br />
+      </Fragment>
+    ))}
+  </p>
+  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
+</ModalComponent>
   </form>
 )
 }

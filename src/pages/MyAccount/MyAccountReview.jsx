@@ -37,7 +37,7 @@ function MyAccountReview (){
 
 //모달 확인 핸들러
   const handleConfirm = async () => {
-
+    console.log('안돼..?');
     try {
       if (actionType === 'review') {
         await deleteData();
@@ -83,7 +83,7 @@ function MyAccountReview (){
           ))}
         </p>
         <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
+        <ButtonConfirm onClick={handleConfirm} confirm={true}/>
       </ModalComponent>
     </div>
 

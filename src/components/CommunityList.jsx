@@ -1,14 +1,12 @@
 import propTypes from 'prop-types';
 import Heart from './Icon/Heart';
 import Chat from './Icon/Chat';
-import Pencil from './Icon/Pencil';
-import X from './Icon/X';
+
 import CategoryTag from './Category/CategoryTag';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 function CommunityList ({
-  edit = false, 
   id, 
   user,
   title,
@@ -17,9 +15,14 @@ function CommunityList ({
   datetime,
   categoryTag,
   likeCount=0,
-  chatCount=0
+  chatCount=0,
+  userName
 }) {
   const [currentDatetime, setCurrentDatetime] = useState('');
+
+  const localUser = JSON.parse(window.localStorage.getItem('user')).value;
+
+
 
   useEffect(() => {
     const updateCurrentDatetime = () => {
@@ -62,18 +65,20 @@ function CommunityList ({
           </Link>
         </li>
       </ol>
-      {edit &&
-            <div className=' flex justify-end gap-x-1 absolute right-2.5 top-2'>
-              <button type="button">
-                <Link to={`/community/${id}`} id={id}>
-                  <Pencil />
+      {userName === localUser &&
+            <div className=" flex justify-end absolute right-2 top-2 text-xs text-gray-500 ">
+                <Link
+                className='p-1'
+                to={`/community/${id}`} 
+                id={id}>
+                  수정
                 </Link>
-              </button>
               <button
+              className='p-1 '
               onClick={onClick}
               data-post-id={id}
               type="button">
-                <X />
+                삭제
               </button>
             </div>}
     </div>
@@ -83,6 +88,7 @@ CommunityList.propTypes = {
   id: propTypes.number,
   edit: propTypes.bool,
   onClick: propTypes.func,
+  userName: propTypes.string,
   likeCount: propTypes.number,
   chatCount: propTypes.number,
   user: propTypes.string.isRequired,

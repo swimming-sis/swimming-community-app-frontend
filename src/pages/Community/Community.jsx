@@ -10,6 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
+import ButtonConfirm from '@/components/Button/ButtonComfirm';
+import { Fragment } from 'react';
+import ModalComponent from '@/components/ModalComponent';
+import useModalStore from '@/zustand/useModalStore';
+import useDeleteData from '@/hooks/useFetchDeleteData';
 
 function Community() {
   let navigate = useNavigate();
@@ -20,13 +25,21 @@ function Community() {
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [value, setValue] = useState('');
+  const [ communityId, setCommunityId ] =useState(null)
   const debouncedSetKeyword = useCallback(debounce((value) => setKeyword(value), 300), []);
+  const { openModal, closeModal, actionType, content, setContent } = useModalStore();
   const fetchSearchData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/search?keyword=${keyword}`
   );
   const fetchListData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${category}`
   );
+  const { deleteData } = useDeleteData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/delete`
+  );
+
+
+  
 
   useEffect(() => {
     if (fetchListData.data?.result?.content) {
@@ -130,6 +143,31 @@ const handleInput = (e) => {
     }
   }, [searchData, searchActive]);
 
+
+  const handleWrited = (e) => {
+    setCommunityId(e.currentTarget.getAttribute('data-post-id'))
+    setContent('게시글을 삭제 하시겠습니까?\n삭제된 게시글은 복구되지 않습니다.');
+
+    openModal('writed');
+  };
+
+  const handleCancle = () => {
+    closeModal();
+  };
+  const handleConfirm = async() => {
+    try {
+      if (actionType === 'writed') {
+        await deleteData();
+        fetchListData.fetchData()
+        closeModal();
+        navigate('/community');
+        toast.success('게시글이 삭제되었습니다.')
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  };
   return (
     <div
       ref={scrollContainer}
@@ -165,10 +203,24 @@ const handleInput = (e) => {
                 categoryTag={post.category}
                 chatCount={post.commentCnt}
                 datetime={post.createdAt}
+                onClick={handleWrited}
+                userName={post.userName}
               />
             ))}
       </>
       <Top onClick={handleTop} className="fixed bottom-20 right-6 shadow-2xl rounded-full" />
+      <ModalComponent>
+        <p className="my-4">
+          {content.split('\n').map((line, index) => (
+            <Fragment key={index}>
+              {line}
+              <br />
+            </Fragment>
+          ))}
+        </p>
+        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
+        <ButtonConfirm onClick={handleConfirm} />
+      </ModalComponent>
     </div>
   );
 }
