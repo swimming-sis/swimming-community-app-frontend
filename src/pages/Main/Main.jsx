@@ -5,10 +5,10 @@ import useFetchData from '@/hooks/useFetchData';
 import Nav from '@/layout/Nav';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Main() {
-
+  const navigate =useNavigate()
   const [postData, setPostData] = useState([]);
   const fetchListData = useFetchData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts`);
   useEffect(() => {
@@ -30,9 +30,7 @@ function Main() {
           </Link>
         </button>
       </header>
-      <Link to='/mylog'>
-        <MyCalendar />
-      </Link>
+        <MyCalendar onClick={()=>navigate('/mylog')} />
       <p className="text-secondary font-semibold mt-6 ml-4 font-pretendard">우리들의 수영 이야기</p>
       <ol className="font-pretendard text-secondary text-xs border py-4 px-2 m-2.5 rounded-2xl shadow-md">
         {postData.map((post) => {

@@ -1,14 +1,13 @@
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
 import CommentList from '@/components/CommentList';
-import ModalComponent from '@/components/ModalComponent';
+import ModalComplex from '@/components/ModalComplex';
 import useFetchData from '@/hooks/useFetchData';
 import useDeleteData from '@/hooks/useFetchDeleteData';
 import useFetchPutData from '@/hooks/useFetchPutData';
 import debounce from '@/utils/debounce';
 import useModalStore from '@/zustand/useModalStore';
-import { Fragment } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 function MyAccountComment() {
@@ -17,7 +16,7 @@ function MyAccountComment() {
   const [communityId, setCommunityId] = useState(null);
   const [commentId, setCommentId] = useState(null);
   const [comment, setComment] = useState('');
-  const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
+  const { openModal, closeModal, actionType, setContent, setActionType} = useModalStore();
   const { data: fetchCommentData, fetchData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/comments/my`
   );
@@ -44,9 +43,6 @@ function MyAccountComment() {
     setComment(e.target.value)
   },200)
 
-  const handleCancle = () => {
-    closeModal();
-  };
   const handleConfirm = async () => {
     try {
       if (actionType === 'comment') {
@@ -54,11 +50,15 @@ function MyAccountComment() {
         fetchData();
         closeModal();
         navigate('/account/comment');
+        setActionType('')
+        toast.success('댓글이 삭제 되었어요.')
       } else if (actionType === 'edit') {
         await putData({ comment });
         fetchData();
         closeModal();
         navigate('/account/comment');
+        setActionType('')
+        toast.success('댓글이 수정 되었어요.')
       }
     } catch (error) {
       console.log(error);
@@ -97,18 +97,7 @@ function MyAccountComment() {
           />
         );
       })}
-<ModalComponent>
-  <p className="my-4">
-    {String(content).split("\n").map((line, index) => (
-      <Fragment key={index}>
-        {line}
-        <br />
-      </Fragment>
-    ))}
-  </p>
-  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
-</ModalComponent>
+<ModalComplex onClick={handleConfirm}/>
     </>
   );
 }

@@ -2,16 +2,20 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 import Direction from './Icon/Direction';
 import SwimmingKickBoard from './Icon/SwimmingKickBoard';
+import propTypes from 'prop-types';
+import { useMemo } from 'react';
+import { useCallback } from 'react';
 
-function MyCalendar() {
+function MyCalendar({ onClick }) {
   const [currentMonth, setCurrentMonth] = useState([]);
   const [monthOffset, setMonthOffset] = useState(0);
   const [holidays, setHolidays] = useState({});
   const [selectedDate, setSelectedDate] = useState(null);
 
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'TUR', 'FRI', 'SAT'];
-  let today = moment().format('YYYY-MM-DD');
+  let today = useMemo(() => moment().format('YYYY-MM-DD'), []);
 
+  
   useEffect(() => {
     let startOfMonth = moment().add(monthOffset, 'months').startOf('month');
     let endOfMonth = moment().add(monthOffset, 'months').endOf('month');
@@ -46,6 +50,7 @@ function MyCalendar() {
     const currentYear = new Date().getFullYear();
     const timeMin = new Date(`${currentYear}-01-01`).toISOString();
     const timeMax = new Date(`${currentYear}-12-31`).toISOString();
+
     fetch(
       `${BASE_CALENDAR_URL}/${CALENDAR_REGION}%23${BASE_CALENDAR_ID_FOR_PUBLIC_HOLIDAY}/events?key=${API_KEY}&timeMin=${timeMin}&timeMax=${timeMax}`
     )
@@ -69,12 +74,22 @@ function MyCalendar() {
         },
         (err) => console.error(err)
       );
-  }, [monthOffset, today]);
+
+  }, [monthOffset]);
+
+  const handleClickDateButton = useCallback((e) => {
+    const dateInfo = e.currentTarget.getAttribute('data-log-id');
+  
+    if (dateInfo !== '') {
+      setSelectedDate(dateInfo);
+      // console.log(selectedDate);
+      onClick(e);
+    }
+  }, [selectedDate]);
 
   return (
     <div className="border shadow-md rounded-2xl mx-2.5">
       <header className="flex justify-between items-center  p-2 border-b">
-        <h2 className="sr-only">캘린더</h2>
         <p
           tabIndex={0}
           className="text-base font-bold text-primary  order-2 self-center"
@@ -107,24 +122,21 @@ function MyCalendar() {
       <div className="grid grid-cols-7 gap-0.5 text-xs py-0 px-4 text-secondary">
         {currentMonth.map((day, index) => (
           <button
-            type="button"
             key={index}
-            onClick={() => {
-              if (day.date !== '') {
-                setSelectedDate(day.dateInfo);
-              }
-            }}
+            data-log-id={day.dateInfo}
+            type="button"
+            onClick={handleClickDateButton}
             aria-label={day.a11y}
-            className={`text-center h-12 items-start rounded-lg hover:bg-quaternary 
-           ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
-           ${
-             selectedDate === day.dateInfo
-               ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
-               : ''
-           }
-           ${holidays[day.dateInfo] ? 'text-error' : ''}
-           ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
-           `}>
+            className={`text-center w-full h-12 items-start rounded-lg hover:bg-quaternary
+             ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
+             ${
+               selectedDate === day.dateInfo
+                 ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
+                 : ''
+             }
+             ${holidays[day.dateInfo] ? 'text-error' : ''}
+             ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
+             `}>
             {day.date}
             <SwimmingKickBoard />
           </button>
@@ -133,5 +145,7 @@ function MyCalendar() {
     </div>
   );
 }
-
+MyCalendar.propTypes = {
+  onClick: propTypes.func,
+};
 export default MyCalendar;

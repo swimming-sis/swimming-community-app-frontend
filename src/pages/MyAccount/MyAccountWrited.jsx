@@ -1,17 +1,17 @@
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import ModalComponent from '@/components/ModalComponent';
 import useFetchData from '@/hooks/useFetchData';
 import useModalStore from '@/zustand/useModalStore';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CommunityList from '../../components/CommunityList';
 import { useNavigate } from 'react-router-dom';
 import useDeleteData from '@/hooks/useFetchDeleteData';
+import ModalComplex from '@/components/ModalComplex';
+import toast from 'react-hot-toast';
 
 function MyAccountWrited() {
   const navigate = useNavigate();
   const [ communityId, setCommunityId ] =useState(null)
   const [postData, setPostData] = useState([]);
-  const { openModal, closeModal, actionType, content, setContent } = useModalStore();
+  const { openModal, closeModal, actionType, setContent, setActionType } = useModalStore();
   const { data: fetchListData,fetchData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/my`
   );
@@ -37,16 +37,16 @@ function MyAccountWrited() {
     openModal('writed');
   };
 
-  const handleCancle = () => {
-    closeModal();
-  };
-  const handleConfirm = async() => {
+
+  const handleConfirmWrited = async() => {
     try {
       if (actionType === 'writed') {
         await deleteData();
         fetchData()
         closeModal();
         navigate('/account/writed');
+        setActionType('')
+        toast.success('게시글이 삭제되었어요.')
       }
 
     }catch(error){
@@ -70,18 +70,7 @@ function MyAccountWrited() {
           userName={post.userName}
         />
       ))}
-      <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+      <ModalComplex onClick={handleConfirmWrited}/>
     </>
   );
 }

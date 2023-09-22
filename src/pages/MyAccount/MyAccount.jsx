@@ -9,22 +9,17 @@ import { Outlet } from 'react-router-dom';
 import RootLayout from '@/layout/RootLayout';
 import { useEffect } from 'react';
 import Crown from '@/components/Icon/Crown';
-import ModalComponent from '@/components/ModalComponent';
-import { Fragment } from 'react';
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import useModalStore from '@/zustand/useModalStore';
 import useAuthStore from '@/zustand/useAuthStore';
 import toast from 'react-hot-toast';
 
 
+
 function MyAccount() {
 const navigate = useNavigate();
- const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
   const [postData, setPostData] = useState([]);
   const [commentData, setCommentData] = useState([]);
   const [reviewData, setReviewData] = useState([]);
   const logOut = useAuthStore(state => state.logOut);
-  const deleteAccount = useAuthStore(state => state.deleteAccount);
   const { data: fetchAccountData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/`
   );
@@ -66,35 +61,13 @@ const navigate = useNavigate();
     }
   }, [fetchReviewData]);
 
-  const handleConfirm = () => {
-    if (actionType === 'deleteAccount') {
-      deleteAccount()
-      toast.success('회원탈퇴 되었습니다.');
-      
-      closeModal();
-      setTimeout(()=>{
-        navigate('/'); 
-
-      },500)
-
-
-    }
-  };
-
-  const handleCancle = () => {
-    closeModal();
-  };
-
   const handleDeleteAccount = ()=>{
-    setContent('정말 회원탈퇴를 하시겠습니까? 😭')
-    openModal('deleteAccount')
+    navigate('/accountDelete')
     }
   
   const handleLogOut = ()=>{
     logOut();
-    
     toast.success('로그아웃 되었습니다.');  
-      
     navigate('/login'); 
   }
 
@@ -163,18 +136,6 @@ const navigate = useNavigate();
         </button>
       </div>
       <Outlet />
-      <ModalComponent>
-  <p className="my-4">
-    {String(content).split("\n").map((line, index) => (
-      <Fragment key={index}>
-        {line}
-        <br />
-      </Fragment>
-    ))}
-  </p>
-  <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-  <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
-</ModalComponent>
     </div>
   );
 }

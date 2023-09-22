@@ -14,7 +14,7 @@ import Timer from '@/components/Timer';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import toast from 'react-hot-toast';
 
-const userNameRegex = /^[a-z][a-z0-9]{3,15}$/;
+const userNameRegex = /^[a-z][a-z0-9]{5,14}$/;
 const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&*]{2,8}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])|(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
@@ -83,7 +83,7 @@ function SignUp() {
         if (!userNameRegex.test(value)) {
           setErrorMessages((prev) => ({
             ...prev,
-            userName: '영문 소문자와 숫자 조합으로 4~16자리로 입력해주세요.',
+            userName: '영문 소문자와 숫자 조합으로 6~15자리로 입력해주세요.',
           }));
           setIsValidFormState((prev) => ({
             ...prev,
@@ -380,7 +380,7 @@ function SignUp() {
           name="userName"
           validation={isValidformState.userName}
           onChange={handleDebounceInput}
-          placeholder={'영문 소문자와 숫자를 포함한 4~16자리로 입력해 주세요.'}
+          placeholder={'영문 소문자와 숫자를 포함한 6~15자리로 입력해 주세요.'}
           errorMessage={errorMessages.userName}
         />
         <LogInText

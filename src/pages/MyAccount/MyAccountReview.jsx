@@ -1,10 +1,9 @@
-import ButtonConfirm from "@/components/Button/ButtonComfirm";
-import ModalComponent from "@/components/ModalComponent";
+import ModalComplex from "@/components/ModalComplex";
 import ReviewList from "@/components/ReviewList";
 import useFetchData from "@/hooks/useFetchData";
 import useDeleteData from "@/hooks/useFetchDeleteData";
 import useModalStore from "@/zustand/useModalStore";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 
@@ -14,7 +13,7 @@ function MyAccountReview (){
   const [reviewId, setReviewId] = useState(null);
   const [poolId, setPoolId] = useState(null);
   const [reviewData, setReviewData] = useState([]);
-  const { openModal, closeModal, actionType, content, setContent, } = useModalStore();
+  const { openModal, closeModal, actionType, setContent, } = useModalStore();
   const { data: fetchReviewData,fetchData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools/reviews/my`
   );
@@ -30,10 +29,6 @@ function MyAccountReview (){
     }
   }, [fetchReviewData]);
 
-  //모달 취소 핸들러
-  const handleCancle = () => {
-    closeModal();
-  };
 
 //모달 확인 핸들러
   const handleConfirm = async () => {
@@ -73,18 +68,7 @@ function MyAccountReview (){
             onClick={handleReview}
           />
           ))}
-          <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} confirm={true}/>
-      </ModalComponent>
+      <ModalComplex onClick={handleConfirm}/>
     </div>
 
   )

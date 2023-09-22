@@ -27,7 +27,10 @@ import PoolSearchReivew from './pages/Main/PoolSearchReview';
 import ReviewWrite from './pages/Review/ReviewWrite';
 import ReviewDetail from './pages/Review/ReviewDetail';
 import ReviewEdit from './pages/Review/ReviewEdit';
-
+import MyLogWrite from './pages/MyLog/MyLogWrite';
+import MyLogList from './pages/MyLog/MyLogList';
+import MyLogSearch from './pages/MyLog/MyLogSearch';
+import MyAccountDelete from './pages/MyAccount/MyAccountDelete';
 
 // 쿼리 클라이언트 객체 생성
 const queryClient = new QueryClient({
@@ -58,18 +61,40 @@ function App() {
                   path="/accountEdit"
                   element={<PrivateRoute component={<MyAccountEdit />} />}
                 />
+                <Route
+                  path="/accountDelete"
+                  element={<PrivateRoute component={<MyAccountDelete />} />}
+                />
                 <Route path="/account" element={<PrivateRoute component={<MyAccount />} />}>
-                  <Route path="comment" element={<PrivateRoute component={<MyAccountComment />} />} />
+                  <Route
+                    path="comment"
+                    element={<PrivateRoute component={<MyAccountComment />} />}
+                  />
                   <Route path="writed" element={<PrivateRoute component={<MyAccountWrited />} />} />
                   <Route path="review" element={<PrivateRoute component={<MyAccountReview />} />} />
                 </Route>
                 <Route path="/search" element={<PrivateRoute component={<PoolSearch />} />}>
-                  <Route path="/search/list" element={<PrivateRoute component={<PoolSearchList />} />} />
-                  <Route path="/search/list/:swimmingPoolId" element={<PrivateRoute component={<PoolSearchReivew />} />} />
+                  <Route
+                    path="/search/list"
+                    element={<PrivateRoute component={<PoolSearchList />} />}
+                  />
+                  <Route
+                    path="/search/list/:swimmingPoolId"
+                    element={<PrivateRoute component={<PoolSearchReivew />} />}
+                  />
                 </Route>
-                <Route path="/search/list/:swimmingPoolId/reviewList" element={<PrivateRoute component={<ReviewDetail />} />} />
-                <Route path="/search/list/:swimmingPoolId/reviewList/write" element={<PrivateRoute component={<ReviewWrite />} />} />
-                <Route path="/search/list/:swimmingPoolId/reviewList/:reviewId/edit" element={<PrivateRoute component={<ReviewEdit />} />} />
+                <Route
+                  path="/search/list/:swimmingPoolId/reviewList"
+                  element={<PrivateRoute component={<ReviewDetail />} />}
+                />
+                <Route
+                  path="/search/list/:swimmingPoolId/reviewList/write"
+                  element={<PrivateRoute component={<ReviewWrite />} />}
+                />
+                <Route
+                  path="/search/list/:swimmingPoolId/reviewList/:reviewId/edit"
+                  element={<PrivateRoute component={<ReviewEdit />} />}
+                />
                 <Route path="/community" element={<PrivateRoute component={<Community />} />} />
                 <Route
                   path="/communityWrite"
@@ -84,7 +109,17 @@ function App() {
                   path="/community/:communityId/edit"
                   element={<PrivateRoute component={<CommunityDetailEdit />} />}
                 />
-                <Route path="/mylog" element={<PrivateRoute component={<MyLog />} />} />
+                <Route path="/mylog" element={<PrivateRoute component={<MyLog />} />}>
+                  <Route
+                    path="/mylog/:date"
+                    element={<PrivateRoute component={<MyLogList />} />}
+                  />
+                  <Route
+                    path="/mylog/logs"
+                    element={<PrivateRoute component={<MyLogSearch />} />}
+                  />
+                </Route>
+                <Route path="/mylog/write" element={<PrivateRoute component={<MyLogWrite />} />} />
               </Routes>
             </Suspense>
           </div>
