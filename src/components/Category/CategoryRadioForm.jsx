@@ -1,11 +1,9 @@
 import CategoryRadio from './CategoryRadio';
 import CategoryRadioGroup from './CategoryRadioGroup';
-// import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/a11y';
-// import 'swiper/css/free-mode';
 import '@/styles/Swiper.css'
 import propTypes from 'prop-types';
 
@@ -56,8 +54,9 @@ function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChan
   slidesOffsetBefore = {10}
   slidesOffsetAfter = {30}
   slidesPerView= {'auto'}
-  autoHeight={true}
-  className='h-10'
+  // autoHeight={true}
+  className='h-12'
+
 >
 {(write ? categoryWriteArr : categoryArr).map((category) => (
     <SwiperSlide key={category.id}>

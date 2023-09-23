@@ -1,7 +1,8 @@
-.swiper-wrapper{
+.swiper.swiper-wrapper{
 display: inline-flex;
 flex-direction: row;
 width: 100vw;
+height: 60px;
 }
 .swiper-slide{
   width: 65px;

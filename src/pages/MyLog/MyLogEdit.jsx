@@ -2,7 +2,6 @@ import ButtonSubmit from "@/components/Button/ButtonSubmit"
 import ModalComplex from "@/components/ModalComplex"
 import TextArea from "@/components/TextArea"
 import DatePickerComponent from "@/components/datePicker"
-import useFetchPostData from "@/hooks/useFetchPostData"
 import Header from "@/layout/Header"
 import debounce from "@/utils/debounce"
 import useModalStore from "@/zustand/useModalStore"
@@ -11,22 +10,57 @@ import { Helmet } from "react-helmet-async"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import moment from 'moment';
+import { useParams } from "react-router-dom"
+import useFetchData from "@/hooks/useFetchData"
+import { useEffect } from "react"
+import useFetchPutData from "@/hooks/useFetchPutData"
 
 
 const numberRegex = /^[0-9]{1,}$/
 function MyLogEdit() {
-  let today = moment()
   const navigate = useNavigate()
-  const { fetchData:postLogData } = useFetchPostData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs/write`)
-  const { closeModal, openModal, actionType, setContent, setActionType } = useModalStore();
+  const { date, logId } = useParams()
+  const [logData, setLogData] = useState({});
   const [formState, setFormState] = useState({
-    calorie:0,
-    contents:'',
-    distance:'',
-    date: moment().format('YYYY-MM-DD'),
-    time:0,
+    calorie:logData.calorie,
+    contents:logData.contents,
+    distance:logData.distance,
+    time:logData.time,
+    date:logData.date,
+  })
+  const { data: fetchLogData } = useFetchData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs/${date}`
+    );
+    const { putData:putLogData } = useFetchPutData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs/${logId}/modify`)
+    const { closeModal, openModal, actionType, setContent, setActionType } = useModalStore();
+    let selectedDay = moment(formState.date)
+    
+    useEffect(()=>{
+      if (fetchLogData?.resultCode==="SUCCESS"){
+      const initLogData = fetchLogData.result.content;
+      const formattedDate = initLogData.map(log => {
+        return {
+          ...log,
+          date:moment(log.date).format('YYYY-MM-DD'),
+          logId:log.logId
+        }
+      });
+      const filteredArray = formattedDate.filter(value => value.logId === +logId);
+      setLogData(filteredArray[0]);
+    }
+  },[fetchLogData?.result])
+
+useEffect(()=>{
+  setFormState({
+    ...formState,
+    calorie:logData.calorie,
+    contents:logData.contents,
+    distance:logData.distance,
+    time:logData.time,
+    date:logData.date,
   })
 
+},[logData])
 
   const handleDatePicker = (e) =>{
     setFormState({...formState, 
@@ -46,10 +80,10 @@ const handleConfirm = async () => {
       setActionType('')
 
     }else if(actionType==='write'){
-    await postLogData(formState)
+    await putLogData(formState)
       closeModal();
       navigate('/mylog')
-      toast.success('일지가 작성되었어요.')
+      toast.success('일지가 수정되었어요.')
       setActionType('')
     }
   }
@@ -60,9 +94,9 @@ const handleConfirm = async () => {
 
 const handleBack = () => {
   if (formState.calorie===''&&formState.contents===''&&formState.distance===''&&formState.time===''&&formState.date===''){
-    navigate('/mylog')
+    navigate(-1)
   }else{
-    setContent('작성을 취소하시겠습니까?\n작성된 데이터는 복구되지 않습니다.');
+    setContent('수정을 취소하시겠습니까?\n수정된 데이터는 복구되지 않습니다.');
     openModal('back');
   }
 };
@@ -88,10 +122,9 @@ const handleInput = debounce((e) => {
   }
 }, 400);
 const handleDone = ()=>{
-setContent('일지를 작성 하시겠습니까?')
+setContent('일지를 수정 하시겠습니까?')
 openModal('write')
 }
-
 
   return (
     <form className="flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen"
@@ -106,7 +139,7 @@ openModal('write')
     onNavigate={true}/>
     <div className="pt-4 py-2">
       <DatePickerComponent
-      defaultValue={today}
+      defaultValue={selectedDay}
       onChange={handleDatePicker}/>
     </div>
     <div className="flex mb-4 items-center flex-col">
@@ -121,6 +154,7 @@ openModal('write')
         type="number"
         name="distance"
         id="distanceLog"
+        defaultValue={formState.distance}
         onChange={handleInput}
         
         className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
@@ -136,6 +170,7 @@ openModal('write')
         type="number"
         name="calorie"
         id="calorieLog"
+        defaultValue={formState.calorie}
         onChange={handleInput}
         className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
       </div>
@@ -150,6 +185,7 @@ openModal('write')
         type="number"
         name="time"
         id="timeLog"
+        defaultValue={formState.time}
         onChange={handleInput}
         className="flex-grow border shadow-md w-full h-9 rounded-lg text-sm px-2"/>
       </div>
@@ -157,6 +193,7 @@ openModal('write')
     <TextArea 
     name='contents'
     placeholder="일지를 작성해 보세요"
+    defaultValue={formState.contents}
     onChange={handleInput}
     className="h-60 mb-auto flex-grow"/>
     <ButtonSubmit

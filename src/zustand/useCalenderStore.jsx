@@ -1,8 +1,5 @@
 import {create} from 'zustand';
-
-// 1주일의 밀리초
-const ONE_DAY = 24 * 60 * 60 * 1000;
-// const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+import moment from 'moment';
 
 const useCalendarStore = create((set) => ({
   selectedDate: null,
@@ -12,29 +9,27 @@ const useCalendarStore = create((set) => ({
   setSelectedDate: (date) => set({ selectedDate: date }),
 
   setThisWeek: () => {
-    const now = new Date();
-    const startOfWeek = now.getTime() - now.getDay() * ONE_DAY;
+    const startOfWeek = moment().startOf('week');
 
     const week = [...Array(7)].map((_, i) => {
-      const day = new Date(startOfWeek + i * ONE_DAY);
-      return day.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+      const day = moment(startOfWeek).add(i, 'days');
+      return day.format('YYYY-MM-DD'); // YYYY-MM-DD 형식
     });
 
     set({ thisWeek: week });
   },
 
   setThisMonth: () => {
-    const now = new Date();
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const startOfMonth = moment().startOf('month');
+    const endOfMonth = moment().endOf('month');
 
     let arr = [];
 
-    for (let dt = new Date(monthStart); dt <= monthEnd; dt.setDate(dt.getDate() + 1)) {
-      arr.push(new Date(dt));
+    for (let dt = moment(startOfMonth); dt <= endOfMonth; dt.add(1, 'days')) {
+      arr.push(moment(dt));
     }
 
-    let formattedDates = arr.map((date) => date.toISOString().split('T')[0]);
+    let formattedDates = arr.map((date) => date.format('YYYY-MM-DD'));
 
     set({ thisMonth: formattedDates });
   },

@@ -109,7 +109,7 @@ function MyCalendar({ onClick }) {
 
   return (
     <div className="border shadow-md rounded-2xl mx-2.5">
-      <header className="flex justify-between items-center  p-2 border-b">
+      <div className="flex justify-between items-center  p-2 border-b">
         <p
           tabIndex={0}
           className="text-base font-bold text-primary  order-2 self-center"
@@ -129,7 +129,7 @@ function MyCalendar({ onClick }) {
           aria-label="다음 달">
           <Direction direction={false} />
         </button>
-      </header>
+      </div>
       <div className={`grid grid-cols-7 gap-0.5 text-xs font-semibold pt-2 px-4`}>
         {daysOfWeek.map((day, index) => (
           <div

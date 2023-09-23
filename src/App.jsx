@@ -1,55 +1,42 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 import Spinner from './components/Spinner';
-import Community from './pages/Community/Community';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Main from './pages/Main/Main';
-import PoolSearch from './pages/Main/PoolSearch';
-import MyLog from './pages/MyLog/MyLog';
-import SignUp from './pages/SignUp';
-import PoolSearchList from './pages/Main/PoolSearchList';
-import PublicRoute from './components/Login/PublicRoute';
-import PrivateRoute from './components/Login/PrivateRoute';
-import CommunityWrite from './pages/Community/CommunityWrite';
-import CommunityDetail from './pages/Community/CommunityDetail';
-import CommunityDetailEdit from './pages/Community/CommunityDetailEdit';
-import MyAccountComment from './pages/MyAccount/MyAccountComment';
-import MyAccountWrited from './pages/MyAccount/MyAccountWrited';
-import MyAccountReview from './pages/MyAccount/MyAccountReview';
-import MyAccountEdit from './pages/MyAccount/MyAccountEdit';
-import MyAccount from './pages/MyAccount/MyAccount';
-import PoolSearchReivew from './pages/Main/PoolSearchReview';
-import ReviewWrite from './pages/Review/ReviewWrite';
-import ReviewDetail from './pages/Review/ReviewDetail';
-import ReviewEdit from './pages/Review/ReviewEdit';
-import MyLogWrite from './pages/MyLog/MyLogWrite';
-import MyLogList from './pages/MyLog/MyLogList';
-import MyLogSearch from './pages/MyLog/MyLogSearch';
-import MyAccountDelete from './pages/MyAccount/MyAccountDelete';
+const  Community = lazy(() =>import ('./pages/Community/Community'))
+const  Home = lazy(() =>import ('./pages/Home'))
+const  Login = lazy(() =>import ('./pages/Login'))
+const  Main = lazy(() =>import ('./pages/Main/Main'))
+const  PoolSearch = lazy(() =>import ('./pages/Main/PoolSearch'))
+const  MyLog = lazy(() =>import ('./pages/MyLog/MyLog'))
+const  SignUp = lazy(() =>import ('./pages/SignUp'))
+const  PoolSearchList = lazy(() =>import ('./pages/Main/PoolSearchList'))
+const  PublicRoute = lazy(() =>import ('./components/Login/PublicRoute'))
+const  PrivateRoute = lazy(() =>import ('./components/Login/PrivateRoute'))
+const  CommunityWrite = lazy(() =>import ('./pages/Community/CommunityWrite'))
+const  CommunityDetail = lazy(() =>import ('./pages/Community/CommunityDetail'))
+const  CommunityDetailEdit = lazy(() =>import ('./pages/Community/CommunityDetailEdit'))
+const  MyAccountComment = lazy(() =>import ('./pages/MyAccount/MyAccountComment'))
+const  MyAccountWrited = lazy(() =>import ('./pages/MyAccount/MyAccountWrited'))
+const  MyAccountReview = lazy(() =>import ('./pages/MyAccount/MyAccountReview'))
+const  MyAccountEdit = lazy(() =>import ('./pages/MyAccount/MyAccountEdit'))
+const  MyAccount = lazy(() =>import ('./pages/MyAccount/MyAccount'))
+const  PoolSearchReivew = lazy(() =>import ('./pages/Main/PoolSearchReview'))
+const  ReviewWrite = lazy(() =>import ('./pages/Review/ReviewWrite'))
+const  ReviewDetail = lazy(() =>import ('./pages/Review/ReviewDetail'))
+const  ReviewEdit = lazy(() =>import ('./pages/Review/ReviewEdit'))
+const  MyLogWrite = lazy(() =>import ('./pages/MyLog/MyLogWrite'))
+const  MyLogList = lazy(() =>import ('./pages/MyLog/MyLogList'))
+const  MyAccountDelete = lazy(() =>import ('./pages/MyAccount/MyAccountDelete'))
+const  MyLogEdit = lazy(() =>import ('./pages/MyLog/MyLogEdit'))
+const  MyLogSearchYear = lazy(() =>import ('./pages/MyLog/MyLogSearchYear'))
+const  MyLogSearchMonth = lazy(() =>import ('./pages/MyLog/MyLogSearchMonth'))
 
 
-// 쿼리 클라이언트 객체 생성
-const queryClient = new QueryClient({
-  // 모든 쿼리에 사용되는 기본 옵션
-  defaultOptions: {
-    queries: {
-      retry: 5, //(기본 값: 3)
-      staleTime: 1 * 1000 * 60 * 60 * 24 * 7, // 7일간 (기본 값: 0)
-      cacheTime: 1 * 1000 * 60 * 5, // (기본 값: 5분)
-    },
-  },
-});
 
 function App() {
   return (
     <>
-      {/* 쿼리 클라이언트를 앱에 공급 */}
-      <QueryClientProvider client={queryClient}>
         <HelmetProvider>
           <div className="App">
             <Suspense fallback={<Spinner size={200} />}>
@@ -116,23 +103,26 @@ function App() {
                     element={<PrivateRoute component={<MyLogList />} />}
                   />
                   <Route
-                    path="/mylog/:date/edit"
-                    element={<PrivateRoute component={<MyLogList />} />}
+                    path="/mylog/logs/year"
+                    element={<PrivateRoute component={<MyLogSearchYear />} />}
                   />
                   <Route
-                    path="/mylog/logs"
-                    element={<PrivateRoute component={<MyLogSearch />} />}
+                    path="/mylog/logs/month"
+                    element={<PrivateRoute component={<MyLogSearchMonth />} />}
                   />
                 </Route>
                 <Route path="/mylog/write" element={<PrivateRoute component={<MyLogWrite />} />} />
+                  <Route
+                    path="/mylog/:date/:logId/edit"
+                    element={<PrivateRoute component={<MyLogEdit />} />}
+                  />
               </Routes>
             </Suspense>
 
           </div>
-          {/* 탠스택 쿼리 개발 도구 */}
-          {/* <ReactQueryDevtools /> */}
+   
         </HelmetProvider>
-      </QueryClientProvider>
+      
       <Toaster />
     </>
   );

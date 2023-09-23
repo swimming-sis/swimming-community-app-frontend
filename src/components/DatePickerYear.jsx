@@ -1,25 +1,31 @@
 
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { LocalizationProvider} from '@mui/x-date-pickers';
 import { DatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import propTypes from 'prop-types';
+import 'moment/locale/ko'
 
-function DatePickerComponent({ defaultValue, onChange }) {
+
+function DatePickerYear({defaultValue={},onChange}) {
+
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
+    <LocalizationProvider 
+    adapterLocale='koKR'
+    dateAdapter={AdapterMoment}>
       <DatePicker
+      
         role="dialog"
+        label=""
+        views={['year']}
         defaultValue={defaultValue}
-        format="YYYY-MM-DD"
-        onChange={onChange}
+        format="YYYY-MM"
         className='rounded-xl shadow-md font-pretendard'
+        onChange={onChange}
         InputLabelProps={{ shrink: true }}
         InputProps={{ disableUnderline: true }}
-        sx={{ minWidth: 100 }}
         slotProps={{
           textField: { 
             size: 'small', 
-            
           } ,
           openPickerButton: {
             color: 'primary',
@@ -35,9 +41,10 @@ function DatePickerComponent({ defaultValue, onChange }) {
     </LocalizationProvider>
   );
 }
-DatePickerComponent.propTypes = {
+DatePickerYear.propTypes = {
   onChange: propTypes.func,
   defaultValue: propTypes.object,
-};
+}
 
-export default DatePickerComponent;
+
+export default DatePickerYear;

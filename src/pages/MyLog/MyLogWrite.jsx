@@ -22,7 +22,7 @@ function MyLogWrite() {
   const [formState, setFormState] = useState({
     calorie:0,
     contents:'',
-    distance:'',
+    distance:0,
     date: moment().format('YYYY-MM-DD'),
     time:0,
   })
@@ -104,7 +104,8 @@ openModal('write')
     noEdit={false} 
     onClickBack={handleBack} 
     onNavigate={true}/>
-    <div className="pt-4 py-2">
+    <div className="pt-4 py-2 flex items-center text-sm">
+      <p className=" w-28 mr-2 text-sm text-secondary">수영 다녀온 날</p>
       <DatePickerComponent
       defaultValue={today}
       onChange={handleDatePicker}/>

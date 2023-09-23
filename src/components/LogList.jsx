@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-function LogList({id,onClick,distance=400, calory=499, time=65,contents='자유형 잘하는 방법이 뭘까..나는 왜 안되지..?'}) {
+function LogList({id,onClick,distance=0, calory=0, time=0,contents='',logId}) {
   return (
     <div className="relative border shadow-lg py-2.5 px-4 rounded-2xl my-2">
       <ul className='text-sm text-secondary'>
@@ -28,10 +28,10 @@ function LogList({id,onClick,distance=400, calory=499, time=65,contents='자유�
       </ul>
       <p className='mt-6 mb-2 text-sm'>{contents}</p>
       <div className=" flex justify-end absolute right-2 top-2 text-xs text-gray-500 ">
-        <Link className="p-1" to={`/mylog/${id}/edit`} id={id}>
+        <Link className="p-1" to={`/mylog/${id}/${logId}/edit`} id={id}>
           수정
         </Link>
-        <button className="p-1 " onClick={onClick} data-post-id={id} type="button">
+        <button className="p-1 " onClick={onClick} data-date={id} data-log-id={logId} type="button">
           삭제
         </button>
       </div>
@@ -42,6 +42,7 @@ function LogList({id,onClick,distance=400, calory=499, time=65,contents='자유�
 
 LogList.propTypes = {
   id: propTypes.string,
+  logId: propTypes.number,
   time: propTypes.number,
   onClick: propTypes.func,
   calory: propTypes.number,
