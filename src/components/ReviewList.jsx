@@ -3,16 +3,19 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Star from './Icon/Star';
 
+
 function ReviewList({
   userName = '',
   id,
   user ,
+  detail ,
   link = true,
   content ,
   onClick,
   datetime,
   ratingStar = 0,
   reviewId,
+  checkedItems,
 }) {
   const [currentDatetime, setCurrentDatetime] = useState('');
   const localUser = JSON.parse(window.localStorage.getItem('user')).value;
@@ -33,8 +36,8 @@ function ReviewList({
   }, []);
 
   return (
-    <div className='relative'>
-      <ol className="relative border rounded-2xl py-2.5 px-3 min-w-0 max-w-[699px] w-[calc(100%-20px)] mx-2.5 font-pretendard shadow-md mt-2">
+    <div className='relative border rounded-2xl pt-2.5 pb-4 px-3 min-w-0 max-w-[699px] w-[calc(100%-20px)] mx-2.5 font-pretendard shadow-md mt-2'>
+      <ol>
         {!link ? (
           <li tabIndex={0}>
             <div className="flex gap-x-1 items-center">
@@ -69,6 +72,36 @@ function ReviewList({
           </li>
         )}
       </ol>
+  
+      {
+  detail
+    ? checkedItems.map((tag,index) => (
+        <ul key={index} className='inline-flex flex-wrap mb-1 '>
+          <li className={`inline py-1.5 px-2 rounded-lg bg-quaternary text-xs border-2 border-tertiary text-primary mr-2 font-semibold`} tabIndex="0">
+            {tag}
+          </li>
+        </ul>
+      ))
+    : checkedItems && (
+        checkedItems.length === 0
+          ? null
+          : checkedItems.length === 1
+            ? <span className={`py-1.5 px-2 rounded-lg bg-quaternary text-xs border-2 border-tertiary text-primary mr-2 font-semibold`} tabIndex="0">
+                {checkedItems[0]}
+              </span>
+            : <>
+                <span className={`py-1.5 px-2 rounded-lg bg-quaternary text-xs border-2 border-tertiary text-primary mr-2 font-semibold`} tabIndex="0">
+                  {checkedItems[0]}
+                </span>
+                <span className={`py-1.5 px-2 rounded-lg bg-quaternary text-xs border-2 border-tertiary text-primary mr-2 font-semibold`}>
+                  +{checkedItems.length - 1}
+                </span>
+              </>
+      )
+}
+
+
+       
       {userName === localUser && (
         <div className=" flex justify-end absolute right-4 top-2 text-xs text-gray-500 ">
           <button 
@@ -104,6 +137,7 @@ ReviewList.propTypes = {
   edit: propTypes.bool,
   link: propTypes.bool,
   user: propTypes.string,
+  detail: propTypes.bool,
   onClick: propTypes.func,
   content: propTypes.string,
   reviewId: propTypes.number,
@@ -111,5 +145,6 @@ ReviewList.propTypes = {
   userName: propTypes.string,
   tagCount: propTypes.number,
   ratingStar: propTypes.number,
+  checkedItems: propTypes.array,
 };
 export default ReviewList;

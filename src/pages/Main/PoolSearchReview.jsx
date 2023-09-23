@@ -62,7 +62,9 @@ function PoolSearchReivew() {
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
       const updateReview = orderDate.slice(0, 3);
-      setReviewData(updateReview);
+      const tagArray = updateReview.map(review => ({ ...review, tag: review.tag.split('/') }));
+
+      setReviewData(tagArray);
     }
   }, [fetchReviewData]);
 
@@ -115,6 +117,7 @@ function PoolSearchReivew() {
     setContent('리뷰를 삭제 하시겠습니까?\n삭제된 리뷰는 복구되지 않습니다.');
     openModal('review');
   };
+  
   return (
     <div>
       <Helmet>
@@ -148,6 +151,7 @@ function PoolSearchReivew() {
             datetime={review.createdAt}
             ratingStar={review.ratingStar}
             onClick={handleReview}
+            checkedItems={review.tag}
 
           />
         ))}

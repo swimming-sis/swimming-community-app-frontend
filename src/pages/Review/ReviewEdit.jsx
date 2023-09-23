@@ -15,17 +15,21 @@ import { useParams } from 'react-router-dom';
 import useFetchPutData from '@/hooks/useFetchPutData';
 import useFetchData from '@/hooks/useFetchData';
 import { useEffect } from 'react';
+import ReviewTagCheckboxGroup from '@/components/Input/ReviewTagCheckboxGroup';
 
 function ReviewEdit() {
   const navigate = useNavigate();
   const {swimmingPoolId, reviewId} = useParams()
+  const [checkedItems, setCheckedItems] = useState([]); 
   const [formState, setFormState] = useState({
     contents: '',
     ratingStar: '',
+    tag: '',
   });
   const [reviewState, setReviewState] = useState({
     contents: '',
     ratingStar: '',
+    tag: '',
   });
   const { closeModal, openModal, actionType, content, setContent } = useModalStore();
   const { putData:putReviewData } = useFetchPutData(
@@ -40,13 +44,16 @@ const {contents,ratingStar} =reviewState
     if (fetchReviewData?.resultCode==='SUCCESS') {
       const updatedPostData = fetchReviewData.result;
       setReviewState(updatedPostData);
+      const tags = updatedPostData.tag.split('/')
       setFormState({
         contents: updatedPostData.contents,
         ratingStar: updatedPostData.ratingStar,
+        tag: tags,
       });
+      setCheckedItems(tags)
     }
   }, [fetchReviewData]);
-
+  console.log(formState);
 
 
   const handleSubmit = (e) => {
@@ -68,6 +75,7 @@ const {contents,ratingStar} =reviewState
             const fieldNamesInKorean = {
               contents: '리뷰를',
               ratingStar: '별점을',
+              tag: '태그를',
             };
             toast.error(`${fieldNamesInKorean[field]} 입력해주세요.`);
             return;
@@ -80,8 +88,8 @@ const {contents,ratingStar} =reviewState
         navigate(`/search/list/${swimmingPoolId}`);
       }
     } catch(error) {
-      // toast.error('서버와의 통신이 제대로 이루어지지 않았어요');
-      console.log(error);
+      toast.error('서버와의 통신이 제대로 이루어지지 않았어요');
+
     }
   };
   const handleBack = () => {
@@ -113,6 +121,28 @@ const {contents,ratingStar} =reviewState
     });
   }
 
+  const handleCheckboxClick = (item, isChecked) => {
+    let newCheckedItems;
+    
+    if (isChecked) {
+      newCheckedItems = [...checkedItems, item];
+    } else {
+      newCheckedItems = checkedItems.filter(i => i !== item);
+    }
+    
+    setCheckedItems(newCheckedItems);
+    
+    // 결과 태그 문자열 계산
+    const tagsString = newCheckedItems.join('/');
+    
+    setFormState({
+      ...formState,
+      tag: tagsString,
+    });
+  };
+
+
+
   return (
     <form
       className="relative flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen"
@@ -121,7 +151,12 @@ const {contents,ratingStar} =reviewState
         <title>리뷰 작성 하기</title>
       </Helmet>
       <Header content="리뷰 작성 하기" noEdit={false} onClickBack={handleBack} onNavigate={true} />
-
+      <p className="ml-2.5 text-sm my-2 text-secondary font-medium">적절한 항목을 선택해 주세요.</p>
+      <div className='flex gap-x-2 gap-y-2 flex-wrap py-4 px-2'>
+        <ReviewTagCheckboxGroup
+        checkedItems={checkedItems}
+        onItemCheck={handleCheckboxClick}/>
+      </div>
       <p className="ml-2.5 text-sm my-2 text-secondary font-medium">리뷰를 남겨주세요.</p>
       <TextArea
         placeholder="다녀온 수영장의 리뷰를 남겨 주세요."

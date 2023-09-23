@@ -27,11 +27,14 @@ function ReviewDetail (){
 
 
   useEffect(() => {
-    if (fetchReviewData?.result?.content) {
+    if (fetchReviewData?.resultCode === 'SUCCESS') {
       const orderDate = fetchReviewData.result.content.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-      setReviewData(orderDate);
+      const updateReview = orderDate.slice(0, 3);
+      const tagArray = updateReview.map(review => ({ ...review, tag: review.tag.split('/') }));
+
+      setReviewData(tagArray);
     }
   }, [fetchReviewData]);
 
@@ -80,6 +83,8 @@ function ReviewDetail (){
             datetime={review.createdAt}
             ratingStar={review.ratingStar}
             onClick={handleReview}
+            checkedItems={review.tag}
+            detail={true}
           />
         ))}
 <ModalComponent>
