@@ -2,9 +2,11 @@ import PoolList from "@/components/PoolList";
 import useFetchPostData from "@/hooks/useFetchPostData";
 import useMapStore from "@/zustand/useMapStore";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const PoolSearchList = () => {
+  const navigate = useNavigate()
   const [ mapState, setMapState ] = useState({
     phone:'',
     placeName:'',
@@ -16,8 +18,7 @@ const PoolSearchList = () => {
   const { fetchData:fetchMapData} = useFetchPostData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/swimmingPools`
   );
-// useState(()=>{
-// },[handleClick])
+
 
 const handleClick = async(item)=>{
   const updatedMapState = {
@@ -31,7 +32,12 @@ const handleClick = async(item)=>{
 
   setMapState(updatedMapState); 
   await fetchMapData(updatedMapState);
+  setTimeout(() => {
+    navigate(`/search/list/${item.id}`)
+  }, 500);
 }
+
+
   return (
     <>
     {items[0]?.map((item) => {

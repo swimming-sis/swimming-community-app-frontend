@@ -67,30 +67,28 @@ function PoolSearchReivew() {
   }, [fetchReviewData]);
 
   //별점계산
-  // useEffect(() => {
-  //   if (fetchReviewData?.resultCode === 'SUCCESS') {
-  //     const ratingStarArr = fetchReviewData.result.content
-  //     setRatingStar(ratingStarArr);
-  //     if (ratingStarArr.length !==0) {
-  //       const sum = ratingStar.reduce((accumulator, currentValue) => {
-  //         return (accumulator + currentValue.ratingStar);
-  //       }, 0);
-  //       const avg = sum/ratingStar.length
-  //       const roundUpAvg=Math.round(avg* 10)/10
-  //       setPoolData({
-  //           ...poolData,
-  //           ratingStar:roundUpAvg
-  //         });
-  //     }else if(ratingStarArr.length===0){
-  //       setPoolData({
-  //         ...poolData,
-  //         ratingStar:0
-  //       });
-  //     }
-  //   }
-  // }, [fetchReviewData]);
-
-  console.log(reviewData);
+  useEffect(() => {
+    if (fetchReviewData?.resultCode === 'SUCCESS') {
+      const ratingStarArr = fetchReviewData.result.content
+      setRatingStar(ratingStarArr);
+      if (ratingStarArr.length !==0) {
+        const sum = ratingStar.reduce((accumulator, currentValue) => {
+          return (accumulator + currentValue.ratingStar);
+        }, 0);
+        const avg = ratingStar.length>0?sum/ratingStar.length:null
+        const roundUpAvg=Math.round(avg* 10)/10
+        setPoolData({
+            ...poolData,
+            ratingStar:roundUpAvg
+          });
+      }else if(ratingStarArr.length===0){
+        setPoolData({
+          ...poolData,
+          ratingStar:0
+        });
+      }
+    }
+  }, [fetchReviewData]);
 
   //모달 취소 핸들러
   const handleCancle = () => {

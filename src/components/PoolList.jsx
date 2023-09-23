@@ -1,7 +1,7 @@
 import propTypes from 'prop-types';
 import House from '@/components/Icon/House';
 import Star from '@/components/Icon/Star';
-import { Link } from 'react-router-dom';
+
 
 function PoolList({
   id,
@@ -38,7 +38,7 @@ function PoolList({
         <li
           className="relative border p-3 rounded-xl shadow-md mx-2.5 list-none font-pretendard text-sm "
           onClick={onClick}>
-          <Link to={id} key={id}>
+          <div key={id}>
             <p className="text-base font-semibold text-primary ">{title}</p>
             {address && <p className="text-gray/700">{address}</p>}
             {tel && <p className="text-gray/700">{tel}</p>}
@@ -47,7 +47,7 @@ function PoolList({
               <p className="text-primary flex-grow font-semibold ml-1  truncate min-w-0">{link}</p>
               <p className="absolute top-3 right-3 text-sm text-secondary">{distance}</p>
             </div>
-          </Link>
+          </div>
         </li>
       )}
     </ol>

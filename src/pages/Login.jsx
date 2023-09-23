@@ -1,5 +1,5 @@
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
-import Chat from '@/components/Icon/Chat';
+// import Chat from '@/components/Icon/Chat';
 import Hide from '@/components/Icon/Hide';
 import Show from '@/components/Icon/Show';
 import LogInText from '@/components/Input/LogInText';
@@ -20,7 +20,7 @@ function Login() {
     password: '',
   });
 
-  const [autoLogin, setAutoLogin] = useState(false);
+  // const [autoLogin, setAutoLogin] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
