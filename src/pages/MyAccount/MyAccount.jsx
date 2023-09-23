@@ -1,7 +1,6 @@
 import ButtonMyCount from '@/components/Button/ButtonMyCount';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
-// import propTypes from 'prop-types';
 import useFetchData from '../../hooks/useFetchData';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
@@ -65,8 +64,8 @@ const navigate = useNavigate();
     navigate('/accountDelete')
     }
   
-  const handleLogOut = ()=>{
-    logOut();
+  const handleLogOut = async ()=>{
+    await logOut();
     toast.success('로그아웃 되었습니다.');  
     navigate('/login'); 
   }

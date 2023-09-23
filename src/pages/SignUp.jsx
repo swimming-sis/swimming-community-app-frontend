@@ -1,18 +1,14 @@
-// import propTypes from 'prop-types';
-
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import LogInText from '@/components/Input/LogInText';
-import Logo from '@/components/Logo';
-// import Timer from '@/components/Timer';
-import { Link, useNavigate } from 'react-router-dom';
-// import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import debounce from '@/utils/debounce';
 import useAuthStore from '@/zustand/useAuthStore';
 import { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
 import Timer from '@/components/Timer';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import toast from 'react-hot-toast';
+import LoginLayout from '@/layout/LoginLayout';
+
 
 const userNameRegex = /^[a-z][a-z0-9]{5,14}$/;
 const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&*]{2,8}$/;
@@ -363,15 +359,10 @@ function SignUp() {
   },[validationData])
 
   return (
-    <>
-      <Helmet>
-        <title className="sr-only">어푸어푸 회원가입</title>
-      </Helmet>
-      <Link to="/">
-        <Logo width={200} height={100} className={'mt-10 mb-8'} />
-      </Link>
+    <div className='relative h-screen'>
+      <LoginLayout content={'회원가입'} />
       <form
-        className="font-pretendard flex flex-col h-full min-w-[320px] max-w-[699px] mx-auto px-[10px]"
+        className="font-pretendard flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5"
         onSubmit={handleRegister}>
         <LogInText
           id={'loginId'}
@@ -429,15 +420,14 @@ function SignUp() {
             type="button"
             onClick={handleSendNumber}
             disabled={!isValidformState.phoneNumber}
-            className={`text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl mr-2.5 ${isValidformState.phoneNumber?'bg-primary': 'bg-gray-600'}`}>
+            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${isValidformState.phoneNumber?'bg-primary': 'bg-gray-600'}`}>
             인증하기
           </button>
         </div>
         {phoneValidation.sendState && (
-          <div className="relative flex ">
+          <div className="relative flex">
             <input
               type="number"
-              
               onChange={handleValidationNumber}
               name="loginTelCheck"
               id="loginTelCheck"
@@ -454,7 +444,7 @@ function SignUp() {
           </div>
         )}
         <ButtonSubmit
-          className="flex flex-col items-center mt-4"
+          className="flex flex-col items-center mt-10 "
           content={'회원가입'}
           disabled={
             !isValidformState.userName ||
@@ -466,7 +456,7 @@ function SignUp() {
           }
         />
       </form>
-    </>
+    </div>
   );
 }
 

@@ -30,7 +30,7 @@ return (
     onChange={onChange}
     defaultValue={defaultValue}
     {...restProp}
-    className={` flex-grow w-full h-8 px-1 py-5 border border-gray/300 rounded-lg text-sm placeholder:text-xs`}/>
+    className={`w-full h-8 px-1 py-5 border border-gray/300 rounded-lg text-sm placeholder:text-xs flex-grow-0`}/>
   {validation ? null:<p
   className='w-full -mt-2 text-xs text-error ml-2'
   >

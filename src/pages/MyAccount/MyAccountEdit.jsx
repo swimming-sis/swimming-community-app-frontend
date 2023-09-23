@@ -190,7 +190,6 @@ function MyAccountEdit() {
         formState,
       }));
       try {
-        console.log(formState);
         await putAccountData(formState);
         toast.success('회원 정보가 수정되었어요. 😊');
       } catch (error) {
@@ -300,7 +299,6 @@ function MyAccountEdit() {
         phoneNumber,
       }));
 
-      console.log('페이지 로딩 후 기본 사용자 정보를 formState로 업데이트\n');
 
       mountedAndFetched = true;
     }

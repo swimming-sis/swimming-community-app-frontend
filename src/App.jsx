@@ -3,9 +3,10 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Toaster } from 'react-hot-toast';
 import { Route, Routes } from 'react-router-dom';
 import Spinner from './components/Spinner';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import FindAccount from './pages/FindAccount';
 const  Community = lazy(() =>import ('./pages/Community/Community'))
-const  Home = lazy(() =>import ('./pages/Home'))
-const  Login = lazy(() =>import ('./pages/Login'))
 const  Main = lazy(() =>import ('./pages/Main/Main'))
 const  PoolSearch = lazy(() =>import ('./pages/Main/PoolSearch'))
 const  MyLog = lazy(() =>import ('./pages/MyLog/MyLog'))
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/" element={<PublicRoute component={<Home />} />} />
                 <Route path="/login" element={<PublicRoute component={<Login />} />} />
                 <Route path="/signup" element={<PublicRoute component={<SignUp />} />} />
+                <Route path="/findAccount" element={<PublicRoute component={<FindAccount />} />} />
                 <Route path="/main" element={<PrivateRoute component={<Main />} />} />
                 <Route
                   path="/accountEdit"

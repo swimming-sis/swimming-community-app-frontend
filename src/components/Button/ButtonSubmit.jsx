@@ -12,7 +12,7 @@ function ButtonSubmit ({
   className}) {
 
 return (
-  <div className={`${className}`}>
+  <div className={className}>
     <button 
     type={type} 
     disabled={disabled}
