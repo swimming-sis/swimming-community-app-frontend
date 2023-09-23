@@ -8,28 +8,24 @@ import debounce from '@/utils/debounce';
 import toast from 'react-hot-toast';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import { useNavigate } from 'react-router-dom';
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import ModalComponent from '@/components/ModalComponent';
-import { Fragment } from 'react';
+
 import useModalStore from '@/zustand/useModalStore';
+import ModalComplex from '@/components/ModalComplex';
+import AWSUPLoadFile from '@/components/AWSUpLoadFile';
 
 function CommunityWrite() {
   const navigate = useNavigate();
-  const [content, setContent] = useState('');
   const { fetchData } = useFetchPostData(`${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts`);
   const [formState, setFormState] = useState({
     category: '',
     title: '',
     body: '',
   });
-  const { closeModal, openModal, actionType } = useModalStore();
+  const { closeModal, openModal, actionType, setContent } = useModalStore();
   const handleSubmit = (e) => {
     e.preventDefault();
   };
 
-  const handleCancle = () => {
-    closeModal();
-  };
 
   const handleConfirm = async () => {
     try {
@@ -111,21 +107,9 @@ function CommunityWrite() {
         onChange={handleInput}
         className="h-60 mb-auto flex-grow"
       />
+      <AWSUPLoadFile/>
       <ButtonSubmit onClick={handleDone} type="button" content="작성완료" className="mt-10 mb-10" />
-      <ModalComponent>
-        <p className="my-4">
-          {String(content)
-            .split('\n')
-            .map((line, index) => (
-              <Fragment key={index}>
-                {line}
-                <br />
-              </Fragment>
-            ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} content="확인" confirm={true} />
-      </ModalComponent>
+    <ModalComplex onClick={handleConfirm}/>
     </form>
   );
 }

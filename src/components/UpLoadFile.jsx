@@ -1,7 +1,9 @@
 import propTypes from 'prop-types';
 
 
-function UpLoadFile({ id = 'community' }) {
+
+function UpLoadFile({ id = 'community', onChange,onClick }) {
+
 
   return (
     <div>
@@ -24,12 +26,17 @@ function UpLoadFile({ id = 'community' }) {
       id={`upLoadFile-${id}`} 
       name="upLoadFile" 
       className='hidden'
+      onChange={onChange}
       />
+      <button type='button' onClick={onClick} ></button>
     </div>
   );
 }
 UpLoadFile.propTypes = {
   id: propTypes.string,
+  onClick: propTypes.func,
+  onChange: propTypes.func,
+
 };
 
 export default UpLoadFile;
