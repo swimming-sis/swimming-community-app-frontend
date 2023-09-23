@@ -4,16 +4,33 @@ import Direction from './Icon/Direction';
 import SwimmingKickBoard from './Icon/SwimmingKickBoard';
 import propTypes from 'prop-types';
 import { useCallback } from 'react';
+import useFetchData from '@/hooks/useFetchData';
 
 function MyCalendar({ onClick }) {
   const [currentMonth, setCurrentMonth] = useState([]);
   const [monthOffset, setMonthOffset] = useState(0);
   const [holidays, setHolidays] = useState({});
-  const [selectedDate, setSelectedDate] = useState(null);
-
+  const [selectedDate, setSelectedDate] = useState(moment().format('YYYY-MM-DD'));
+  const [logData, setLogdata] = useState([]);
+  const { data: fetchLogData } = useFetchData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs`
+  );
   const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'TUR', 'FRI', 'SAT'];
-  
-  
+
+  // 일지에서 날짜데이터를 추출하기위한 배열받아오기
+  useEffect(() => {
+    if (fetchLogData?.resultCode === 'SUCCESS') {
+      const initLogData = fetchLogData.result.content;
+      const formattedDate = initLogData.map(log => {
+        return moment(log.date).format('YYYY-MM-DD');
+        // console.log(formattedDate);
+      });
+      setLogdata(formattedDate)
+    }
+  }, [fetchLogData?.result]);
+
+
+  // moment.js로 날짜정보 받아와서 배열에 담기
   useEffect(() => {
     let today = () => moment().format('YYYY-MM-DD');
     let startOfMonth = moment().add(monthOffset, 'months').startOf('month');
@@ -29,6 +46,7 @@ function MyCalendar({ onClick }) {
         a11y: '',
       });
     }
+
     for (let date = startOfMonth; date.isBefore(endOfMonth); date.add(1, 'day')) {
       monthArr.push({
         date: date.format('D'),
@@ -36,12 +54,13 @@ function MyCalendar({ onClick }) {
         dayOfWeek: date.format('ddd').toLowerCase(),
         isToday: today === date.format('YYYY-MM-DD'),
         a11y: date.format('DD일 MM월 YYYY년'),
+        //isMatch:logData.map((value) => value === date.dateInfo)
       });
     }
 
     setCurrentMonth(monthArr);
 
-    // Google Calendar API
+    // Google Calendar API(휴일정보를 가져오기위한 구글캘린더 API)
     const BASE_CALENDAR_URL = 'https://www.googleapis.com/calendar/v3/calendars';
     const BASE_CALENDAR_ID_FOR_PUBLIC_HOLIDAY = 'holiday@group.v.calendar.google.com';
     const API_KEY = import.meta.env.VITE_GOOGLECAL_API_KEY;
@@ -73,18 +92,20 @@ function MyCalendar({ onClick }) {
         },
         (err) => console.error(err)
       );
-
   }, [monthOffset]);
 
-  const handleClickDateButton = useCallback((e) => {
-    const dateInfo = e.currentTarget.getAttribute('data-log-id');
-  
-    if (dateInfo !== '') {
-      setSelectedDate(dateInfo);
-      // console.log(selectedDate);
-      onClick(e);
-    }
-  }, [selectedDate]);
+  //원래는 하단에 map함수내부에 위치했었는데 상위컴포넌트에서 클릭시 날짜정보를 받아오기위한 핸들러입니다
+  const handleClickDateButton = useCallback(
+    (e) => {
+      const dateInfo = e.currentTarget.getAttribute('data-log-id');
+
+      if (dateInfo !== '') {
+        setSelectedDate(dateInfo);
+        onClick(e);
+      }
+    },
+    [selectedDate]
+  );
 
   return (
     <div className="border shadow-md rounded-2xl mx-2.5">
@@ -127,17 +148,20 @@ function MyCalendar({ onClick }) {
             onClick={handleClickDateButton}
             aria-label={day.a11y}
             className={`text-center w-full h-12 items-start rounded-lg hover:bg-quaternary
-             ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
-             ${
-               selectedDate === day.dateInfo
-                 ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
-                 : ''
-             }
-             ${holidays[day.dateInfo] ? 'text-error' : ''}
-             ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
-             `}>
+            ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
+            ${
+                selectedDate === day.dateInfo
+                ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
+                : ''
+            }
+            ${holidays[day.dateInfo] ? 'text-error' : ''}
+            ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
+            `}>
             {day.date}
-            <SwimmingKickBoard />
+
+            {logData.some((log) => log === day.dateInfo) ? 
+              <SwimmingKickBoard color="#0086FF" />:<SwimmingKickBoard color="none" />
+            }
           </button>
         ))}
       </div>

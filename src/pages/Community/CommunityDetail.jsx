@@ -232,7 +232,7 @@ function CommunityDetail() {
 
 
   return (
-    <div className="flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen overflow-y-scroll mb-20">
+    <div className="flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5 font-pretendard h-screen mb-20">
       <Helmet>
         <title>커뮤니티</title>
       </Helmet>

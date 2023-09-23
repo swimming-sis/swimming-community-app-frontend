@@ -100,7 +100,7 @@ openModal('write')
       <title>수영 일지 쓰기</title>
     </Helmet>
     <Header 
-    content="수영 일지 작성" 
+    content="수영 일지 수정하기" 
     noEdit={false} 
     onClickBack={handleBack} 
     onNavigate={true}/>

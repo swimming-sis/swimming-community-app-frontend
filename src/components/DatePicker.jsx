@@ -38,7 +38,7 @@ function DatePickerComponent({defaultValue,onChange}) {
   );
 }
 DatePickerComponent.propTypes = {
-  // onChange: propTypes.string,
+  onChange: propTypes.string,
   defaultValue: propTypes.string,
 }
 

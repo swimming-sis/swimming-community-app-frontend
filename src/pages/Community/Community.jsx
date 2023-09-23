@@ -5,7 +5,7 @@ import SearchInput from '@/components/Input/SearchInput';
 import useFetchData from '@/hooks/useFetchData';
 import RootLayout from '@/layout/RootLayout';
 import debounce from '@/utils/debounce';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -25,8 +25,11 @@ function Community() {
   const [searchData, setSearchData] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [value, setValue] = useState('');
-  const [ communityId, setCommunityId ] =useState(null)
-  const debouncedSetKeyword = useCallback(debounce((value) => setKeyword(value), 300), []);
+  const [communityId, setCommunityId] = useState(null);
+  const debouncedSetKeyword = useCallback(
+    debounce((value) => setKeyword(value), 300),
+    []
+  );
   const { openModal, closeModal, actionType, content, setContent } = useModalStore();
   const fetchSearchData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/search?keyword=${keyword}`
@@ -38,13 +41,12 @@ function Community() {
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/${communityId}/delete`
   );
 
-
-  
-
   useEffect(() => {
     if (fetchListData.data?.result?.content) {
-      const orderDate = fetchListData.data.result.content.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
-      setPostData(orderDate)
+      const orderDate = fetchListData.data.result.content.sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setPostData(orderDate);
     }
   }, [fetchListData]);
 
@@ -107,17 +109,16 @@ function Community() {
       }
     } catch (error) {
       console.error(error);
-      toast.error('An error occurred while fetching search results');
     }
   };
 
-const handleInput = (e) => {
-  setValue(e.target.value);
+  const handleInput = (e) => {
+    setValue(e.target.value);
 
-  if (e.target.value === '') {
-    setSearchActive(false);
-  }
-};
+    if (e.target.value === '') {
+      setSearchActive(false);
+    }
+  };
 
   const handleTextClear = () => {
     setValue('');
@@ -129,13 +130,10 @@ const handleInput = (e) => {
       setSearchData(fetchSearchData.data.result.content);
     }
   }, [keyword]);
-  
-  
-  
-  useEffect(()=>{
+
+  useEffect(() => {
     debouncedSetKeyword(value);
-  
-  },[value])
+  }, [value]);
 
   useEffect(() => {
     if (searchData && searchActive) {
@@ -143,9 +141,8 @@ const handleInput = (e) => {
     }
   }, [searchData, searchActive]);
 
-
   const handleWrited = (e) => {
-    setCommunityId(e.currentTarget.getAttribute('data-post-id'))
+    setCommunityId(e.currentTarget.getAttribute('data-post-id'));
     setContent('게시글을 삭제 하시겠습니까?\n삭제된 게시글은 복구되지 않습니다.');
 
     openModal('writed');
@@ -154,24 +151,23 @@ const handleInput = (e) => {
   const handleCancle = () => {
     closeModal();
   };
-  const handleConfirm = async() => {
+  const handleConfirm = async () => {
     try {
       if (actionType === 'writed') {
         await deleteData();
-        fetchListData.fetchData()
+        fetchListData.fetchData();
         closeModal();
         navigate('/community');
-        toast.success('게시글이 삭제되었습니다.')
+        toast.success('게시글이 삭제되었습니다.');
       }
-
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   };
   return (
     <div
       ref={scrollContainer}
-      className="container relative min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen overflow-y-scroll mb-20">
+      className="container relative min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen mb-20">
       <Helmet>
         <title>어푸어푸 커뮤니티</title>
       </Helmet>
@@ -185,28 +181,27 @@ const handleInput = (e) => {
         onSubmit={handleSearchKeyword}
         placeholder="검색하고 싶은 내용을 입력해보세요."
       />
-      <CategoryRadioForm 
-      onClick={handleChoiceCategory} 
-      selectedCategory={category ? category : '전체'} 
-      onCategroyChange={handleChoiceCategory}
+      <CategoryRadioForm
+        onClick={handleChoiceCategory}
+        selectedCategory={category ? category : '전체'}
+        onCategroyChange={handleChoiceCategory}
       />
       <>
-        {(searchActive
-          ? searchData: postData).map((post) => (
-              <CommunityList
-                id={post.postId}
-                key={post.postId}
-                title={post.title}
-                content={post.body}
-                user={post.nickName}
-                likeCount={post.likeCnt}
-                categoryTag={post.category}
-                chatCount={post.commentCnt}
-                datetime={post.createdAt}
-                onClick={handleWrited}
-                userName={post.userName}
-              />
-            ))}
+        {(searchActive ? searchData : postData).map((post) => (
+          <CommunityList
+            id={post.postId}
+            key={post.postId}
+            title={post.title}
+            content={post.body}
+            user={post.nickName}
+            likeCount={post.likeCnt}
+            categoryTag={post.category}
+            chatCount={post.commentCnt}
+            datetime={post.createdAt}
+            onClick={handleWrited}
+            userName={post.userName}
+          />
+        ))}
       </>
       <Top onClick={handleTop} className="fixed bottom-20 right-6 shadow-2xl rounded-full" />
       <ModalComponent>
