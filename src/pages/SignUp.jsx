@@ -193,12 +193,12 @@ function SignUp() {
     }
   };
 
-  const handleValidationNumber = debounce((e) => {
+  const handleValidationNumber = (e) => {
     setPhoneValidation((prev) => ({
       ...prev,
       validationNumber: e.target.value,
     }));
-  }, 50);
+  };
 
 
 
@@ -358,7 +358,7 @@ function SignUp() {
         validationData: validationResult,
       }));
     }
-  },[validationData])
+  },[validationData, phoneValidation])
 
   return (
     <div className='relative h-screen'>
