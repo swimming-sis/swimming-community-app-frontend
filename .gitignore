@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env.local
+.env
 pocketbase
 # Editor directories and files
 .vscode/*
