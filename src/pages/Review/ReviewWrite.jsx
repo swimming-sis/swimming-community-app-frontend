@@ -58,7 +58,10 @@ function ReviewWrite() {
         closeModal();
         
         toast.success('리뷰가 작성 되었어요!')
-        navigate(`/search/list/${swimmingPoolId}`);
+        setTimeout(() => {
+          navigate(`/search/list/${swimmingPoolId}`);
+          
+        }, 500);
       }
     } catch {
       toast.error('서버와의 통신이 제대로 이루어지지 않았어요');
