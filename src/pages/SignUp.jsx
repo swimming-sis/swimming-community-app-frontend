@@ -210,7 +210,7 @@ function SignUp() {
     setShowPasswordCheck(!showPasswordCheck);
   };
 
-  const handleDebounceInput = debounce(handleInput, 200);
+  const handleDebounceInput = debounce(handleInput, 100);
 
   useEffect(() => {
     const checkDuplication = async () => {
@@ -422,7 +422,7 @@ function SignUp() {
           </button>
           <button
           type='button'
-          className='absolute right-8 top-[320px]'
+          className='absolute right-8 top-[300px]'
           onClick={toggleShowPasswordCheck}>
             {showPasswordCheck ? <Show /> :  <Hide />}
           </button>
