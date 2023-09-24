@@ -2,7 +2,9 @@ import ButtonConfirm from '@/components/Button/ButtonComfirm';
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
 import LogInText from '@/components/Input/LogInText';
 import ModalComponent from '@/components/ModalComponent';
+import Timer from '@/components/Timer';
 import useFetchData from '@/hooks/useFetchData';
+import useFetchPostData from '@/hooks/useFetchPostData';
 import useFetchPutData from '@/hooks/useFetchPutData';
 import Header from '@/layout/Header';
 import debounce from '@/utils/debounce';
@@ -50,6 +52,26 @@ function MyAccountEdit() {
   const { putData: putAccountData } = useFetchPutData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/modify`
   );
+  const [phoneValidation, setPhoneValidation] = useState({
+    sendState: false,
+    validationState: false,
+    sendNumber: null,
+    validationNumber: null,
+    validationData: false,
+  });
+  const { fetchData: postSendValidation } = useFetchPostData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber/send`
+  );
+  const { data: validationData, fetchData: postValidation } = useFetchPostData(
+    `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/users/phoneNumber/check`
+  );
+
+  const handleValidationNumber = debounce((e) => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+      validationNumber: e.target.value,
+    }));
+  }, 200);
 
   const handleEdit = () => {
     setContent('수정하시겠습니까?');
@@ -165,7 +187,7 @@ function MyAccountEdit() {
     }
   };
 
-  const handleDebounceInput = debounce(handleInput, 500);
+  const handleDebounceInput = debounce(handleInput, 200);
 
   const handleCancle = () => {
     closeModal();
@@ -299,10 +321,56 @@ function MyAccountEdit() {
         phoneNumber,
       }));
 
-
       mountedAndFetched = true;
     }
   }, [fetchAccountData]);
+
+  const handleSendNumber = async () => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+      sendState: true,
+      validationState: !phoneValidation.validationState,
+    }));
+    toast.success('인증번호가 전송되었어요 🤗');
+    await postSendValidation({ to: formState.phoneNumber });
+  };
+
+  const handleValidation = async () => {
+    setPhoneValidation((prev) => ({
+      ...prev,
+    }));
+    await postValidation({
+      checkNumber: phoneValidation.validationNumber,
+      phoneNumber: formState.phoneNumber,
+    });
+    try {
+      const result = validationData?.result;
+      console.log(result);
+      if (result) {
+        toast.success('인증에 성공했어요. 수정완료 버튼을 눌러주세요!');
+      } else toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!');
+    } catch (error) {
+      toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!');
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPhoneValidation((prev) => ({
+        ...prev,
+        sendState: false,
+      }));
+    }, 180000);
+  }, [phoneValidation.validationState]);
+
+  useEffect(() => {
+    if (validationData?.resultCode === 'SUCCESS') {
+      setPhoneValidation((prev) => ({
+        ...prev,
+        validationData: validationData.result,
+      }));
+    }
+  }, [validationData]);
 
   return (
     <>
@@ -345,43 +413,48 @@ function MyAccountEdit() {
           placeholder={''}
           errorMessage={errorMessages.passwordConfirm}
         />
-        {/* <div className="flex"> */}
-        <LogInText
-          id={'myAccountEditTel'}
-          content={'휴대전화번호'}
-          type="tel"
-          name="phoneNumber"
-          className={'mb-8'}
-          defaultValue={fetchAccountData?.result.phoneNumber}
-          onChange={handleDebounceInput}
-          validation={isValidformState.phoneNumber}
-          placeholder={"'-'없이 입력해 주세요."}
-          errorMessage={errorMessages.phoneNumber}
-        />
-        {/* <button
-              type="submit"
+        <div className="flex items-center">
+          <LogInText
+            id={'myAccountEditTel'}
+            content={'휴대전화번호'}
+            type="tel"
+            name="phoneNumber"
+            className={'mb-8 flex-grow'}
+            defaultValue={fetchAccountData?.result.phoneNumber}
+            onChange={handleDebounceInput}
+            validation={isValidformState.phoneNumber}
+            placeholder={"'-'없이 입력해 주세요."}
+            errorMessage={errorMessages.phoneNumber}
+          />
+          <button
+            type="button"
+            onClick={handleSendNumber}
+            disabled={!isValidformState.phoneNumber}
+            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${
+              isValidformState.phoneNumber ? 'bg-primary' : 'bg-gray-600'
+            } ${errorMessages.phoneNumber && 'mb-4'}`}>
+            인증하기
+          </button>
+        </div>
+        {phoneValidation.sendState && (
+          <div className="relative flex">
+            <input
+              type="number"
+              onChange={handleValidationNumber}
+              name="loginTelCheck"
+              id="loginTelCheck"
+              className="flex-grow h-8 px-1 py-5 border border-gray/300 rounded-lg ml-2.5 mr-2"
+            />
+            <label htmlFor="loginTelCheck" className="전화번호 인증"></label>
+            <Timer className="absolute right-28 top-2" />
+            <button
+              onClick={handleValidation}
+              type="button"
               className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
-              인증하기
+              인증완료
             </button>
           </div>
-          {validationTel === 'send' && (
-            <div className="relative flex ">
-              <input
-                type="number"
-                name="loginTelCheck"
-                id="loginTelCheck"
-                className="flex-grow h-8 px-1 py-5 border border-gray/300 rounded-lg ml-2.5 mr-2
-        "
-              />
-              <label htmlFor="loginTelCheck" className="전화번호 인증"></label>
-              <Timer className="absolute right-28 top-2" />
-              <button
-                type="submit"
-                className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
-                인증완료
-              </button>
-            </div>
-          )} */}
+        )}
         <ButtonSubmit
           type="button"
           onClick={handleEdit}
@@ -391,7 +464,8 @@ function MyAccountEdit() {
             !isValidformState.nickName ||
             !isValidformState.password ||
             !isValidformState.passwordConfirm ||
-            !isValidformState.phoneNumber
+            !isValidformState.phoneNumber ||
+            phoneValidation.validationData
           }
         />
         <ModalComponent>

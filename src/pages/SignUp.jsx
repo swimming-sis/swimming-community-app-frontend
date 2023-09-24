@@ -8,6 +8,8 @@ import Timer from '@/components/Timer';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import toast from 'react-hot-toast';
 import LoginLayout from '@/layout/LoginLayout';
+import Show from '@/components/Icon/Show';
+import Hide from '@/components/Icon/Hide';
 
 
 const userNameRegex = /^[a-z][a-z0-9]{5,14}$/;
@@ -17,7 +19,8 @@ const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
 function SignUp() {
   const navigate = useNavigate();
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
   const [formState, setFormState] = useState({
     userName: '',
     nickName: '',
@@ -200,6 +203,13 @@ function SignUp() {
     }));
   }, 200);
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+  const toggleShowPasswordCheck = () => {
+    setShowPasswordCheck(!showPasswordCheck);
+  };
+
   const handleDebounceInput = debounce(handleInput, 200);
 
   useEffect(() => {
@@ -362,7 +372,7 @@ function SignUp() {
     <div className='relative h-screen'>
       <LoginLayout content={'회원가입'} />
       <form
-        className="font-pretendard flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5"
+        className="relative font-pretendard flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5"
         onSubmit={handleRegister}>
         <LogInText
           id={'loginId'}
@@ -387,7 +397,7 @@ function SignUp() {
         <LogInText
           id={'loginPw'}
           content={'비밀번호'}
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           name="password"
           onChange={handleDebounceInput}
           validation={isValidformState.password}
@@ -397,13 +407,25 @@ function SignUp() {
         <LogInText
           id={'loginPwCheck'}
           content={'비밀번호 확인'}
-          type="password"
+          type={showPasswordCheck ? 'text' : 'password'}
           name="passwordConfirm"
           onChange={handleDebounceInput}
           validation={isValidformState.passwordConfirm}
           placeholder={''}
           errorMessage={errorMessages.passwordConfirm}
         />
+          <button
+          type='button'
+          className='absolute right-8 top-[218px]'
+          onClick={toggleShowPassword}>
+            {showPassword ? <Show /> :  <Hide />}
+          </button>
+          <button
+          type='button'
+          className='absolute right-8 top-[320px]'
+          onClick={toggleShowPasswordCheck}>
+            {showPasswordCheck ? <Show /> :  <Hide />}
+          </button>
         <div className="flex items-center">
           <LogInText
             id={'loginTel'}
@@ -420,7 +442,9 @@ function SignUp() {
             type="button"
             onClick={handleSendNumber}
             disabled={!isValidformState.phoneNumber}
-            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${isValidformState.phoneNumber?'bg-primary': 'bg-gray-600'}`}>
+            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${
+              isValidformState.phoneNumber ? 'bg-primary' : 'bg-gray-600'
+            } ${errorMessages.phoneNumber && 'mb-4'}`}>
             인증하기
           </button>
         </div>
