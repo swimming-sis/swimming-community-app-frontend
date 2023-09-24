@@ -338,7 +338,7 @@ function SignUp() {
       phoneNumber:formState.phoneNumber})
       try{
         const result = validationData?.result
-        console.log(result);
+
         if (result){
           toast.success('인증에 성공했어요. 회원가입 버튼을 눌러주세요!')
         }else(
