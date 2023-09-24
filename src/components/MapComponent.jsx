@@ -374,14 +374,15 @@ function MapComponent() {
             type="button"
             className="w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-t-md shadow-sm font-semibold text-xl"
             onClick={handleZoomIn}>
-            <Minus className="mx-auto" />
+            <Plus className="mx-auto" />
           </button>
           <button
             aria-label="지도 확대하기"
             type="button"
             className="w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-b-md shadow-sm font-semibold text-xl"
             onClick={handleZoomOut}>
-            <Plus className="mx-auto" />
+            
+            <Minus className="mx-auto" />
           </button>
         </div>
       </div>
