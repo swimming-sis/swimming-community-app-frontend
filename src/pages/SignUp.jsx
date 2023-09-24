@@ -337,6 +337,7 @@ function SignUp() {
         //   toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
         // }
         }catch(error){
+          return;
           // toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
       }
   };
