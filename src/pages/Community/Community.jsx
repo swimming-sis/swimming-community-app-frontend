@@ -1,6 +1,6 @@
 import CategoryRadioForm from '@/components/Category/CategoryRadioForm';
 import CommunityList from '@/components/CommunityList';
-import Top from '@/components/Icon/top';
+import Top from '@/components/Icon/Top';
 import SearchInput from '@/components/Input/SearchInput';
 import useFetchData from '@/hooks/useFetchData';
 import RootLayout from '@/layout/RootLayout';
