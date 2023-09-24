@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/a11y';
-import '@/styles/Swiper.css'
+import '@/styles/swiper.css'
 import propTypes from 'prop-types';
 
 
