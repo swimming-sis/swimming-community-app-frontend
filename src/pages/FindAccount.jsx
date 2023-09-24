@@ -30,9 +30,9 @@ function FindAccount() {
     try {
       fetchIdData(formIdState);
       setValidationId(true);
-      setTimeout(() => {
-        navigate('/login');
-      }, 10000);
+      // setTimeout(() => {
+      //   navigate('/login');
+      // }, 10000);
     } catch (error) {
       throw new Error(error);
     }
