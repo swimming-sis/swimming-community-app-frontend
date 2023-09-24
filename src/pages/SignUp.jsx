@@ -331,11 +331,13 @@ function SignUp() {
 
         if (result){
           toast.success('인증에 성공했어요. 회원가입 버튼을 눌러주세요!')
-        }else(
-          toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
-          )
+        }
+        // else{
+
+        //   toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
+        // }
         }catch(error){
-          toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
+          // toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
       }
   };
 
