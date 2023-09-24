@@ -13,8 +13,10 @@ function DatePickerComponent({ defaultValue, onChange }) {
         format="YYYY-MM-DD"
         onChange={onChange}
         className='rounded-xl shadow-md font-pretendard'
-        InputLabelProps={{ shrink: true }}
-        InputProps={{ disableUnderline: true }}
+        type
+        // InputLabelProps={{ shrink: true }}
+        // InputProps={{ disableUnderline: true }}
+        orientation={'portrait'}
         sx={{ minWidth: 100 }}
         slotProps={{
           textField: { 
@@ -27,9 +29,9 @@ function DatePickerComponent({ defaultValue, onChange }) {
           inputAdornment: {
             position: 'start',
           },
-          tabs: {
-            hidden: false,
-          },
+          // tabs: {
+          //   hidden: false,
+          // },
         }}
       />
     </LocalizationProvider>

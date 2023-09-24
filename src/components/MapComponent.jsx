@@ -266,8 +266,6 @@ function MapComponent() {
       const overlay = new kakao.maps.CustomOverlay(overlayOptions);
 
       
-
-
       overlay.setMap(map);
       setCustomOverlay(overlay);
       return () => {
@@ -328,14 +326,14 @@ function MapComponent() {
             kakao.maps.event.addListener(marker, 'click', function () {
               overlay2.setMap(map);
             });
-            map.setBounds(bounds)
+            map?.setBounds(bounds)
             setSearchCustomOverlay(marker);
   
             marker.setMap(map);
           });
         }
+        addItem(data);
       };
-  
       const searchOptions = {
         location: options.center,
         useMapCenter: true,
