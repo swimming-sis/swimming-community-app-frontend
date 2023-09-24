@@ -8,8 +8,7 @@ import Timer from '@/components/Timer';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import toast from 'react-hot-toast';
 import LoginLayout from '@/layout/LoginLayout';
-import Show from '@/components/Icon/Show';
-import Hide from '@/components/Icon/Hide';
+
 
 
 const userNameRegex = /^[a-z][a-z0-9]{5,14}$/;
@@ -19,8 +18,6 @@ const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
 function SignUp() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
   const [formState, setFormState] = useState({
     userName: '',
     nickName: '',
@@ -203,12 +200,7 @@ function SignUp() {
     }));
   }, 200);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-  const toggleShowPasswordCheck = () => {
-    setShowPasswordCheck(!showPasswordCheck);
-  };
+
 
   const handleDebounceInput = debounce(handleInput, 100);
 
@@ -326,9 +318,7 @@ function SignUp() {
     toast.success('인증번호가 전송되었어요 🤗')
     await postSendValidation({ to: formState.phoneNumber });
   };
-  console.log(phoneValidation, formState.phoneNumber);
-
-
+  
   const handleValidation = async() => {
     setPhoneValidation((prev) => ({
       ...prev,
@@ -397,7 +387,7 @@ function SignUp() {
         <LogInText
           id={'loginPw'}
           content={'비밀번호'}
-          type={showPassword ? 'text' : 'password'}
+          type={'password'}
           name="password"
           onChange={handleDebounceInput}
           validation={isValidformState.password}
@@ -407,25 +397,14 @@ function SignUp() {
         <LogInText
           id={'loginPwCheck'}
           content={'비밀번호 확인'}
-          type={showPasswordCheck ? 'text' : 'password'}
+          type={"password"}
           name="passwordConfirm"
           onChange={handleDebounceInput}
           validation={isValidformState.passwordConfirm}
           placeholder={''}
           errorMessage={errorMessages.passwordConfirm}
         />
-          <button
-          type='button'
-          className='absolute right-8 top-[218px]'
-          onClick={toggleShowPassword}>
-            {showPassword ? <Show /> :  <Hide />}
-          </button>
-          <button
-          type='button'
-          className='absolute right-8 top-[305px]'
-          onClick={toggleShowPasswordCheck}>
-            {showPasswordCheck ? <Show /> :  <Hide />}
-          </button>
+
         <div className="flex items-center">
           <LogInText
             id={'loginTel'}

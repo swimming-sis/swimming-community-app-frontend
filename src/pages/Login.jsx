@@ -1,7 +1,4 @@
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
-// import Chat from '@/components/Icon/Chat';
-import Hide from '@/components/Icon/Hide';
-import Show from '@/components/Icon/Show';
 import LogInText from '@/components/Input/LogInText';
 import LoginLayout from '@/layout/LoginLayout';
 import { createShakeAnimation } from '@/utils/animation/createShakeAnimation';
@@ -18,7 +15,6 @@ function Login() {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const signIn = useAuthStore((state) => state.signIn);
-  const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState({
     userName: '',
     password: '',
@@ -53,9 +49,6 @@ function Login() {
     });
   }, 200);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   return (
       <div className="font-pretendard flex flex-col  min-w-[320px] max-w-[699px] mx-auto px-[10px] h-screen">
@@ -77,7 +70,7 @@ function Login() {
           <LogInText
             id={'loginPw'}
             content={'비밀번호'}
-            type={showPassword ? 'text' : 'password'}
+            type={'password'}
             name="password"
             validation={true}
             placeholder={''}
@@ -86,12 +79,6 @@ function Login() {
             onChange={handleInput}
             errorMessage={'비밀번호를 확인해주세요.'}
           />
-          <button
-          type='button'
-          className='absolute right-8 top-[133px]'
-          onClick={toggleShowPassword}>
-            {showPassword ? <Show /> :  <Hide />}
-          </button>
           {/* <div className="flex gap-x-1 justify-end mr-2.5 items-start flex-grow mb-8">
             <input
               type="checkbox"
