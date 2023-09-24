@@ -33,8 +33,8 @@ function Login() {
       const userData = await signIn(formState);
       if (userData.token && userData.user) {
         // window.localStorage.setItem('token',userData.token);
-        setItemWithExpireTime('token', userData.token, 1.8e7);
-        setItemWithExpireTime('user', userData.user.userName, 1.8e7);
+        setItemWithExpireTime('token', userData.token, 7.2e+6);
+        setItemWithExpireTime('user', userData.user.userName, 7.2e+6);
 
         toast.success('로그인 되었습니다. 🥰');
       }
@@ -117,8 +117,8 @@ function Login() {
           /> */}
           <ButtonSubmit content={'로그인'} />
         </form>
-        <div className="flex flex-col justify-end items-center mb-8">
-          <Link to="/signup" className="text-sm font-semibold">
+        <div className="flex flex-col justify-end items-center mt-4 mb-8">
+          <Link to="/signup" className="text-sm font-semibold my-2">
             회원가입
           </Link>
           <div>
@@ -127,7 +127,6 @@ function Login() {
             <span aria-hidden='true' className='text-sm text-primary'>/</span>
               비밀번호 찾기
             </Link>
-
           </div>
         </div>
       </div>
