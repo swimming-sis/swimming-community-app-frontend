@@ -11,26 +11,30 @@ const Nav = memo(function Nav() {
       <ul className="flex justify-evenly items-center h-14  max-w-[699px] mx-auto shadow-[0px_-4px_4px_0px_rgba(0,0,0,0.25)]">
         <li>
           <NavLink to="/main"
+          aria-label='홈으로 가기'
           className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
             <House />홈
           </NavLink>
         </li>
       <li>
           <NavLink to="/search/list"
-          className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
+            aria-label='수영장 검색하기'
+            className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
             <Search size={17} />
             검색
           </NavLink>
         </li>
       <li>
           <NavLink to="/community"
-          className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
+            aria-label='커뮤니티'
+            className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
             <People />
             커뮤니티
           </NavLink>
         </li>
       <li>
           <NavLink to="/mylog"
+            aria-label='수영 일지'
           className={({isActive})=>isActive?'flex flex-col items-center border-b-primary border-b-2 ':'flex flex-col items-center'}>
             <Paper />
             일지

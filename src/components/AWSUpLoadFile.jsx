@@ -1,8 +1,9 @@
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { useState } from "react";
 import UpLoadFile from "./UpLoadFile";
+import toast from "react-hot-toast";
 
-const client = new S3Client({ region: "<region>" });
+const client = new S3Client({ region: `${import.meta.env.VITE_AWS_S3_REGION}` });
 
 function AWSUPLoadFile() {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -12,10 +13,10 @@ function AWSUPLoadFile() {
     const fileExt = file.name.split('.').pop().toLowerCase();
 
     // 허용되는 확장자 목록
-    const allowedExtensions = ['jpg', 'jpeg', 'png'];
+    const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif','webp'];
 
     if (!allowedExtensions.includes(fileExt)) {
-      alert('jpg, jpeg, png 파일만 업로드가 가능합니다.');
+      toast.error('jpg, jpeg, png, gif, webp 파일만 업로드가 가능합니다.');
       return;
     }
 
@@ -26,22 +27,22 @@ function AWSUPLoadFile() {
     if (!selectedFile) return;
 
     const uploadParams = {
-      Bucket: "<bucket-name>",
-      Key: `upload/${selectedFile.name}`,
+      Bucket: `${import.meta.env.VITE_AWS_S3_BUCKET_NAME}`,
+      Key: `category/${selectedFile.name}`,
       Body: selectedFile,
     };
 
     try {
       const result = await client.send(new PutObjectCommand(uploadParams));
       console.log("Successfully uploaded file.", result);
-    } catch (err) {
-      console.error("Error occurred while uploading file:", err);
+    } catch (error) {
+      console.error("Error occurred while uploading file:", error);
     }
   };
 
   return (
     <>
-      <UpLoadFile onChange={onFileChange} onClick={uploadS3}/>
+      <UpLoadFile onChange={onFileChange} onClick={uploadS3} selectedFile={selectedFile}/>
     </>
   );
 }

@@ -7,13 +7,14 @@ function UpLoadFile({ id = 'community', onChange,onClick }) {
 
   return (
     <div>
-      <label htmlFor={`upLoadFile-${id}`}  aria-label='파일 업로드'>
+      <label htmlFor={`upLoadFile-${id}`}
+      className='w-full'
+      aria-label='파일 업로드'>
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width="300"
-        height="125"
+        width="699"
         fill="none"
-        className="w-full"
+        className="w-full my-4"
         viewBox="0 0 300 125">
         <rect width="300" height="125" fill="#D9D9D9" rx="10"></rect>
         <path
@@ -27,6 +28,7 @@ function UpLoadFile({ id = 'community', onChange,onClick }) {
       name="upLoadFile" 
       className='hidden'
       onChange={onChange}
+      multiple
       />
       <button type='button' onClick={onClick} ></button>
     </div>

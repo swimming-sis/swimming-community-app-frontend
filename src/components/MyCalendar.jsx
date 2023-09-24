@@ -6,7 +6,7 @@ import propTypes from 'prop-types';
 import { useCallback } from 'react';
 import useFetchData from '@/hooks/useFetchData';
 
-function MyCalendar({ onClick }) {
+function MyCalendar({ onClick,disabled=false }) {
   const [currentMonth, setCurrentMonth] = useState([]);
   const [monthOffset, setMonthOffset] = useState(0);
   const [holidays, setHolidays] = useState({});
@@ -108,7 +108,7 @@ function MyCalendar({ onClick }) {
   );
 
   return (
-    <div className="border shadow-md rounded-2xl mx-2.5">
+    <div className="border shadow-md rounded-2xl mx-2.5 pb-3">
       <div className="flex justify-between items-center  p-2 border-b">
         <p
           tabIndex={0}
@@ -120,10 +120,12 @@ function MyCalendar({ onClick }) {
         <button
           onClick={() => setMonthOffset(monthOffset - 1)}
           className="mr-2 py-1 px-3 rounded order-1"
+          disabled={disabled}
           aria-label="이전 달">
           <Direction />
         </button>
         <button
+         disabled={disabled}
           onClick={() => setMonthOffset(monthOffset + 1)}
           className="py-1 px-3 rounded order-3"
           aria-label="다음 달">
@@ -140,35 +142,44 @@ function MyCalendar({ onClick }) {
         ))}
       </div>
       <div className="grid grid-cols-7 gap-0.5 text-xs py-0 px-4 text-secondary">
-        {currentMonth.map((day, index) => (
-          <button
-            key={index}
-            data-log-id={day.dateInfo}
-            type="button"
-            onClick={handleClickDateButton}
-            aria-label={day.a11y}
-            className={`text-center w-full h-12 items-start rounded-lg hover:bg-quaternary
+  {currentMonth.map((day, index) => (
+    day.date === ''
+      ? <div key={index} />
+      : <button
+          disabled={disabled}
+          key={index}
+          data-log-id={day.dateInfo}
+          type="button"
+          onClick={handleClickDateButton}
+          aria-label={logData.some((log) => log === day.dateInfo)
+            ? `${day.a11y} 작성된 일지가 있습니다`
+            : `${day.a11y}`
+          }
+          className={`text-center w-full h-12 items-start rounded-lg hover:bg-quaternary
             ${day.isToday ? 'border-2 border-primary text-primary font-semibold' : ''}
             ${
-                selectedDate === day.dateInfo
-                ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
-                : ''
+              selectedDate === day.dateInfo
+              ? 'border-2 border-primary text-primary bg-quaternary font-semibold'
+              : ''
             }
             ${holidays[day.dateInfo] ? 'text-error' : ''}
-            ${day.dayOfWeek === 'sun' ? 'text-error' : ''}
-            `}>
-            {day.date}
+            ${day.dayOfWeek === 'sun' ? 'text-error' : ''}`}
+        >
+        {day.date}
 
-            {logData.some((log) => log === day.dateInfo) ? 
-              <SwimmingKickBoard color="#0086FF" />:<SwimmingKickBoard color="none" />
-            }
-          </button>
-        ))}
-      </div>
-    </div>
+        {logData.some((log) => log === day.dateInfo)
+          ? <SwimmingKickBoard color="#0086FF" />
+          : <SwimmingKickBoard color="none" />
+        }
+      </button>
+  ))}
+</div>
+</div>
+
   );
 }
 MyCalendar.propTypes = {
   onClick: propTypes.func,
+  disabled: propTypes.bool,
 };
 export default MyCalendar;

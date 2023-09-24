@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = memo(function Header({ 
   type = 'default', 
   content = '', 
+  label, 
   noEdit=true, 
   deleteButton=false, 
   onNavigate=false,
@@ -48,7 +49,7 @@ const Header = memo(function Header({
         {noEdit&&
         <button type="button"
         onClick={onClickEdit}>
-          <Pencil />
+          <Pencil label={label}/>
         </button>
         }
         {(deleteButton) &&
@@ -83,6 +84,7 @@ const Header = memo(function Header({
 })
 Header.propTypes = {
   type: propTypes.string,
+  label: propTypes.string,
   value: propTypes.string,
   content: propTypes.string,
   noEdit: propTypes.bool,

@@ -4,14 +4,18 @@ import Hide from '@/components/Icon/Hide';
 import Show from '@/components/Icon/Show';
 import LogInText from '@/components/Input/LogInText';
 import LoginLayout from '@/layout/LoginLayout';
+import { createShakeAnimation } from '@/utils/animation/createShakeAnimation';
 import debounce from '@/utils/debounce';
 import { setItemWithExpireTime } from '@/utils/expireTime';
 import useAuthStore from '@/zustand/useAuthStore';
+import { useRef } from 'react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
+
+  const formRef = useRef(null);
   const navigate = useNavigate();
   const signIn = useAuthStore((state) => state.signIn);
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +28,7 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    
     try {
       const userData = await signIn(formState);
       if (userData.token && userData.user) {
@@ -33,10 +37,9 @@ function Login() {
         setItemWithExpireTime('user', userData.user.userName, 1.8e7);
 
         toast.success('로그인 되었습니다. 🥰');
-      } else {
-        return;
       }
     } catch (error) {
+      createShakeAnimation(formRef.current);
       return;
     }
     navigate('/main');
@@ -57,7 +60,9 @@ function Login() {
   return (
       <div className="font-pretendard flex flex-col  min-w-[320px] max-w-[699px] mx-auto px-[10px] h-screen">
         <LoginLayout content={'어푸어푸 로그인'}/>
-        <form className="relative flex flex-col flex-grow" onSubmit={handleLogin}>
+        <form 
+        ref={formRef}
+        className="relative flex flex-col flex-grow" onSubmit={handleLogin}>
           <LogInText
             id={'loginId'}
             content={'아이디'}

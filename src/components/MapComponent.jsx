@@ -286,6 +286,7 @@ function MapComponent() {
             const coords = new kakao.maps.LatLng(data[i].y, data[i].x);
             const overlayContent = /* html */ `
             <figure
+
             class='mapFigure'>
             <svg 
             xmlns="http://www.w3.org/2000/svg" 
@@ -348,11 +349,13 @@ function MapComponent() {
   }, [mixed]);
 
   return (
-    <div className="relative">
+    <div className="relative" >
       <div
+      
         id="map"
         ref={mapRef}
-        className="w-[calc(100%-20px)] h-[200px] mx-auto rounded-xl relative"></div>
+        className="w-[calc(100%-20px)] h-[200px] mx-auto rounded-xl relative">
+
       <button
         type="submit"
         onClick={handleSearch}
@@ -361,6 +364,7 @@ function MapComponent() {
       </button>
       <div className="absolute z-10 right-6 top-2">
         <button
+          aria-label='현재 내위치 탐색하기'
           type="button"
           className="relative border bg-white shadow-sm w-7 h-7 rounded-md"
           onClick={handleLocateMe}>
@@ -369,18 +373,21 @@ function MapComponent() {
       </div>
       <div className="flex flex-col absolute bottom-4 right-6 z-10">
         <button
+          aria-label='지도 축소하기'
           type="button"
           className="w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-t-md shadow-sm font-semibold text-xl"
           onClick={handleZoomIn}>
           <Minus className="mx-auto" />
         </button>
         <button
+          aria-label='지도 확대하기'
           type="button"
           className="w-7 h-7 px-0.5 text-gray/600 text-center border bg-white rounded-b-md shadow-sm font-semibold text-xl"
           onClick={handleZoomOut}>
           <Plus className="mx-auto" />
         </button>
       </div>
+        </div>
     </div>
   );
 }

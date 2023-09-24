@@ -119,7 +119,7 @@ function PoolSearchReivew() {
   };
   
   return (
-    <div>
+    <div className=''>
       <Helmet>
         <title>수영장 별 리뷰</title>
       </Helmet>

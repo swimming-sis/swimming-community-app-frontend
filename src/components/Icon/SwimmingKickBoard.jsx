@@ -2,7 +2,10 @@ import propTypes from 'prop-types';
 
 function SwimmingKickBoard ({color="#none"}) {
   return (
-    <figure>
+    <figure
+    className='.calenderFigure'
+    aria-labelledby={(color!=='none') && 'figcaption'}
+    >
       <svg
       xmlns="http://www.w3.org/2000/svg"
       width="22"

@@ -11,6 +11,7 @@ function PoolList({
   link,
   rating = 0.0,
   distance,
+  onKeyDown,
   onClick,
   review = false,
 }) {
@@ -18,8 +19,10 @@ function PoolList({
     <ol>
       {review ? (
         <li
-          className="relative border p-3 rounded-xl shadow-md mx-2.5 list-none font-pretendard text-sm my-5"
-          onClick={onClick}>
+          className="relative border p-3 rounded-xl shadow-md mx-2.5 list-none font-pretendard text-sm my-6"
+          tabIndex={0}
+          onClick={onClick}
+          onKeyDown={onKeyDown}>
           <p className="text-base font-semibold text-primary ">{title}</p>
           {address && <p className="text-gray/700">{address}</p>}
           {tel && <p className="text-gray/700">{tel}</p>}
@@ -36,8 +39,10 @@ function PoolList({
         </li>
       ) : (
         <li
-          className="relative border p-3 rounded-xl shadow-md mx-2.5 list-none font-pretendard text-sm "
-          onClick={onClick}>
+          className="relative border p-3 rounded-xl shadow-md mx-2.5 list-none font-pretendard text-sm my-3"
+          tabIndex={0}
+          onClick={onClick}
+          onKeyDown={onKeyDown}>
           <div key={id}>
             <p className="text-base font-semibold text-primary ">{title}</p>
             {address && <p className="text-gray/700">{address}</p>}
@@ -60,6 +65,7 @@ PoolList.propTypes = {
   review: propTypes.bool,
   title: propTypes.string,
   onClick: propTypes.func,
+  onKeyDown: propTypes.func,
   rating: propTypes.number,
   address: propTypes.string,
   distance: propTypes.oneOfType([propTypes.number, propTypes.string]),

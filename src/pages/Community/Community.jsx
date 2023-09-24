@@ -48,6 +48,7 @@ function Community() {
       );
       setPostData(orderDate);
     }
+    console.log(postData);
   }, [fetchListData]);
 
   const handleTop = () => {

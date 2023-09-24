@@ -15,7 +15,7 @@ function ReviewTagCheckbox({ isActive=false, onClick, content }) {
       <label
         htmlFor={`reviewTag-${content}`}
         tabIndex={0}
-        className={`${style.reviewTagLabelInactive} ${!isActive || style.reviewTagLabelActive} flex-shrink-0`}>
+        className={`${style.reviewTagLabelInactive} ${!isActive || style.reviewTagLabelActive} flex-shrink-0 text-xs`}>
         {content}
       </label>
     </>

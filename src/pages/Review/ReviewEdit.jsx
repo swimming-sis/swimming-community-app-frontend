@@ -53,7 +53,7 @@ const {contents,ratingStar} =reviewState
       setCheckedItems(tags)
     }
   }, [fetchReviewData]);
-  console.log(formState);
+
 
 
   const handleSubmit = (e) => {
@@ -152,7 +152,7 @@ const {contents,ratingStar} =reviewState
       </Helmet>
       <Header content="리뷰 작성 하기" noEdit={false} onClickBack={handleBack} onNavigate={true} />
       <p className="ml-2.5 text-sm my-2 text-secondary font-medium">적절한 항목을 선택해 주세요.</p>
-      <div className='flex gap-x-2 gap-y-2 flex-wrap py-4 px-2'>
+      <div className='flex gap-x-1 gap-y-1 flex-wrap py-4 px-2'>
         <ReviewTagCheckboxGroup
         checkedItems={checkedItems}
         onItemCheck={handleCheckboxClick}/>
@@ -162,7 +162,7 @@ const {contents,ratingStar} =reviewState
         placeholder="다녀온 수영장의 리뷰를 남겨 주세요."
         onChange={handleInput}
         defaultValue={contents}
-        className="flex-grow"
+        className="flex-grow  min-h-[280px]"
       />
       <p className="ml-2.5 text-sm mt-6 mb-2 text-secondary font-medium">별점을 매겨주세요.</p>
       <RatingStar 

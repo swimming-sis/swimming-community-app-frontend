@@ -55,7 +55,7 @@ function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChan
   slidesOffsetAfter = {30}
   slidesPerView= {'auto'}
   // autoHeight={true}
-  className='h-12'
+  className='min-h-24'
 
 >
 {(write ? categoryWriteArr : categoryArr).map((category) => (

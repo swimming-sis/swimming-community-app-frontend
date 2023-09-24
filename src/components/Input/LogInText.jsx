@@ -18,7 +18,6 @@ return (
   className={`flex flex-col gap-y-2 justify-start items-center m-2 ${className}`}>
   <label 
     htmlFor={id}
-    tabIndex={0}
     className='w-full text-sm font-medium text-secondary'>
     {content}
   </label>
@@ -33,6 +32,7 @@ return (
     className={`w-full h-8 px-1 py-5 border border-gray/300 rounded-lg text-sm placeholder:text-xs flex-grow-0`}/>
   {validation ? null:<p
   className='w-full -mt-2 text-xs text-error ml-2'
+  tabIndex={0}
   >
     {errorMessage}
   </p>}

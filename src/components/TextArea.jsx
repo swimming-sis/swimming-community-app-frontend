@@ -5,7 +5,7 @@ function TextArea ({
   placeholder="오늘의 수영일지를 기록해보세요", 
   id='logTextArea', defaultValue,
   name='body',
-  className='min-h-[280px]', 
+  className, 
   onChange}) {
 return (
   <textarea 
@@ -16,7 +16,7 @@ return (
   defaultValue={defaultValue}
   placeholder={placeholder}
   onChange={onChange}
-  className={`w-full border shadow-lg resize-none rounded-2xl p-2 placeholder:text-sm text-sm ${className}`}>
+  className={`w-full border shadow-lg resize-none rounded-2xl p-2 placeholder:text-sm text-sm min-h-[280px] ${className}`}>
   </textarea>
 )
 }

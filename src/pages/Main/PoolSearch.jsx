@@ -29,7 +29,7 @@ function PoolSearch() {
 
 
   return (
-    <div className="min-w-[320px] max-w-[699px] mx-auto font-pretendard h-screen mb-20">
+    <div className="min-w-[320px] max-w-[699px] mx-auto font-pretendard h-screen pb-20">
       <Helmet>
         <title className="sr-only">전국 수영장 검색하기</title>
       </Helmet>

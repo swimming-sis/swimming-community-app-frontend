@@ -70,7 +70,7 @@ function ReviewDetail (){
     };
 
   return (
-    <div className="relative  mx-auto  min-w-0 max-w-[699px] w-[calc(100%-20px)] font-pretendard">
+    <div className="relative  mx-auto  min-w-0 max-w-[699px] w-[calc(100%-20px)] font-pretendard pb-20">
       <RootLayout content={'리뷰'} onClickEdit={handleWrite}/>
       {reviewData.map((review) => (
             <ReviewList

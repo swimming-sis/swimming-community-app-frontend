@@ -1,6 +1,7 @@
 import ButtonLog from "@/components/Button/ButtonLog"
 import MyCalendar from "@/components/MyCalendar"
 import RootLayout from "@/layout/RootLayout"
+import { Helmet } from "react-helmet-async"
 
 import { Outlet, useNavigate } from "react-router-dom"
 
@@ -20,8 +21,11 @@ function MyLog() {
 
 
   return (
-    <div className="min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen">
+    <div className="min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen pb-20">
       <RootLayout content="수영일지" onClickEdit ={handleEdit} />
+      <Helmet>
+        <title>수영 일지</title>
+      </Helmet>
       <MyCalendar onClick={handleCheckDate} />
       <div className="flex mt-6 items-center justify-between mr-6">
         <h1 className='ml-4 font-semibold'>운동기록</h1>

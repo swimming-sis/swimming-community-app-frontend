@@ -2,8 +2,11 @@
 display: inline-flex;
 flex-direction: row;
 width: 100vw;
-height: 60px;
+
 }
 .swiper-slide{
   width: 65px;
+}
+.swiper-horizontal{
+  height: 2.25rem;
 }

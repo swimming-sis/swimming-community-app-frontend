@@ -77,12 +77,14 @@ const navigate = useNavigate();
         <title>내 계정</title>
       </Helmet>
       <RootLayout
+        label={'계정 수정하기'}
         content={'내 계정'}
         onClickEdit={() => {
           navigate('/accountEdit');
         }}
       />
-      <ul className="text-sm py-4 px-2.5">
+      <ul className="text-sm py-4 px-2.5"
+      tabIndex={0}>
         <li className="flex my-4 ">
           <strong className="w-20">아이디</strong>
           <p>{fetchAccountData?.result.userName}</p>

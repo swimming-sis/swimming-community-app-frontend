@@ -20,7 +20,10 @@ const PoolSearchList = () => {
   );
 
 
-const handleClick = async(item)=>{
+const handleClick = async(item, e)=>{
+  if (e.type === 'keydown' && !(e.key === 'Enter' || e.key === ' ')) {
+    return;
+  }
   const updatedMapState = {
     ...mapState,
     phone:item.phone,
@@ -39,7 +42,7 @@ const handleClick = async(item)=>{
 
 
   return (
-    <>
+    <div className="pb-20">
     {items[0]?.map((item) => {
       return (
         <PoolList
@@ -49,13 +52,14 @@ const handleClick = async(item)=>{
           tel={item.phone}
           link={item.place_url}
           distance={item.distance < 1000 ? `${item.distance}m` : `${item.distance / 1000}km`}
-          onClick={() => handleClick(item)}
+          onClick={(e) => handleClick(item,e)}
+          onKeyDown={(e) => handleClick(item,e)}
           id={item.id}
           review={false}
         />
       );
     })}
-  </>
+  </div>
 
   );
 };

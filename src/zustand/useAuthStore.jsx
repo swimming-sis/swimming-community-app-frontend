@@ -1,6 +1,7 @@
 import toast from 'react-hot-toast';
 import { create } from 'zustand';
 
+
 const initalAuthState = {
   isAuth: false,
   user: null,
@@ -52,6 +53,7 @@ const authStore = create((set, get) => ({
     if (!response.ok || resultCode !== "SUCCESS") {
       if (result?.errorCode === "INVALID_PASSWORD") {
         toast.error('비밀번호가 다릅니다. 🥹');
+        
       } else {
         toast.error('사용자 정보가 올바르지 않습니다. 🥹');
       }

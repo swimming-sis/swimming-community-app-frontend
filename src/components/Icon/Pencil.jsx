@@ -1,6 +1,6 @@
 import propTypes from 'prop-types';
 
-function Pencil({size=20}) {
+function Pencil({size=20,label='작성하기'}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +8,7 @@ function Pencil({size=20}) {
       height={size}
       fill="none"
       viewBox="0 0 20 20"
-      aria-label='수정하기'
+      aria-label={label}
     >
       <path
         stroke="#001B33"
@@ -22,6 +22,7 @@ function Pencil({size=20}) {
 }
 
 Pencil.propTypes = {
-  size: propTypes.number
+  size: propTypes.number,
+  label: propTypes.string,
 }
 export default Pencil;

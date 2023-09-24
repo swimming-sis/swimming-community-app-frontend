@@ -247,7 +247,7 @@ function CommunityDetail() {
           <p className="text-sm text-secondary font-semibold">{title}</p>
         </div>
         <div className="relative border shadow-md rounded-lg min-h-[200px] px-2.5 py-1.5 mt-3 mb-2">
-          <div className="flex gap-x-1 items-center">
+          <div className="flex justify-between items-center">
             <p className="text-gray/500 font-semibold text-xs ml-1">{nickName}</p>
             <time
               dateTime="YYYY-MM-DDThh:mm:ss"

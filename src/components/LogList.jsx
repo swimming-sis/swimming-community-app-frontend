@@ -3,9 +3,14 @@ import { Link } from 'react-router-dom';
 
 function LogList({id,onClick,distance=0, calory=0, time=0,contents='',logId}) {
   return (
-    <div className="relative border shadow-lg py-2.5 px-4 rounded-2xl my-2">
-      <ul className='text-sm text-secondary'>
-        <li className='flex my-1'>
+    <div className="relative border shadow-lg py-2.5 px-4 rounded-2xl mx-auto my-2"
+    tabIndex={0}>
+      <ul 
+      
+      className='text-sm text-secondary'>
+        <li 
+        
+        className='flex my-1 '>
           <p className='w-20'> 거리</p>
           <p>
             <span className='mr-2' aria-hidden>:</span>

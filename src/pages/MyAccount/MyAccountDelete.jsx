@@ -35,7 +35,10 @@ function MyAccountDelete() {
         <title>회원 탈퇴</title>
       </Helmet>
       <Header noEdit={false} content={'회원 탈퇴'} />
-      <div className='px-6 pr-4 flex-grow'>
+      <div 
+      
+      tabIndex={0}
+      className='px-6 pr-4 flex-grow'>
         <strong className='block font-medium mt-10'>회원 탈퇴 동의서</strong>
         <ul className='list-disc my-5 px-2'>
           <li className='my-10 text-sm'>

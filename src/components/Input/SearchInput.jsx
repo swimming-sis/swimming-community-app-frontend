@@ -26,7 +26,7 @@ function SearchInput({
       htmlFor={id} 
       hidden={hidden}
       className=" text-secondary mt-3 mb-2 ml-4" 
-      tabIndex={0}>
+      >
         {content}
       </label>
       <input

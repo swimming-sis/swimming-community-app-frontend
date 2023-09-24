@@ -52,7 +52,7 @@ const localUser = JSON.parse(window.localStorage.getItem('user')).value;
             <textarea
               defaultValue={commentContent}
               onChange={onChange}
-              className="w-[90%] h-full resize-none"></textarea>
+              className="w-[80%] h-full resize-none"></textarea>
           ) : (
             <>
               <p className="text-gray/500 font-semibold text-xs ml-1.5 mb-1">{user}</p>
