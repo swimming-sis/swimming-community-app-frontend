@@ -8,10 +8,9 @@ import debounce from '@/utils/debounce';
 import toast from 'react-hot-toast';
 import useFetchPostData from '@/hooks/useFetchPostData';
 import { useNavigate } from 'react-router-dom';
-
 import useModalStore from '@/zustand/useModalStore';
 import ModalComplex from '@/components/ModalComplex';
-import AWSUPLoadFile from '@/components/AWSUpLoadFile';
+// import AWSUPLoadFile from '@/components/AWSUpLoadFile';
 
 function CommunityWrite() {
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ function CommunityWrite() {
       ...formState,
       [name]: value,
     });
-  }, 400);
+  }, 200);
   const handleDone = () => {
     setContent('게시글을 작성 하시겠습니까?');
     openModal('write');
@@ -107,7 +106,7 @@ function CommunityWrite() {
         onChange={handleInput}
         className="h-60 mb-auto flex-grow"
       />
-      <AWSUPLoadFile/>
+      {/* <AWSUPLoadFile/> */}
       <ButtonSubmit onClick={handleDone} type="button" content="작성완료" className="mt-10 mb-10" />
     <ModalComplex onClick={handleConfirm}/>
     </form>

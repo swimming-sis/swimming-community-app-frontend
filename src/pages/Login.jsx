@@ -39,8 +39,8 @@ function Login() {
         toast.success('로그인 되었습니다. 🥰');
       }
     } catch (error) {
-      createShakeAnimation(formRef.current);
-      return;
+      const shakeAnimation = createShakeAnimation(formRef.current);
+      shakeAnimation.play(); // <- 이 부분 추가
     }
     navigate('/main');
   };

@@ -1,7 +1,6 @@
 import propTypes from 'prop-types';
 import Heart from './Icon/Heart';
 import Chat from './Icon/Chat';
-
 import CategoryTag from './Category/CategoryTag';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -41,7 +40,8 @@ function CommunityList ({
   }, []);
 
   return(
-    <div className='relative'>
+    <div
+    className='relative'>
       <ol>
         <li
         tabIndex={0}

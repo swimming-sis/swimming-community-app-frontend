@@ -6,19 +6,20 @@ import useFetchData from '@/hooks/useFetchData';
 import RootLayout from '@/layout/RootLayout';
 import debounce from '@/utils/debounce';
 import { useNavigate } from 'react-router-dom';
-
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import toast from 'react-hot-toast';
-import ButtonConfirm from '@/components/Button/ButtonComfirm';
-import { Fragment } from 'react';
-import ModalComponent from '@/components/ModalComponent';
 import useModalStore from '@/zustand/useModalStore';
 import useDeleteData from '@/hooks/useFetchDeleteData';
+import gsap from 'gsap';
+import ModalComplex from '@/components/ModalComplex';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 function Community() {
+  gsap.registerPlugin(ScrollToPlugin);
   let navigate = useNavigate();
   const scrollContainer = useRef(null);
+  const communityRef = useRef(null);
   const [searchActive, setSearchActive] = useState(false);
   const [category, setCategory] = useState('');
   const [postData, setPostData] = useState([]);
@@ -30,7 +31,7 @@ function Community() {
     debounce((value) => setKeyword(value), 300),
     []
   );
-  const { openModal, closeModal, actionType, content, setContent } = useModalStore();
+  const { openModal, closeModal, actionType, setContent } = useModalStore();
   const fetchSearchData = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/posts/search?keyword=${keyword}`
   );
@@ -42,19 +43,19 @@ function Community() {
   );
 
   useEffect(() => {
-    if (fetchListData.data?.result?.content) {
+    if (fetchListData.data?.resultCode === 'SUCCESS') {
       const orderDate = fetchListData.data.result.content.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
       setPostData(orderDate);
     }
-    console.log(postData);
   }, [fetchListData]);
 
   const handleTop = () => {
-    if (scrollContainer.current) {
-      scrollContainer.current.scrollTop = 0;
-    }
+    gsap.to(window, {
+      scrollTo: 0,
+      duration: 0.7,
+    });
   };
   const handleWrite = () => {
     navigate('/communityWrite');
@@ -148,10 +149,6 @@ function Community() {
 
     openModal('writed');
   };
-
-  const handleCancle = () => {
-    closeModal();
-  };
   const handleConfirm = async () => {
     try {
       if (actionType === 'writed') {
@@ -168,7 +165,7 @@ function Community() {
   return (
     <div
       ref={scrollContainer}
-      className="container relative min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard h-screen mb-20">
+      className="relative min-w-[320px] max-w-[699px] mx-auto px-[10px] font-pretendard pb-20">
       <Helmet>
         <title>어푸어푸 커뮤니티</title>
       </Helmet>
@@ -187,7 +184,7 @@ function Community() {
         selectedCategory={category ? category : '전체'}
         onCategroyChange={handleChoiceCategory}
       />
-      <>
+      <div ref={communityRef}>
         {(searchActive ? searchData : postData).map((post) => (
           <CommunityList
             id={post.postId}
@@ -203,20 +200,9 @@ function Community() {
             userName={post.userName}
           />
         ))}
-      </>
+      </div>
       <Top onClick={handleTop} className="fixed bottom-20 right-6 shadow-2xl rounded-full" />
-      <ModalComponent>
-        <p className="my-4">
-          {content.split('\n').map((line, index) => (
-            <Fragment key={index}>
-              {line}
-              <br />
-            </Fragment>
-          ))}
-        </p>
-        <ButtonConfirm onClick={handleCancle} content="취소" confirm={false} />
-        <ButtonConfirm onClick={handleConfirm} />
-      </ModalComponent>
+      <ModalComplex onClick={handleConfirm} />
     </div>
   );
 }
