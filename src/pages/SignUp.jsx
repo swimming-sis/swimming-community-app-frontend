@@ -198,7 +198,7 @@ function SignUp() {
       ...prev,
       validationNumber: e.target.value,
     }));
-  }, 200);
+  }, 50);
 
 
 
@@ -351,9 +351,11 @@ function SignUp() {
 
   useEffect(()=>{
     if (validationData?.resultCode === 'SUCCESS') {
+      const validationResult = validationData.result
+
       setPhoneValidation((prev) => ({
         ...prev,
-        validationData: validationData.result,
+        validationData: validationResult,
       }));
     }
   },[validationData])
@@ -421,7 +423,7 @@ function SignUp() {
             type="button"
             onClick={handleSendNumber}
             disabled={!isValidformState.phoneNumber}
-            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${
+            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 flex-shrink-0 ${
               isValidformState.phoneNumber ? 'bg-primary' : 'bg-gray-600'
             } ${errorMessages.phoneNumber && 'mb-4'}`}>
             인증하기
@@ -441,7 +443,7 @@ function SignUp() {
             <button
             onClick={handleValidation}
               type="button"
-              className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
+              className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5 flex-shrink-0">
               인증완료
             </button>
           </div>
