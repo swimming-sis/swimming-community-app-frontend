@@ -422,7 +422,7 @@ function SignUp() {
           </button>
           <button
           type='button'
-          className='absolute right-8 top-[300px]'
+          className='absolute right-8 top-[305px]'
           onClick={toggleShowPasswordCheck}>
             {showPasswordCheck ? <Show /> :  <Hide />}
           </button>
