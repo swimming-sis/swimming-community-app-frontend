@@ -432,7 +432,7 @@ function SignUp() {
           </button>
         </div>
         {phoneValidation.sendState && (
-          <div className="relative flex">
+          <div className="relative flex w-full max-w-full">
             <input
               type="number"
               onChange={handleValidationNumber}
