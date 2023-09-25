@@ -451,7 +451,7 @@ function SignUp() {
           </div>
         )}
         <ButtonSubmit
-          className="flex flex-col items-center mt-10 "
+          className="flex flex-col items-center mt-20 "
           content={'회원가입'}
           disabled={
             !isValidformState.userName ||
