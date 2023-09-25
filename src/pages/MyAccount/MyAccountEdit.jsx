@@ -464,8 +464,7 @@ function MyAccountEdit() {
             !isValidformState.nickName ||
             !isValidformState.password ||
             !isValidformState.passwordConfirm ||
-            !isValidformState.phoneNumber ||
-            phoneValidation.validationData
+            !isValidformState.phoneNumber
           }
         />
         <ModalComponent>
