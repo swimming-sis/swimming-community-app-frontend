@@ -77,8 +77,8 @@ function PoolSearchReivew() {
         const sum = ratingStar.reduce((accumulator, currentValue) => {
           return (accumulator + currentValue.ratingStar);
         }, 0);
-        const avg = ratingStar.length>0?sum/ratingStar.length:null
-        const roundUpAvg=Math.round(avg* 10)/10
+          const avg = ratingStar.length>0?sum/ratingStar.length:null
+          const roundUpAvg=Math.round(avg* 10)/10
         setPoolData({
             ...poolData,
             ratingStar:roundUpAvg
