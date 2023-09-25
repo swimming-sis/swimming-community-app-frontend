@@ -172,6 +172,7 @@ function CommunityDetail() {
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
       setCommentData(orderDate);
+      fetchListData()
     }
   }, [fetchCommentData.data]);
 
