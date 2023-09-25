@@ -79,7 +79,7 @@ function MyAccountComment() {
   };
 
   return (
-    <>
+    <div className='pb-20'>
       {commentData.map((comment) => {
         return (
           <CommentList
@@ -98,7 +98,7 @@ function MyAccountComment() {
         );
       })}
 <ModalComplex onClick={handleConfirm}/>
-    </>
+    </div>
   );
 }
 
