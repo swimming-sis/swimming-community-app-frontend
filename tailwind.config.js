@@ -7,7 +7,7 @@ export default {
         pretendard: ["Pretendard Variable"],
       },
       colors: {
-        primary: "#0086FF",
+        primary: "#0074E6",
         secondary: "#001B33",
         tertiary: "#5FB2FD",
         quaternary: "#E9F4FF",

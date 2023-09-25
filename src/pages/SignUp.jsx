@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import LoginLayout from '@/layout/LoginLayout';
 
 
+
 const userNameRegex = /^[a-z][a-z0-9]{5,14}$/;
 const nickNameRegex = /^(?=.*[a-zA-Z0-9가-힣!@#$%^&*])[a-zA-Z0-9가-힣!@#$%^&*]{2,8}$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*\d)(?=.*[A-Z])|(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -17,7 +18,6 @@ const phoneNumberRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
 function SignUp() {
   const navigate = useNavigate();
-
   const [formState, setFormState] = useState({
     userName: '',
     nickName: '',
@@ -193,14 +193,16 @@ function SignUp() {
     }
   };
 
-  const handleValidationNumber = debounce((e) => {
+  const handleValidationNumber = (e) => {
     setPhoneValidation((prev) => ({
       ...prev,
       validationNumber: e.target.value,
     }));
-  }, 200);
+  };
 
-  const handleDebounceInput = debounce(handleInput, 200);
+
+
+  const handleDebounceInput = debounce(handleInput, 100);
 
   useEffect(() => {
     const checkDuplication = async () => {
@@ -316,9 +318,7 @@ function SignUp() {
     toast.success('인증번호가 전송되었어요 🤗')
     await postSendValidation({ to: formState.phoneNumber });
   };
-  console.log(phoneValidation, formState.phoneNumber);
-
-
+  
   const handleValidation = async() => {
     setPhoneValidation((prev) => ({
       ...prev,
@@ -328,12 +328,14 @@ function SignUp() {
       phoneNumber:formState.phoneNumber})
       try{
         const result = validationData?.result
-        console.log(result);
+
         if (result){
           toast.success('인증에 성공했어요. 회원가입 버튼을 눌러주세요!')
-        }else(
+        }
+        else{
+
           toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
-          )
+        }
         }catch(error){
           toast.error('인증번호가 틀렸어요. 다시 한번 확인해주세요!')
       }
@@ -351,18 +353,20 @@ function SignUp() {
 
   useEffect(()=>{
     if (validationData?.resultCode === 'SUCCESS') {
+      const validationResult = validationData.result
+
       setPhoneValidation((prev) => ({
         ...prev,
-        validationData: validationData.result,
+        validationData: validationResult,
       }));
     }
-  },[validationData])
+  },[validationData, phoneValidation])
 
   return (
     <div className='relative h-screen'>
       <LoginLayout content={'회원가입'} />
       <form
-        className="font-pretendard flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5"
+        className="relative font-pretendard flex flex-col min-w-[320px] max-w-[699px] mx-auto px-2.5"
         onSubmit={handleRegister}>
         <LogInText
           id={'loginId'}
@@ -387,7 +391,7 @@ function SignUp() {
         <LogInText
           id={'loginPw'}
           content={'비밀번호'}
-          type="password"
+          type={'password'}
           name="password"
           onChange={handleDebounceInput}
           validation={isValidformState.password}
@@ -397,13 +401,14 @@ function SignUp() {
         <LogInText
           id={'loginPwCheck'}
           content={'비밀번호 확인'}
-          type="password"
+          type={"password"}
           name="passwordConfirm"
           onChange={handleDebounceInput}
           validation={isValidformState.passwordConfirm}
           placeholder={''}
           errorMessage={errorMessages.passwordConfirm}
         />
+
         <div className="flex items-center">
           <LogInText
             id={'loginTel'}
@@ -420,12 +425,14 @@ function SignUp() {
             type="button"
             onClick={handleSendNumber}
             disabled={!isValidformState.phoneNumber}
-            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 ${isValidformState.phoneNumber?'bg-primary': 'bg-gray-600'}`}>
+            className={`text-white font-pretendard text-sm font-semibold h-10 mt-1 px-4 rounded-xl mr-2.5 flex-shrink-0 ${
+              isValidformState.phoneNumber ? 'bg-primary' : 'bg-gray-600'
+            } ${errorMessages.phoneNumber && 'mb-4'}`}>
             인증하기
           </button>
         </div>
         {phoneValidation.sendState && (
-          <div className="relative flex">
+          <div className="relative flex w-full max-w-full">
             <input
               type="number"
               onChange={handleValidationNumber}
@@ -438,13 +445,13 @@ function SignUp() {
             <button
             onClick={handleValidation}
               type="button"
-              className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5">
+              className="bg-primary text-white font-pretendard text-sm font-semibold h-10 px-4 rounded-xl my-auto mr-2.5 flex-shrink-0">
               인증완료
             </button>
           </div>
         )}
         <ButtonSubmit
-          className="flex flex-col items-center mt-10 "
+          className="flex flex-col items-center mt-20 "
           content={'회원가입'}
           disabled={
             !isValidformState.userName ||

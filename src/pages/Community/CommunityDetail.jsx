@@ -68,7 +68,7 @@ function CommunityDetail() {
   );
 
   const debouncedSetComment = useCallback(
-    debounce((value) => setFormState((prev) => ({ ...prev, comment: value })), 500),
+    debounce((value) => setFormState((prev) => ({ ...prev, comment: value })), 200),
     []
   );
 
@@ -172,6 +172,7 @@ function CommunityDetail() {
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       );
       setCommentData(orderDate);
+      fetchListData.fetchData()
     }
   }, [fetchCommentData.data]);
 

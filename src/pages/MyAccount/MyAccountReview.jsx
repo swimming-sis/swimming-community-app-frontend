@@ -54,7 +54,7 @@ function MyAccountReview (){
   };
 
   return (
-    <div>
+    <div className='pb-20'>
     {reviewData.map((review) => (
             <ReviewList
             key={review.reviewId}

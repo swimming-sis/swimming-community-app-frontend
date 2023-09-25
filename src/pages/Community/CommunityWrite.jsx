@@ -46,7 +46,9 @@ function CommunityWrite() {
         }
         fetchData(formState);
         closeModal();
-        navigate('/community');
+        setTimeout(() => {
+          navigate('/community');
+        }, 500);
       }
     } catch {
       toast.error('서버와의 통신이 제대로 이루어지지 않았어요');

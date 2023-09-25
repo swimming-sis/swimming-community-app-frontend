@@ -54,7 +54,7 @@ function MyAccountWrited() {
     }
   };
   return (
-    <>
+    <div  className='pb-20'>
       {postData.map((post) => (
         <CommunityList
           id={post.postId}
@@ -71,7 +71,7 @@ function MyAccountWrited() {
         />
       ))}
       <ModalComplex onClick={handleConfirmWrited}/>
-    </>
+    </div>
   );
 }
 

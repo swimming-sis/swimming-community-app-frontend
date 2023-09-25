@@ -4,6 +4,7 @@ import useFetchPostData from '@/hooks/useFetchPostData';
 import LoginLayout from '@/layout/LoginLayout';
 import debounce from '@/utils/debounce';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 function FindAccount() {
@@ -30,9 +31,9 @@ function FindAccount() {
     try {
       fetchIdData(formIdState);
       setValidationId(true);
-      setTimeout(() => {
-        navigate('/login');
-      }, 10000);
+      // setTimeout(() => {
+      //   navigate('/login');
+      // }, 10000);
     } catch (error) {
       throw new Error(error);
     }
@@ -43,6 +44,7 @@ function FindAccount() {
 
     try {
       await fetchPwData(formPwState);
+      toast.success('문자로 새로운 비밀번호가 발급되었습니다!')
       navigate('/login');
     } catch (error) {
       throw new Error(error);

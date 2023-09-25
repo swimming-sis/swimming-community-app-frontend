@@ -15,8 +15,11 @@ function MyLog() {
   }
 
   const handleCheckDate = (e) =>{
-    const selectedDate = e.currentTarget.getAttribute('data-log-id');
-    navigate(`/mylog/${selectedDate}`);
+    if(e){
+      const selectedDate = e.currentTarget.getAttribute('data-log-id');
+      navigate(`/mylog/${selectedDate}`);
+
+    }
   }
 
 

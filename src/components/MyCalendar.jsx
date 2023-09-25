@@ -15,7 +15,7 @@ function MyCalendar({ onClick,disabled=false }) {
   const { data: fetchLogData } = useFetchData(
     `${import.meta.env.VITE_UPUHUPUH_DB_URL}/api/v1/logs`
   );
-  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'TUR', 'FRI', 'SAT'];
+  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
   // 일지에서 날짜데이터를 추출하기위한 배열받아오기
   useEffect(() => {

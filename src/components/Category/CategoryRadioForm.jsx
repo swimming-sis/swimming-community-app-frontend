@@ -51,8 +51,8 @@ function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChan
     sticky: true
   }} 
   spaceBetween= {0}
-  slidesOffsetBefore = {10}
-  slidesOffsetAfter = {30}
+  slidesOffsetBefore = {30}
+  slidesOffsetAfter = {50}
   slidesPerView= {'auto'}
   // autoHeight={true}
   className='min-h-24'

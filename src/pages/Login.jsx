@@ -1,7 +1,4 @@
 import ButtonSubmit from '@/components/Button/ButtonSubmit';
-// import Chat from '@/components/Icon/Chat';
-import Hide from '@/components/Icon/Hide';
-import Show from '@/components/Icon/Show';
 import LogInText from '@/components/Input/LogInText';
 import LoginLayout from '@/layout/LoginLayout';
 import { createShakeAnimation } from '@/utils/animation/createShakeAnimation';
@@ -18,7 +15,6 @@ function Login() {
   const formRef = useRef(null);
   const navigate = useNavigate();
   const signIn = useAuthStore((state) => state.signIn);
-  const [showPassword, setShowPassword] = useState(false);
   const [formState, setFormState] = useState({
     userName: '',
     password: '',
@@ -33,8 +29,8 @@ function Login() {
       const userData = await signIn(formState);
       if (userData.token && userData.user) {
         // window.localStorage.setItem('token',userData.token);
-        setItemWithExpireTime('token', userData.token, 1.8e7);
-        setItemWithExpireTime('user', userData.user.userName, 1.8e7);
+        setItemWithExpireTime('token', userData.token, 7.2e+6);
+        setItemWithExpireTime('user', userData.user.userName, 7.2e+6);
 
         toast.success('로그인 되었습니다. 🥰');
       }
@@ -53,9 +49,6 @@ function Login() {
     });
   }, 200);
 
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
 
   return (
       <div className="font-pretendard flex flex-col  min-w-[320px] max-w-[699px] mx-auto px-[10px] h-screen">
@@ -77,7 +70,7 @@ function Login() {
           <LogInText
             id={'loginPw'}
             content={'비밀번호'}
-            type={showPassword ? 'text' : 'password'}
+            type={'password'}
             name="password"
             validation={true}
             placeholder={''}
@@ -86,12 +79,6 @@ function Login() {
             onChange={handleInput}
             errorMessage={'비밀번호를 확인해주세요.'}
           />
-          <button
-          type='button'
-          className='absolute right-8 top-[133px]'
-          onClick={toggleShowPassword}>
-            {showPassword ? <Show /> :  <Hide />}
-          </button>
           {/* <div className="flex gap-x-1 justify-end mr-2.5 items-start flex-grow mb-8">
             <input
               type="checkbox"
@@ -117,8 +104,8 @@ function Login() {
           /> */}
           <ButtonSubmit content={'로그인'} />
         </form>
-        <div className="flex flex-col justify-end items-center mb-8">
-          <Link to="/signup" className="text-sm font-semibold">
+        <div className="flex flex-col justify-end items-center mt-4 mb-8">
+          <Link to="/signup" className="text-sm font-semibold my-2">
             회원가입
           </Link>
           <div>
@@ -127,7 +114,6 @@ function Login() {
             <span aria-hidden='true' className='text-sm text-primary'>/</span>
               비밀번호 찾기
             </Link>
-
           </div>
         </div>
       </div>
