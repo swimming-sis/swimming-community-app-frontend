@@ -1,7 +1,7 @@
 function Spinner() {
   return (
     <figure
-    className="mt-20"
+    className="mt-20 pt-20"
     >
      <svg
       xmlns="http://www.w3.org/2000/svg"
