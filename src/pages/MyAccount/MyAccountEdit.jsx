@@ -323,7 +323,7 @@ function MyAccountEdit() {
 
       mountedAndFetched = true;
     }
-  }, [fetchAccountData]);
+  }, [fetchAccountData?.result]);
 
   const handleSendNumber = async () => {
     setPhoneValidation((prev) => ({
