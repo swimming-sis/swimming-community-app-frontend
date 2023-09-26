@@ -236,11 +236,8 @@
    - 리뷰목록 및 상세 페이지
    - 리뷰 목록 작성 / 수정 / 삭제
 
-  <table>
-  <tr>
-    <td><img alt="수영장 리뷰페이지" src="https://github.com/swimming-sis/swimming-community-app-frontend/assets/116139215/ceccce0e-1bb0-43f3-aa95-95b3e1dc9085"  height="600px" width="300px" /></td>
-  <tr>
-</table>
+
+  <p align="center"><img alt="내계정 페이지" src="https://github.com/swimming-sis/swimming-community-app-frontend/assets/116139215/ceccce0e-1bb0-43f3-aa95-95b3e1dc9085" height="600px" width="300px"></p>
 
 <br />
 
