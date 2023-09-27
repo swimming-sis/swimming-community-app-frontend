@@ -1,13 +1,14 @@
 
 
-.swiper.swiper-wrapper{
+.swiper.swiper-initialize.swiper-wrapper{
 display: inline-flex;
 flex-direction: row;
-width: 100%;
-
+flex-wrap: nowrap;
+width: 100vw;
 }
-.swiper-slide{
-  width: 20%;
+.swiper.swiper-slide{
+  width: 75px;
+  flex-shrink: 0;
 }
 .swiper-horizontal{
   height: 2.25rem;

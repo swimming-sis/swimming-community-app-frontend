@@ -44,7 +44,7 @@ function CategoryRadioForm({ onClick, write = false, selectedCategory, onCategor
             enable: true,
             sticky: true,
           }}
-          spaceBetween={-10}
+          // spaceBetween={-10}
           slidesOffsetBefore={30}
           slidesOffsetAfter={50}
           slidesPerView="auto"
