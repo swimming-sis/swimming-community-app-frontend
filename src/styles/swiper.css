@@ -1,11 +1,13 @@
+
+
 .swiper.swiper-wrapper{
 display: inline-flex;
 flex-direction: row;
-width: 100vw;
+width: 100%;
 
 }
 .swiper-slide{
-  width: 80px;
+  width: 100%;
 }
 .swiper-horizontal{
   height: 2.25rem;

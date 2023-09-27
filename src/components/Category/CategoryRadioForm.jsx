@@ -4,12 +4,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/a11y';
-import '@/styles/swiper.css'
+import '@/styles/swiper.css';
 import propTypes from 'prop-types';
 
-
-
-function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChange}) {
+function CategoryRadioForm({ onClick, write = false, selectedCategory, onCategoryChange }) {
   // const [selectedCategory, setSelectedCategory] = useState('all');
 
   const categoryArr = [
@@ -30,45 +28,40 @@ function CategoryRadioForm({onClick,write=false,selectedCategory, onCategoryChan
     { id: 'info', value: '정보' },
   ];
 
-
   const handleChange = (e) => {
     // setSelectedCategory(e.target.value);
     if (onCategoryChange) {
-      onCategoryChange(e.target.value);  
+      onCategoryChange(e.target.value);
     }
   };
 
-
   return (
-    <div 
-    className="mt-4 mb-2 w-full overflow-x-hidden"
-    onClick={onClick}>
+    <div className="mt-4 mb-2 w-full overflow-x-hidden">
       <CategoryRadioGroup>
-      <Swiper 
-  modules={[FreeMode]}
-  freeMode={{
-    enable: true,
-    sticky: true
-  }} 
-  spaceBetween= {0}
-  slidesOffsetBefore = {30}
-  slidesOffsetAfter = {50}
-  slidesPerView= {'auto'}
-  // autoHeight={true}
-  className='min-h-24'
-
->
-{(write ? categoryWriteArr : categoryArr).map((category) => (
-    <SwiperSlide key={category.id}>
-      <CategoryRadio
-        id={category.id}
-        value={category.value}
-        onChange={handleChange}
-        isChecked={selectedCategory === category.value} 
-      />
-    </SwiperSlide>
-))}
-</Swiper>
+        <Swiper
+          onClick={onClick}
+          modules={[FreeMode]}
+          freeMode={{
+            enable: true,
+            sticky: true,
+          }}
+          spaceBetween={10}
+          slidesOffsetBefore={30}
+          slidesOffsetAfter={50}
+          slidesPerView="auto"
+          // autoHeight={true}
+          className="min-h-24">
+          {(write ? categoryWriteArr : categoryArr).map((category) => (
+            <SwiperSlide key={category.id}>
+              <CategoryRadio
+                id={category.id}
+                value={category.value}
+                onChange={handleChange}
+                isChecked={selectedCategory === category.value}
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </CategoryRadioGroup>
     </div>
   );
