@@ -22,7 +22,7 @@ display: inline-flex;
     width: 14%;
     }
 }
-@media (max-width:699px) {
+@media (min-width:699px) {
   .swiper-wrapper{
     width: 12%;
     }
