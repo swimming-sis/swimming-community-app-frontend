@@ -45,11 +45,11 @@ function CategoryRadioForm({ onClick, write = false, selectedCategory, onCategor
             sticky: true,
           }}
           // spaceBetween={-10}
-          slidesOffsetBefore={30}
-          slidesOffsetAfter={50}
+          slidesOffsetBefore={10}
+          // slidesOffsetAfter={50}
           slidesPerView="auto"
           // autoHeight={true}
-          className="min-h-24">
+          className="min-h-24 px-2.5">
           {(write ? categoryWriteArr : categoryArr).map((category) => (
             <SwiperSlide key={category.id}>
               <CategoryRadio
