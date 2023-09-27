@@ -36,10 +36,9 @@ function CategoryRadioForm({ onClick, write = false, selectedCategory, onCategor
   };
 
   return (
-    <div className="mt-4 mb-2 w-full overflow-x-hidden">
+    <div onClick={onClick} className="mt-4 mb-2 w-full overflow-x-hidden">
       <CategoryRadioGroup>
         <Swiper
-          onClick={onClick}
           modules={[FreeMode]}
           freeMode={{
             enable: true,
